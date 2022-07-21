@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppLayout from '../components/Applayout';
 import { Button } from 'antd';
 import Link from 'next/link';
@@ -37,6 +37,7 @@ const Mainpage = styled.div`
 `;
 
 const Home = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
         <div>
             <AppLayout>
@@ -45,7 +46,7 @@ const Home = () => {
                 <h1>지금 여행을 <br />
                     계획해보세요</h1>
                 <h3>여러 사람들과 함께 계획을 세워보세요.</h3>
-                <Button><Link href="/admin"><a>시작하기</a></Link></Button>
+                {isLoggedIn ? <Button><Link href="/admin"><a>시작하기</a></Link></Button> : <Button><Link href="/login"><a>시작하기</a></Link></Button>}
             </Mainpage>
         </div>
     );
