@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import AppLayout from '../components/Applayout';
 import Head from 'next/head';
-import { Form, Input, Button, Row, Col, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 import Link from 'next/link';
 
 const Login = () => {
@@ -16,6 +16,10 @@ const Login = () => {
         setPassword(e.target.value);
     }, []);
 
+    const onSubmitForm = useCallback(() => {
+        console.log(id, password);
+    }, [id, password]);
+
     return (
         <div>
             <Head>
@@ -28,6 +32,7 @@ const Login = () => {
                     wrapperCol={{ span: 5 }}
                     initialValues={{ remember: true }}
                     autoComplete="off"
+                    onFinish={onSubmitForm}
                 >
                     <Form.Item
                         label="아이디"
@@ -50,7 +55,7 @@ const Login = () => {
                     </Form.Item>
 
                     <Form.Item wrapperCol={{ offset: 10, span: 10 }}>
-                        <Button type="primary" htmlType="submit">로그인</Button>
+                        <Button type="primary" htmlType="submit"><Link href="/admin"><a>로그인</a></Link></Button>
                         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
                     </Form.Item>
                 </Form>
