@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import AppLayout from '../components/Applayout';
 import Head from 'next/head';
+import { useRouter } from 'next/router'
 import { Form, Input, Button, Checkbox } from 'antd';
 import useInput from '../components/hooks/useInput';
 import styled from 'styled-components';
@@ -14,6 +15,7 @@ const ErrorTerm = styled.div`
 `;
 
 const Signup = () => {
+    const router = useRouter();
     const [id, onChangeId] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -33,6 +35,8 @@ const Signup = () => {
         setTermError(false)
     }, []);
 
+    const pageMove = () => router.push('/login'); // 회원가입후 페이지 이동
+
     const onSubmit = useCallback(() => {
         if (password !== passwordCheck) {
             return setPasswordError(true);
@@ -40,7 +44,8 @@ const Signup = () => {
         if (!term) {
             return setTermError(true);
         }
-        console.log(id, nickname, password);
+        alert('회원가입되었습니다');
+        setTimeout(() => { pageMove() }, 1000);
     }, [id, password, nickname, passwordCheck, term]);
     return (
         <div>
@@ -78,7 +83,7 @@ const Signup = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label="비밀번호체크"    
+                        label="비밀번호체크"
                         name="passwordCheck"
                     >
                         <Input.Password value={passwordCheck} onChange={onChangePasswordCheck} />
