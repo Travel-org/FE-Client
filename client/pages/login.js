@@ -55,7 +55,7 @@ const Login = () => {
                     </Form.Item>
 
                     <Form.Item wrapperCol={{ offset: 10, span: 10 }}>
-                        <Button type="primary" htmlType="submit"><Link href="/admin"><a>로그인</a></Link></Button>
+                        <Button type="primary" htmlType="submit"><Link href="/home"><a>로그인</a></Link></Button>
                         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
                     </Form.Item>
                 </Form>
