@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import AppLayout from '../components/Applayout';
-import { Button } from 'antd';
+import React, { useCallback } from 'react';
+import { Button, Menu } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { logoutAction } from '../reducers';
 
 const Mainpage = styled.div`
     width: 100%;
@@ -37,17 +39,30 @@ const Mainpage = styled.div`
 `;
 
 const Home = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const onLogOut = useCallback(() => {
+        dispatch(logoutAction());
+    }, [])
     return (
         <div>
-            <AppLayout>
-            </AppLayout>
+            <Menu mode="horizontal">
+                <Menu.Item>
+                    <Link href="/"><a>Travel</a></Link>
+                </Menu.Item>
+                <Menu.Item>
+                    {isLoggedIn ? <a onClick={onLogOut}>로그아웃</a> : <Link href="/login"><a>로그인</a></Link>}
+                </Menu.Item>
+                <Menu.Item>
+                    <Link href="/signup"><a>회원가입</a></Link>
+                </Menu.Item>
+            </Menu>
             <Mainpage>
                 <h1>지금 여행을 <br />
                     계획해보세요</h1>
                 <h3>여러 사람들과 함께 계획을 세워보세요.</h3>
-                {isLoggedIn ? <Button><Link href="/admin"><a>시작하기</a></Link></Button> : <Button><Link href="/login"><a>시작하기</a></Link></Button>}
-            </Mainpage>
+                {isLoggedIn ? <Button><Link href="/home"><a>시작하기</a></Link></Button> : <Button><Link href="/login"><a>시작하기</a></Link></Button>}
+                </Mainpage>
         </div>
     );
 };
