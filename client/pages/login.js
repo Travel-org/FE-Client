@@ -4,7 +4,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux';
-import { loginAction } from '../reducers';
+import { loginAction } from '../reducers/user';
 
 const Login = () => {
     const dispatch = useDispatch();

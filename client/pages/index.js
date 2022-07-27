@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { logoutAction } from '../reducers';
+import { logoutAction } from '../reducers/user';
 
 const Mainpage = styled.div`
     width: 100%;
