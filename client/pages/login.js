@@ -1,10 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import AppLayout from '../components/Applayout';
 import Head from 'next/head';
 import { Form, Input, Button, Checkbox } from 'antd';
 import Link from 'next/link';
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../reducers';
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
+    
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
 
@@ -18,14 +23,17 @@ const Login = () => {
 
     const onSubmitForm = useCallback(() => {
         console.log(id, password);
+        dispatch(loginAction({ id, password }));
+        const pageMove = () => router.push(`/`);
+        pageMove();
     }, [id, password]);
+
 
     return (
         <div>
             <Head>
                 <title>로그인 | Travel</title>
             </Head>
-            <AppLayout>
                 <Form
                     name="basic"
                     labelCol={{ span: 10 }}
@@ -55,11 +63,10 @@ const Login = () => {
                     </Form.Item>
 
                     <Form.Item wrapperCol={{ offset: 10, span: 10 }}>
-                        <Button type="primary" htmlType="submit"><Link href="/home"><a>로그인</a></Link></Button>
+                        <Button type="primary" htmlType="submit">로그인</Button>
                         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
                     </Form.Item>
                 </Form>
-            </AppLayout>
         </div>
     );
 };
