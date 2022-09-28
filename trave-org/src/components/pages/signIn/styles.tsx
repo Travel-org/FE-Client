@@ -8,6 +8,19 @@ const Container = styled(FlexDiv)`
   align-items: center;
 `;
 
-const LoginForm = styled.form``;
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
 
-export { Container, LoginForm };
+const Wrapper = styled(FlexDiv)`
+  column-gap: 1rem;
+  p {
+    cursor: pointer;
+    :hover {
+      opacity: 50%;
+    }
+  }
+`;
+
+export { Container, LoginForm, Wrapper };

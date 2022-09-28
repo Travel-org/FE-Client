@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 
-import { Container, LoginForm } from "./styles";
-import Input from "@organisms/loginInput";
-import { INPUT_DATA } from "@constants/index";
+import { Container, LoginForm, Wrapper } from "./styles";
+import SignInInput from "@organisms/loginInput";
+import { SIGNIN_INPUT_DATA, ERROR_MESSAGE } from "@constants/index";
+import { useNavigate } from "react-router-dom";
 
 interface SignInFormInterface {
   id: string;
@@ -10,6 +11,7 @@ interface SignInFormInterface {
 }
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,23 +24,24 @@ const SignIn = () => {
 
   const inputProps = (type: "id" | "password") => {
     return {
-      ...register(type, { required: type }),
-      ...INPUT_DATA[type],
+      ...register(type, { required: ERROR_MESSAGE }),
+      ...SIGNIN_INPUT_DATA[type],
       ...{ error: errors[type]?.message },
     };
   };
 
   return (
     <Container direction="column">
-      <h2>로그인</h2>
+      <h1>로그인</h1>
       <LoginForm onSubmit={handleSubmit(onSubmit)}>
-        <Input {...inputProps("id")} />
-        <Input {...inputProps("password")} />
+        <SignInInput {...inputProps("id")} />
+        <SignInInput {...inputProps("password")} />
+        <Wrapper direction="row" style={{ columnGap: "1rem" }}>
+          <p onClick={() => navigate("/find")}>아이디/비밀번호 찾기</p>
+          <p onClick={() => navigate("/signUp")}>회원가입</p>
+        </Wrapper>
         <button>버튼</button>
       </LoginForm>
-      <section>
-        <div>소셜 로그인</div>
-      </section>
     </Container>
   );
 };
