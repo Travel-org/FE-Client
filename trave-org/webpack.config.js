@@ -20,25 +20,12 @@ module.exports = {
 
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: ["babel-loader", "ts-loader"],
-      },
-    ],
-  },
-
-  output: {
-    path: path.join(__dirname, "/dist"),
-    filename: "bundle.js",
-  },
-
-  plugins: [
-    new webpack.ProvidePlugin({
-      React: "react",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-  ],
-};
+        {
+          test: /\.tsx?$/,
+          use: [
+            "babel-loader",
+            "ts-loader"
+          ],
+        },
+      ],
+    },
