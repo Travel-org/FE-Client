@@ -1,12 +1,11 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
-const dotenv = require("dotenv");
-const mode = process.env.NODE_ENV || "development";
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+import * as webpack from 'webpack';
+import * as path from "path";
+import 'webpack-dev-server';
 
-dotenv.config();
+const mode = (process.env.NODE_ENV || "development") as "development" | "none" | "production";
 
-module.exports = {
+const config: webpack.Configuration = {
   mode,
   devServer: {
     historyApiFallback: true,
@@ -16,7 +15,6 @@ module.exports = {
   entry: {
     app: path.join(__dirname, "index.tsx"),
   },
-
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: {
@@ -30,12 +28,14 @@ module.exports = {
       "@styles": path.resolve(__dirname, "src/styles"),
     },
   },
-
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: ["babel-loader", "ts-loader"],
+        use: [
+          "babel-loader",
+          "ts-loader"
+        ],
       },
     ],
   },
@@ -44,16 +44,14 @@ module.exports = {
     filename: "bundle.js",
   },
   plugins: [
-    new webpack.DefinePlugin({
-      "process.env": JSON.stringify(process.env),
-    }),
     new webpack.ProvidePlugin({
       React: "react",
     }),
     new HtmlWebpackPlugin({
-      publicPath: "/",
       template: "./public/index.html",
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 };
+
+export default config;
