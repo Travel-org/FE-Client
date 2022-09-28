@@ -3,6 +3,7 @@ import SignUpInput from "@organisms/loginInput";
 import { FlexDiv } from "@src/styles";
 import { Container, SignFormStyle, ErrorMessage } from "./styles";
 import { SIGNUP_INPUT_DATA, CHECK_SIGNUP_DATA } from "@constants/index";
+import Button from "@atoms/button";
 
 interface SignUpFormInterface {
   name: string;
@@ -100,7 +101,7 @@ const SignUpForm = () => {
       <BirthInputForm />
       <SignUpInput {...inputProps("email")} />
       <SignUpInput {...inputProps("password")} />
-      <button>제출</button>
+      <Button>제출</Button>
     </SignFormStyle>
   );
 };

@@ -7,7 +7,6 @@ interface InputProps {
   type: string;
   placeholder: string;
 }
-
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ content, error, type, placeholder, ...rest }, ref) => {
     return (
@@ -27,5 +26,4 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-
 export default Input;
