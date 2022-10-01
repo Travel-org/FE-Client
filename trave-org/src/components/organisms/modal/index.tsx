@@ -5,7 +5,7 @@ import { Background, Content } from "./styles";
 const Modal = ({
   children,
 }: {
-  children: ReactChild | ReactChildren | boolean;
+  children: ReactChild |  boolean;
 }) => {
   return (
     <Portal>

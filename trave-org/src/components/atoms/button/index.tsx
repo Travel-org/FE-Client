@@ -9,5 +9,6 @@ const Button = ({
   onClick?: any;
 }) => {
   return <ButtonStyle onClick={onClick}>{children}</ButtonStyle>;
+};
 
 export default Button;

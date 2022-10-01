@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 const Portal = ({
   children,
 }: {
-  children: ReactChild | ReactChildren | boolean;
+  children: ReactChild | boolean;
 }) => {
   const element =
     typeof window !== "undefined" && document.getElementById("portal");

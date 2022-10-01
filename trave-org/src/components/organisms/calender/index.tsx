@@ -2,13 +2,13 @@ import { CalenderNav, Wrapper } from "./styles";
 import { DAY } from "@constants/index";
 import { handleCompareDate } from "@utils/index";
 import DayElement from "@atoms/dayElement";
-// import CalenderDayElement from "@atoms/calenderDayElement";
 
 interface Props {
   date: Date;
   selectedDate: Date[];
   handleChangeMonth: (condition: number) => void;
   handleSelectDate: (day: Date) => void;
+}
 
 const getDate = (date: Date) => {
   const start = new Date(date.getFullYear(), date.getMonth(), 0);
@@ -19,13 +19,14 @@ const getDate = (date: Date) => {
   const thisDates = [...Array(endDate + 1).keys()]
     .slice(1)
     .map((d) => new Date(end.getFullYear(), end.getMonth(), d));
+
   const prevDates =
     startDay !== 6
-    ? Array.from({ length: startDay + 1 })
-    .map(
-      (e, i) =>
-        new Date(start.getFullYear(), start.getMonth(), startDate - i)
-    )
+      ? Array.from({ length: startDay + 1 })
+          .map(
+            (e, i) =>
+              new Date(start.getFullYear(), start.getMonth(), startDate - i)
+          )
           .reverse()
       : [];
   return { thisDates, prevDates };
@@ -38,15 +39,10 @@ const Calender = ({
   handleSelectDate,
 }: Props) => {
   const title = date.getFullYear() + "년" + " " + (date.getMonth() + 1) + "월";
-  const handleCheckToday = (element: number) =>
-    !!(
-      today.getFullYear() === date.getFullYear() &&
-      today.getMonth() === date.getMonth() &&
-      today.getDate() === element
-    );
   const { thisDates, prevDates } = getDate(date);
   const handleUp = () => handleChangeMonth(1);
   const handleDown = () => handleChangeMonth(-1);
+
   const handleCheckSleleted = (element: Date) => {
     const [first, second] = selectedDate;
     return (
@@ -55,6 +51,7 @@ const Calender = ({
       (selectedDate.length == 2 && first >= element && element >= second)
     );
   };
+
   return (
     <>
       <CalenderNav>
@@ -65,7 +62,7 @@ const Calender = ({
         </CalenderNav>
       </CalenderNav>
       <Wrapper>
-      {DAY.map((day) => (
+        {DAY.map((day) => (
           <p key={day}>{day}</p>
         ))}
         {[...prevDates, ...thisDates].map((element, index) => (
