@@ -9,8 +9,9 @@ const Navigation = () => {
         <Wrapper>
           <div>
             <Logo onClick={() => navigate("/")} src="/로고.png" />
-            <p onClick={() => navigate("/shcedule")}>계획</p>
+            <p onClick={() => navigate("/schedule")}>계획</p>
             <p onClick={() => navigate("/search")}>조회</p>
+            <p onClick={() => navigate("/settlement")}>정산</p>
           </div>
           <p onClick={() => navigate("/signIn")}>로그인</p>
         </Wrapper>

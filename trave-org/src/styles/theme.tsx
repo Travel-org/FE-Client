@@ -1,5 +1,4 @@
 import { Theme } from "@emotion/react";
-
 declare module "@emotion/react" {
   export interface Theme {
     colors: {
@@ -12,6 +11,16 @@ declare module "@emotion/react" {
         600: string;
         300: string;
       };
+      green: {
+        600: string;
+        300: string;
+      };
+      grey: {
+        600: string;
+        500: string;
+        300: string;
+      };
+      white: string;
     };
     breakpoints: {
       lg: string;
@@ -20,7 +29,6 @@ declare module "@emotion/react" {
     };
   }
 }
-
 export const theme: Theme = {
   colors: {
     shadow: "#00000029",
@@ -29,9 +37,19 @@ export const theme: Theme = {
     },
     blue: {
       900: "#064389",
-      600: "#1396f1",
+      600: "#3DBBF5",
       300: "#a5defb",
     },
+    green: {
+      600: "#46cc59",
+      300: "#c8ffc8",
+    },
+    grey: {
+      600: "#a1a4a0",
+      500: "#BDBDBD",
+      300: "#edefed",
+    },
+    white: "#ffffff",
   },
   breakpoints: {
     lg: "1200px",

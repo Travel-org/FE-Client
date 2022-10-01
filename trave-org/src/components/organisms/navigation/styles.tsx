@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   position: relative;
   padding: 0px 24px;
   height: 8vh;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,6 +28,8 @@ const Wrapper = styled.div`
   }
 `;
 const Logo = styled.img`
+  padding: 0.4rem;
+  box-sizing: border-box;
   width: 4rem;
   cursor: pointer;
   :hover {

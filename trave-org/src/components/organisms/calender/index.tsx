@@ -1,12 +1,14 @@
 import { CalenderNav, Wrapper } from "./styles";
+import { DAY } from "@constants/index";
+import { handleCompareDate } from "@utils/index";
 import DayElement from "@atoms/dayElement";
 // import CalenderDayElement from "@atoms/calenderDayElement";
 
 interface Props {
   date: Date;
+  selectedDate: Date[];
   handleChangeMonth: (condition: number) => void;
-}
-const Day = ["월", "화", "수", "목", "금", "토", "일"];
+  handleSelectDate: (day: Date) => void;
 
 const getDate = (date: Date) => {
   const start = new Date(date.getFullYear(), date.getMonth(), 0);
@@ -14,19 +16,27 @@ const getDate = (date: Date) => {
   const startDate = start.getDate();
   const startDay = start.getDay();
   const endDate = end.getDate();
-  const thisDates = [...Array(endDate + 1).keys()].slice(1);
+  const thisDates = [...Array(endDate + 1).keys()]
+    .slice(1)
+    .map((d) => new Date(end.getFullYear(), end.getMonth(), d));
   const prevDates =
     startDay !== 6
-      ? Array(startDay + 1)
-          .fill("")
-          .map((element, i) => startDate - i)
+    ? Array.from({ length: startDay + 1 })
+    .map(
+      (e, i) =>
+        new Date(start.getFullYear(), start.getMonth(), startDate - i)
+    )
           .reverse()
       : [];
   return { thisDates, prevDates };
 };
 
-const Calender = ({ date, handleChangeMonth }: Props) => {
-  const today = new Date();
+const Calender = ({
+  date,
+  selectedDate,
+  handleChangeMonth,
+  handleSelectDate,
+}: Props) => {
   const title = date.getFullYear() + "년" + " " + (date.getMonth() + 1) + "월";
   const handleCheckToday = (element: number) =>
     !!(
@@ -37,6 +47,14 @@ const Calender = ({ date, handleChangeMonth }: Props) => {
   const { thisDates, prevDates } = getDate(date);
   const handleUp = () => handleChangeMonth(1);
   const handleDown = () => handleChangeMonth(-1);
+  const handleCheckSleleted = (element: Date) => {
+    const [first, second] = selectedDate;
+    return (
+      !!(selectedDate.length === 1 && handleCompareDate(first, element)) ||
+      (selectedDate.length == 2 && first <= element && element <= second) ||
+      (selectedDate.length == 2 && first >= element && element >= second)
+    );
+  };
   return (
     <>
       <CalenderNav>
@@ -47,20 +65,13 @@ const Calender = ({ date, handleChangeMonth }: Props) => {
         </CalenderNav>
       </CalenderNav>
       <Wrapper>
-        {Day.map((element) => (
-          <p key={element}>{element}</p>
+      {DAY.map((day) => (
+          <p key={day}>{day}</p>
         ))}
-        {prevDates.map((element, index) => (
+        {[...prevDates, ...thisDates].map((element, index) => (
           <DayElement
-            status="prev"
-            key={index}
-            day={element}
-            date={(index + 1) % 7}
-          />
-        ))}
-        {thisDates.map((element, index) => (
-          <DayElement
-            status={handleCheckToday(element) ? "today" : "this"}
+            status={handleCheckSleleted(element) ? "mid" : "none"}
+            onClick={handleSelectDate}
             key={index}
             day={element}
             date={(index + 1) % 7}

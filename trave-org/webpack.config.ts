@@ -16,7 +16,7 @@ const config: webpack.Configuration = {
     app: path.join(__dirname, "index.tsx"),
   },
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    extensions: [".js", ".ts", ".tsx"],
     alias: {
       "@src": path.resolve(__dirname, "src"),
       "@atoms": path.resolve(__dirname, "src/components/atoms"),
@@ -46,6 +46,7 @@ const config: webpack.Configuration = {
   plugins: [
     new webpack.ProvidePlugin({
       React: "react",
+      process: 'process/browser',
     }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",

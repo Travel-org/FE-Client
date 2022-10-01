@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ThemeProvider, Global } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -27,11 +27,30 @@ const Main = lazy(() => import("@pages/main"));
 const SignIn = lazy(() => import("@pages/signIn"));
 const SignUp = lazy(() => import("@pages/signUp"));
 const Admin = lazy(() => import("@pages/admin"));
+const Schedule = lazy(() => import("@pages/schedule"));
+const NewSchedule = lazy(() => import("@pages/newSchedule"));
+const Settlement = lazy(() => import("@pages/settlement"));
+const LiveSchedule = lazy(() => import("@pages/liveSchedule"));
+const Search = lazy(() => import("@pages/search"));
 const Temp = lazy(() => import("@pages/temp"));
 
 function App() {
   const queryClient = new QueryClient();
-  return (
+  const preventClose = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener("beforeunload", preventClose);
+    })();
+    return () => {
+      window.removeEventListener("beforeunload", preventClose);
+    };
+  }, []);
+
+  https: return (
     <ThemeProvider theme={theme}>
       <Global styles={reset} />
       <QueryClientProvider client={queryClient}>
@@ -77,6 +96,38 @@ function App() {
                 }
               />
               <Route
+                path={"/schedule"}
+                element={
+                  <PrivateRoute>
+                    <Schedule />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/settlement"
+                element={
+                  <PrivateRoute>
+                    <Settlement />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={"/newSchedule"}
+                element={
+                  <PrivateRoute>
+                    <NewSchedule />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={"/liveSchedule"}
+                element={
+                  <PrivateRoute>
+                    <LiveSchedule />
+                  </PrivateRoute>
+                }
+              />
+              <Route
                 path={ADMIN_URL}
                 element={
                   <AdminRoute>
@@ -87,9 +138,9 @@ function App() {
               <Route
                 path={"/temp"}
                 element={
-                  <AdminRoute>
+                  <PublicRoute>
                     <Temp />
-                  </AdminRoute>
+                  </PublicRoute>
                 }
               />
             </Routes>

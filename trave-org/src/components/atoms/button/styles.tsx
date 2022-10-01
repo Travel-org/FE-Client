@@ -19,6 +19,10 @@ const KakaoBtnStyle = styled.div`
   justify-content: center;
   background: #eed80c;
   column-gap: 0.5rem;
+  cursor: pointer;
+  :hover {
+    opacity: 50%;
+  }
   img {
     width: 1rem;
   }

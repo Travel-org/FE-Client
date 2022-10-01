@@ -2,16 +2,15 @@ import { Box } from "./styles";
 
 interface ElementProps {
   date: number;
-  day: number;
-  status: "prev" | "this" | "today";
+  day: Date;
+  status: "mid" | "none" | "start" | "end";
+  onClick: (day: Date) => void;
 }
-const DayElement = ({ status, date, day }: ElementProps) => {
+const DayElement = ({ status, date, day, onClick }: ElementProps) => {
   return (
-    <>
-      <Box>
-        <p>{day}</p>
-      </Box>
-    </>
+    <Box status={status} onClick={() => onClick(day)}>
+      <p>{day.getDate()}</p>
+    </Box>
   );
 };
 

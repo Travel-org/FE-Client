@@ -1,0 +1,7 @@
+import styled from "@emotion/styled";
+
+const Container = styled.div``;
+
+const SubContainer = styled.div``;
+
+export { Container, SubContainer };
