@@ -6,6 +6,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   column-gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
 `;
 const Image = styled.div`
   min-width: 4rem;

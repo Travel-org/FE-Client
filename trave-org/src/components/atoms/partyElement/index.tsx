@@ -5,14 +5,11 @@ interface Props {
   email: string;
 }
 
-const PartyElement = ({ name, email }: Props) => {
+const PartyElement = ({ email }: Props) => {
   return (
     <Container>
       <Image />
       <div>
-        <strong>
-          <p>{name}</p>
-        </strong>
         <p>{email}</p>
       </div>
     </Container>

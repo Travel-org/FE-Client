@@ -3,7 +3,6 @@ import { FlexDiv } from "@src/styles";
 import { theme } from "@src/styles/theme";
 const Container = styled(FlexDiv)`
   background: white;
-  height: 92vh;
   padding: 4vw;
   box-sizing: border-box;
   justify-content: space-between;
@@ -11,7 +10,6 @@ const Container = styled(FlexDiv)`
     width: 100%;
   }
 `;
-
 const ScheduleWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -30,15 +28,47 @@ const ScheduleWrapper = styled.div`
 `;
 
 const ScheduleElementContainer = styled.div`
-  height: 100%;
   width: 100%;
   border-radius: 10px;
-  padding: 2vw;
+  padding: 1rem;
   box-sizing: border-box;
   font-size: 1rem;
-  color: white;
-  background: grey;
+  color: black;
+  background: white;
+  margin: 3rem;
   box-shadow: 0px 0px 6px ${theme.colors.shadow};
 `;
 
-export { Container, ScheduleWrapper, ScheduleElementContainer };
+const Image = styled.img`
+  border-radius: 10px;
+  width: 100%;
+  height: 60%;
+  background: white;
+`;
+
+const AvartarContainer = styled.div`
+  display: flex;
+  > * {
+    margin-left: -0.5rem;
+  }
+  > *:first-of-type {
+    margin-left: 0;
+  }
+`;
+
+const Avartar = styled.div`
+  border-radius: 100vw;
+  background: green;
+  box-shadow: 0px 0px 6px ${theme.colors.shadow};
+  width: 1.6rem;
+  height: 1.6rem;
+`;
+
+export {
+  Container,
+  ScheduleWrapper,
+  Image,
+  ScheduleElementContainer,
+  AvartarContainer,
+  Avartar,
+};

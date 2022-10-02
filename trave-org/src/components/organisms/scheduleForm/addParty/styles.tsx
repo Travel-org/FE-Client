@@ -5,7 +5,10 @@ const Container = styled.div``;
 
 const ElementWrapper = styled.div`
   height: 40vh;
+  box-shadow: 0px 0px 6px ${theme.colors.shadow};
+  border-radius: 10px;
   padding-bottom: 1rem;
+  margin-bottom: 1rem;
   overflow: auto;
 `;
 
