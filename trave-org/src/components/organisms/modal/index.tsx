@@ -1,12 +1,8 @@
 import Portal from "@src/portal";
-import { ReactChild, ReactChildren } from "react";
+import { ReactNode } from "react";
 import { Background, Content } from "./styles";
 
-const Modal = ({
-  children,
-}: {
-  children: ReactChild |  boolean;
-}) => {
+const Modal = ({ children }: { children: ReactNode | boolean }) => {
   return (
     <Portal>
       <Background>{children}</Background>
