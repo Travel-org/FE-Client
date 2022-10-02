@@ -7,6 +7,6 @@ interface Props {
 }
 
 const PublicRoute = ({ children: Component }: Props) => {
-  return isLogin() ? <Navigate to="/" /> : Component;
+  return false ? <Navigate to="/" /> : Component;
 };
 export default PublicRoute;
