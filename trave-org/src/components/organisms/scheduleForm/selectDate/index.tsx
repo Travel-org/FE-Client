@@ -1,27 +1,26 @@
 import { useState } from "react";
 import DataRangeBar from "@atoms/dataRangebar";
 import Calender from "@organisms/calender";
-import { handleCompareDate } from "@utils/index";
 
-const SelectDate = () => {
+interface Props {
+  selectedDate: Date[];
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date[]>>;
+}
+
+const SelectDate = ({ selectedDate, setSelectedDate }: Props) => {
   const [isSelected, setIsSelected] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date[]>([new Date()]);
   const [date, setDate] = useState(new Date());
 
   const handleChangeMonth = (number: number) =>
     setDate(new Date(date.getFullYear(), date.getMonth() + number));
 
-  const handleSelectDate = (day: Date) => {
-    if (selectedDate.some((e) => handleCompareDate(e, day))) {
-      setSelectedDate(selectedDate.filter((e) => !handleCompareDate(e, day)));
-    } else {
-      setSelectedDate(
-        selectedDate.length < 2
-          ? [...selectedDate, day].sort()
-          : [...selectedDate.slice(1), day].sort()
-      );
-    }
-  };
+  const handleSelectDate = (day: Date) =>
+    setSelectedDate(
+      selectedDate.length < 2
+        ? [...selectedDate, day]
+        : [...selectedDate.slice(1), day]
+    );
+
   return (
     <>
       <h2>언제 여행을 떠나시나요?</h2>

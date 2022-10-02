@@ -1,7 +1,6 @@
 import { Container, Image } from "./styles";
 
 interface Props {
-  name: string;
   email: string;
 }
 

@@ -47,4 +47,5 @@ const AddParty = ({ userList, addUserEmail }: Props) => {
     </Container>
   );
 };
+
 export default AddParty;

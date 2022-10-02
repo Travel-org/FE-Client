@@ -1,9 +1,14 @@
 import { Container } from "./styles";
-const ScheduleBoard = () => {
+
+interface Props {
+  content: string;
+}
+
+const ScheduleBoard = ({ content }: Props) => {
   return (
     <Container>
       <img src="/rect.png" />
-      <h2>용형 자연 휴양림</h2>
+      <h3>{content}</h3>
       <p>test</p>
     </Container>
   );

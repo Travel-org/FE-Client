@@ -1,8 +1,9 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import { KAKAO_API_KEY } from "@src/constants";
 
 interface Props {
+  kakao: any;
+  setMap: React.Dispatch<any>;
   focusMark: { x: number; y: number };
   //   mark: { name: string; x: number; y: number }[];
 }
@@ -12,16 +13,7 @@ const Container = styled.div`
   height: 92vh;
 `;
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
-const Map = ({ focusMark }: Props) => {
-  const [kakao, setKakao] = useState(window.kakao);
-  const [marks, setMarks] = useState<any[]>();
-  const [map, setMap] = useState();
+const Map = ({ kakao, setMap, focusMark }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleFocusMark = () => {
@@ -33,29 +25,8 @@ const Map = ({ focusMark }: Props) => {
   };
 
   useEffect(() => {
-    if (kakao && kakao.maps) {
-      handleFocusMark();
-    } else {
-      const script = document.createElement("script");
-      script.onload = () => {
-        window.kakao.maps.load(function () {
-          setKakao(window.kakao);
-        });
-      };
-      script.type = "text/javascript";
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
-        KAKAO_API_KEY +
-        "&autoload=false";
-      document.head.appendChild(script);
-    }
+    if (kakao && kakao.maps) handleFocusMark();
   }, [kakao]);
-
-  useEffect(() => {
-    if (map === undefined) return;
-    marks?.map((element) => element.setMap(null));
-
-  }, [map]);
 
   return <Container id="map" ref={ref} />;
 };

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Wrapper, SearchContainer, SearchItem } from "./styles";
-
+import { useNavigate } from "react-router-dom";
 interface Props {
   kakao: any;
   map: any;
@@ -18,7 +17,7 @@ const SearchBoard = ({
   setMarkers,
 }: Props) => {
   const InputRef = useRef<HTMLInputElement>();
-  const [searchResult, setSearchResult] = useState<any[]>([]);
+  const [searchResult, setSearchResult] = useState([]);
   const [selectItem, setSelectItem] = useState<any>({});
 
   const [ps, setPs] = useState<any>();
@@ -47,8 +46,10 @@ const SearchBoard = ({
       });
     } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
       alert("검색 결과가 존재하지 않습니다.");
+      return;
     } else if (status === kakao.maps.services.Status.ERROR) {
       alert("검색 결과 중 오류가 발생했습니다.");
+      return;
     }
   }
 
@@ -68,23 +69,24 @@ const SearchBoard = ({
         onBlur={handleSearch}
       />
       <SearchContainer>
-        {searchResult.map((searchItem) => {
-          const { x, y } = searchItem;
-
-          return (
-            <SearchItem
-              key={searchItem}
-              selected={selectItem === searchItem}
-              onClick={() => {
-                map.panTo(new kakao.maps.LatLng(y, x));
-                setSelectItem(searchItem);
-              }}
-            >
-              <p>{searchItem.place_name}</p>
-              <p>{searchItem.address_name}</p>
-            </SearchItem>
-          );
-        })}
+        {searchResult.map(({ address_name, place_name, place_url, x, y }) => (
+          <SearchItem
+            selected={address_name === selectItem?.address_name}
+            onClick={() => {
+              map.panTo(new kakao.maps.LatLng(y, x));
+              setSelectItem({
+                address_name,
+                place_name,
+                place_url,
+                x,
+                y,
+              });
+            }}
+          >
+            <p>{place_name}</p>
+            <p>{address_name}</p>
+          </SearchItem>
+        ))}
       </SearchContainer>
       {searchResult.length > 0 && <button>확인</button>}
     </>
