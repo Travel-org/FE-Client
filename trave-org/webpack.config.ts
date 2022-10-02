@@ -2,9 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 import * as webpack from 'webpack';
 import * as path from "path";
 import 'webpack-dev-server';
-
 const mode = (process.env.NODE_ENV || "development") as "development" | "none" | "production";
-
 const config: webpack.Configuration = {
   mode,
   devServer: {
@@ -15,6 +13,7 @@ const config: webpack.Configuration = {
   entry: {
     app: path.join(__dirname, "index.tsx"),
   },
+
   resolve: {
     extensions: [".js", ".ts", ".tsx"],
     alias: {
@@ -43,16 +42,19 @@ const config: webpack.Configuration = {
     path: path.join(__dirname, "/dist"),
     filename: "bundle.js",
   },
+
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env": JSON.stringify(process.env),
+    }),
     new webpack.ProvidePlugin({
       React: "react",
-      process: 'process/browser',
     }),
     new HtmlWebpackPlugin({
+      publicPath: "/",
       template: "./public/index.html",
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 };
-
 export default config;
