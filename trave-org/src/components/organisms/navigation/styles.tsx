@@ -2,8 +2,7 @@ import styled from "@emotion/styled";
 import { theme } from "@src/styles/theme";
 
 const NavigationStyle = styled.div`
-  top: 0px;
-  position: fixed;
+  position: relative;
   width: 100%;
   z-index: 1001;
 `;

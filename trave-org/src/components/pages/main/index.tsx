@@ -1,6 +1,6 @@
 import { jsx, css } from "@emotion/react";
 import Board from "@organisms/board";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { Container, Background, Banner } from "./styles";
@@ -22,8 +22,8 @@ const Content = () => {
 };
 
 const tempData = {
-  title: "예비군 학생 훈련",
-  dates: "9월 27일 - 9월 28일",
+  title: "예비군 동원 훈련",
+  dates: "5월 15일 - 5월 15일",
   participants: [
     {
       profileUrl:
@@ -61,7 +61,7 @@ const Avatar = styled.img`
   object-fit: cover;
 `;
 
-const Main = () => {
+const Main2 = () => {
   const [width, setWidth] = useState(0);
   const ref = useRef<any>();
 
@@ -72,7 +72,6 @@ const Main = () => {
   return (
     <div
       css={css`
-        height: 100vh;
         align-items: center;
         margin: 0px 10px;
       `}
@@ -97,6 +96,7 @@ const Main = () => {
           dragConstraints={{ right: 0, left: -width }}
           css={css`
             display: flex;
+
             > * {
               margin: 0px 10px;
             }
@@ -162,6 +162,7 @@ const Main = () => {
                 <div
                   css={css`
                     display: flex;
+
                     > * {
                       margin-left: -7px;
                     }
@@ -198,6 +199,219 @@ const Main = () => {
     //   </Banner>
     //   <Content />
     // </Container>
+  );
+};
+
+const Main = () => {
+  return (
+    <>
+      <div
+        css={css`
+          margin-bottom: 136px;
+          @media (max-width: 1179px) {
+            margin-bottom: 64px;
+          }
+          @media (max-width: 96px) {
+            margin-bottom: 64px;
+          }
+        `}
+      >
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 1,
+          }}
+          css={css`
+            padding: 0 80px;
+            margin: 0 auto;
+            max-width: 1440px;
+          `}
+        >
+          <div
+            css={css`
+              position: relative;
+            `}
+          >
+            <img
+              src={
+                "https://www.kagoshima-kankou.com/storage/tourism_themes/12/responsive_images/ElwnvZ2u5uZda7Pjcwlk4mMtr08kLNydT8zXA6Ie__1673_1115.jpeg"
+              }
+              css={css`
+                width: 100%;
+                max-height: 800px;
+                border-radius: 24px;
+                object-fit: cover;
+              `}
+            />
+            <div
+              css={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 145px 80px;
+              `}
+            >
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ ease: "easeOut", duration: 1 }}
+                style={{
+                  fontSize: "96px",
+                  fontWeight: "600",
+                  color: "#23262F",
+                  marginBottom: "16px",
+                }}
+              >
+                지금 여행을
+                <br />
+                계획해보세요
+              </motion.div>
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ ease: "easeOut", duration: 1 }}
+                css={css`
+                  font-size: 24px;
+                  font-weight: 500;
+                  color: #23262f;
+                `}
+              >
+                실시간으로 다양한 여행지를 탐색해보세요.
+              </motion.div>
+            </div>
+          </div>
+          <div
+            css={css`
+              position: relative;
+              padding: 40px;
+              z-index: 5;
+              transform: translateY(-70%);
+              margin: 0 80px 0;
+              background: white;
+              border-radius: 24px;
+              box-shadow: 0px 40px 64px -32px rgb(15 15 15 / 10%);
+              height: 167px;
+            `}
+          >
+            <div
+              css={css`
+                display: flex;
+              `}
+            >
+              <div
+                css={css`
+                  flex: 1;
+                `}
+              >
+                <input
+                  value={"출발지"}
+                  css={css`
+                    width: 100%;
+                    height: 100%;
+                    font-size: 24px;
+                    font-weight: 600;
+                    border: 0;
+                  `}
+                />
+                <div
+                  css={css`
+                    color: #777e90;
+                  `}
+                >
+                  어디서 출발하시나요?
+                </div>
+              </div>
+              <div
+                css={css`
+                  flex: 1;
+                `}
+              >
+                <input
+                  value={"도착지"}
+                  css={css`
+                    width: 100%;
+                    height: 100%;
+                    font-size: 24px;
+                    font-weight: 600;
+                    border: 0;
+                  `}
+                />
+
+                <div
+                  css={css`
+                    color: #777e90;
+                  `}
+                >
+                  어디로 떠나시나요?
+                </div>
+              </div>
+              <div
+                css={css`
+                  flex: 1;
+                `}
+              >
+                <input
+                  value={"시작일"}
+                  css={css`
+                    width: 100%;
+                    height: 100%;
+                    font-size: 24px;
+                    font-weight: 600;
+                    border: 0;
+                  `}
+                />
+
+                <div
+                  css={css`
+                    color: #777e90;
+                  `}
+                >
+                  날짜를 지정해주세요
+                </div>
+              </div>
+              <div
+                css={css`
+                  flex: 1;
+                `}
+              >
+                <input
+                  value={"종료일"}
+                  css={css`
+                    width: 100%;
+                    height: 100%;
+                    font-size: 24px;
+                    font-weight: 600;
+                    border: 0;
+                  `}
+                />
+
+                <div
+                  css={css`
+                    color: #777e90;
+                  `}
+                >
+                  날짜를 지정해주세요
+                </div>
+              </div>
+              <div
+                css={css`
+                  width: 64px;
+                  height: 64px;
+                  background: #3b71fe;
+                  border-radius: 50%;
+                  display: flex;
+                  justify-content: center;
+                  align-content: center;
+                `}
+              ></div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      <Main2 />
+    </>
   );
 };
 

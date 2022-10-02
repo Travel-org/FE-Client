@@ -19,7 +19,6 @@ import {
   KAKAO_CALLBACK_URL,
 } from "@constants/index";
 
-
 import OAuth2RedirectHandler from "@routes/oauth";
 import Navigation from "./components/organisms/navigation";
 
@@ -59,15 +58,20 @@ function App() {
           * {
             font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif;
           }
-          body {
-            background: #f8f8f8;
+          
+          *,
+          *::before,
+          *::after {
+            box-sizing: border-box;
           }
+          body {
+            background: #fcfcfd;
         `}
       />
       <QueryClientProvider client={queryClient}>
         <Suspense fallback={<Spinner />}>
           <Router>
-             <Navigation />
+            <Navigation />
             <Routes>
               <Route
                 path={KAKAO_CALLBACK_URL}
