@@ -8,14 +8,15 @@ const OAuth2RedirectHandler = () => {
   const navigate = useNavigate();
   const { isLoading, error, data } = useQuery("oauth", () => {
     let code = new URL(window.location.href).searchParams.get("code");
-    return { status: false, data: Api.get(`/oauth?${code}`) };
+    return Api.get(`/api/v1/oauth2/authorization/kakao?code=${code}`, {
+      withCredentials: true,
+    });
   });
+
   useEffect(() => {
     if (data === undefined) return;
-    const {
-      status,
-      data: { kakaoId },
-    } = data as any;
+    const { status, kakaoId } = data as any;
+    
     if (status === 301) navigate("/signUp", { state: { kakaoId } });
     else navigate("/");
   }, [data]);
