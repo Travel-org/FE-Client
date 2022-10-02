@@ -24,9 +24,9 @@ const NewSchedule = () => {
   const handleEmptyTitle = countChip === 1 ? title !== "" : true;
 
   const setDateFormat = (date: Date) =>
-    `${date.getFullYear()}-${
-      date.getMonth() < 10 ? "0" : ""
-    }${date.getMonth()}-${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
+    `${date.getFullYear()}-${date.getMonth() + 1 < 10 ? "0" : ""}${
+      date.getMonth() + 1
+    }-${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
 
   const handleNext = () =>
     handleEmptyTitle && setCountChip(Math.min(2, countChip + 1));
