@@ -3,8 +3,8 @@ import { Api } from "../api";
 interface createProps {
   title: string;
   userEmails: string[];
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 }
 export const createTravel = async ({
   startDate,
