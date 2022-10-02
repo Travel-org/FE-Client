@@ -1,7 +1,7 @@
-import { CLIENT_TARGET_URL } from "@utils/api";
-
 // url
 export const MAIN_URL = "/";
+
+export const KAKAO_API_KEY = "	244b79eae3d8dcb07b1677e2c4f962ed";
 
 export const SIGNIN_URL = "/signIn";
 export const SIGNUP_URL = "/signUp";
@@ -13,9 +13,7 @@ export const KAKAO_CALLBACK_URL = "/oauth/kakao/callback";
 
 export const ERROR_MESSAGE = "올바른 작성이 필요합니다.";
 
-const REDIRECT_URI = `${CLIENT_TARGET_URL}/oauth/kakao/callback`;
-
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${window.location.host}/oauth/kakao/callback&response_type=code`;
 
 export const DAY = ["월", "화", "수", "목", "금", "토", "일"];
 

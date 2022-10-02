@@ -1,14 +1,6 @@
 import axios from "axios";
 
-export const SERVER_TARGET_URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.LOCAL_SERVER
-    : process.env.DEPLOY_SERVER;
-
-export const CLIENT_TARGET_URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.LOCAL_HOST
-    : process.env.DEPLOY_DOMAIN;
+export const SERVER_TARGET_URL = "api." + window.location.host;
 
 export const Api = axios.create({
   baseURL: SERVER_TARGET_URL || "",
