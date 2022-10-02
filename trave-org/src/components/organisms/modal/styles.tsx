@@ -1,21 +1,24 @@
 import styled from "@emotion/styled";
-import { theme } from "@src/styles/theme";
 
 const Background = styled.div`
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
+  z-index: 998;
   left: 0;
   top: 0;
+  text-align: center;
+  background: none;
 `;
 
 const Content = styled.div`
-  margin-top: 70px;
-  position: relative;
-  overflow: scroll;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
 `;
-
 export { Background, Content };

@@ -1,11 +1,19 @@
-import Portal from "@src/portal";
 import { ReactNode } from "react";
+
 import { Background, Content } from "./styles";
 
-const Modal = ({ children }: { children: ReactNode | boolean }) => {
+import Portal from "@src/portal";
+const Modal = ({
+  children,
+  onClick,
+}: {
+  children: ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+}) => {
   return (
     <Portal>
-      <Background>{children}</Background>
+      <Content>{children}</Content>
+      <Background onClick={onClick} />
     </Portal>
   );
 };
