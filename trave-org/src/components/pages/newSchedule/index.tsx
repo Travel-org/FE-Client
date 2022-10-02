@@ -6,7 +6,9 @@ import Chip from "@atoms/chip";
 import SelectDate from "@organisms/scheduleForm/selectDate";
 import SelectTitle from "@src/components/organisms/scheduleForm/selectTitle";
 import AddParty from "@organisms/scheduleForm/addParty";
+
 import { FlexDiv } from "@src/styles";
+
 import { Container, ChipWrapper, FormWrapper } from "./styles";
 import { createTravel } from "@src/utils/api/travel";
 
@@ -26,18 +28,26 @@ const NewSchedule = () => {
   const handlePast = () => setCountChip(Math.max(0, countChip - 1));
 
   const handleEmptyTitle = countChip === 1 ? title !== "" : true;
-  const handleNext = () =>
-    handleEmptyTitle && setCountChip(Math.min(2, countChip + 1));
-  const goNextPage = () => {
-    const [startDate, endDate] = selectedDate;
-    createTravel({ startDate, endDate, title, userId: 1 });
-    navigate("/liveSchedule");
-  };
 
-  useEffect(() => {
-    setSelectedDate([params?.dayStart, params?.dayEnd]);
-    setCountChip(2);
-    setTitle(params?.title);
+  const handleNext = () =>
+  handleEmptyTitle && setCountChip(Math.min(2, countChip + 1));
+const goNextPage = async () => {
+  const [startDate, endDate] = selectedDate;
+
+  const { status } = await createTravel({
+    startDate,
+    endDate,
+    title,
+    userEmails: userList,
+  });
+  if (status === undefined) navigate("/liveSchedule");
+};
+
+useEffect(() => {
+  if (!params) return;
+  setSelectedDate([params?.dayStart, params?.dayEnd]);
+  setCountChip(2);
+  setTitle(params?.title);
   }, [params]);
 
   return (
@@ -71,4 +81,5 @@ const NewSchedule = () => {
     </Container>
   );
 };
+
 export default NewSchedule;
