@@ -1,7 +1,7 @@
 import { Api } from "../api";
 
 export const createSchedule = (travelId: number) => async () => {
-  await Api.post(`/api/v1/travels/${travelId}/schedules`, {
+    await Api.post(`/v1/travels/${travelId}/schedules`, {
     endTime: "2022-10-02T08:50:55.957Z",
     place: {
       addressName: "string",

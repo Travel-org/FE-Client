@@ -41,7 +41,7 @@ const SignIn = () => {
   };
 
    // const handleTest = async () => {
-  //   const data = await Api.get("/api/v1/test");
+  // const data = await Api.get("/v1/test");
   //   console.log(data);
   // };
 

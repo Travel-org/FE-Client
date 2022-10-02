@@ -39,7 +39,7 @@ const SignUpForm = ({ kakaoId }: { kakaoId: string }) => {
   const onSubmit = async (data: SignUpFormInterface) => {
     const { year, month, day, email, name, phoneNumber } = data;
     // console.log({ birth: `${year}-${month}-${day}`, ...rest });
-    const { status } = await Api.post("/api/v1/users/signup", {
+    const { status } = await Api.post("/v1/users/signup", {
       email,
       kakaoId,
       name,
