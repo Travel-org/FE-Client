@@ -21,6 +21,7 @@ import {
 
 import OAuth2RedirectHandler from "@routes/oauth";
 import Navigation from "./components/organisms/navigation";
+import Invite from "./components/pages/invite";
 
 const MyPage = lazy(() => import("@pages/myPage"));
 const Main = lazy(() => import("@pages/main"));
@@ -154,6 +155,14 @@ function App() {
                 element={
                   <PublicRoute>
                     <Temp />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/invite/accept/:id"
+                element={
+                  <PublicRoute>
+                    <Invite />
                   </PublicRoute>
                 }
               />
