@@ -6,7 +6,7 @@ const reset = css`
     width: 100vw;
     height: calc(100vh - 8vh);
     margin: 0px;
-    background: ${theme.colors.blue[300]};
+    
     font-size: 16px;
     /* @media (max-width: ${theme.breakpoints.md}) {
       font-size: 8px;

@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { ThemeProvider, Global } from "@emotion/react";
+import { ThemeProvider, Global, css } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { theme } from "@styles/theme";
@@ -19,8 +19,9 @@ import {
   KAKAO_CALLBACK_URL,
 } from "@constants/index";
 
-import Navigation from "./components/organisms/navigation";
+
 import OAuth2RedirectHandler from "@routes/oauth";
+import Navigation from "./components/organisms/navigation";
 
 const MyPage = lazy(() => import("@pages/myPage"));
 const Main = lazy(() => import("@pages/main"));
@@ -50,14 +51,23 @@ function App() {
     };
   }, []);
 
-  https: return (
+  return (
     <ThemeProvider theme={theme}>
       <Global styles={reset} />
+      <Global
+        styles={css`
+          * {
+            font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif;
+          }
+          body {
+            background: #f8f8f8;
+          }
+        `}
+      />
       <QueryClientProvider client={queryClient}>
         <Suspense fallback={<Spinner />}>
           <Router>
-            <Navigation />
-            <div style={{ marginTop: "8vh" }} />
+             <Navigation />
             <Routes>
               <Route
                 path={KAKAO_CALLBACK_URL}
@@ -150,5 +160,4 @@ function App() {
     </ThemeProvider>
   );
 }
-
 export default App;
