@@ -1,14 +1,12 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ThemeProvider, Global, css } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
-
 import { theme } from "@styles/theme";
 import reset from "@styles/global";
 import PrivateRoute from "@routes/private";
 import PublicRoute from "@routes/public";
 import AdminRoute from "@routes/admin";
-
 import Spinner from "@atoms/spinner";
 import {
   MAIN_URL,
@@ -18,11 +16,9 @@ import {
   ADMIN_URL,
   KAKAO_CALLBACK_URL,
 } from "@constants/index";
-
 import OAuth2RedirectHandler from "@routes/oauth";
 import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
-
 const MyPage = lazy(() => import("@pages/myPage"));
 const Main = lazy(() => import("@pages/main"));
 const SignIn = lazy(() => import("@pages/signIn"));
@@ -37,11 +33,11 @@ const Temp = lazy(() => import("@pages/temp"));
 
 function App() {
   const queryClient = new QueryClient();
+  const [user, setUser] = useState(false);
   const preventClose = (e: BeforeUnloadEvent) => {
     e.preventDefault();
     e.returnValue = "";
   };
-
   useEffect(() => {
     (() => {
       window.addEventListener("beforeunload", preventClose);
@@ -50,7 +46,6 @@ function App() {
       window.removeEventListener("beforeunload", preventClose);
     };
   }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <Global styles={reset} />
@@ -59,7 +54,6 @@ function App() {
           * {
             font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif;
           }
-          
           *,
           *::before,
           *::after {
@@ -67,12 +61,13 @@ function App() {
           }
           body {
             background: #fcfcfd;
+          }
         `}
       />
       <QueryClientProvider client={queryClient}>
         <Suspense fallback={<Spinner />}>
           <Router>
-            <Navigation />
+            <Navigation user={user} />
             <Routes>
               <Route
                 path={KAKAO_CALLBACK_URL}
@@ -81,7 +76,7 @@ function App() {
               <Route
                 path={MYPAGE_URL}
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute user={user}>
                     <MyPage />
                   </PrivateRoute>
                 }
@@ -90,7 +85,7 @@ function App() {
                 path={MAIN_URL}
                 element={
                   <PublicRoute>
-                    <Main />
+                    <Main setUser={setUser} />
                   </PublicRoute>
                 }
               />
@@ -113,7 +108,7 @@ function App() {
               <Route
                 path={"/schedule"}
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute user={user}>
                     <Schedule />
                   </PrivateRoute>
                 }
@@ -121,7 +116,7 @@ function App() {
               <Route
                 path="/settlement"
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute user={user}>
                     <Settlement />
                   </PrivateRoute>
                 }
@@ -129,7 +124,7 @@ function App() {
               <Route
                 path={"/newSchedule"}
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute user={user}>
                     <NewSchedule />
                   </PrivateRoute>
                 }
@@ -137,7 +132,7 @@ function App() {
               <Route
                 path={"/liveSchedule"}
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute user={user}>
                     <LiveSchedule />
                   </PrivateRoute>
                 }

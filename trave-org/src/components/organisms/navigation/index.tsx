@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { NavigationStyle, Logo, Wrapper, Margin } from "./styles";
 
-const Navigation = () => {
+interface Props {
+  user: boolean;
+}
+
+const Navigation = ({ user }: Props) => {
   const navigate = useNavigate();
   return (
     <>
@@ -13,7 +17,8 @@ const Navigation = () => {
             <p onClick={() => navigate("/search")}>조회</p>
             <p onClick={() => navigate("/settlement")}>정산</p>
           </div>
-          <p onClick={() => navigate("/signIn")}>로그인</p>
+          {user && <p onClick={() => navigate("/signIn")}>로그인</p>}
+          {!user && <p>로그아웃</p>}
         </Wrapper>
       </NavigationStyle>
     </>

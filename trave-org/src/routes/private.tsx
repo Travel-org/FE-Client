@@ -5,9 +5,10 @@ import React from "react";
 
 interface Props {
   children: ReactElement;
+  user: boolean;
 }
 
-const PrivateRoute = ({ children: Component }: Props) => {
-  return true ? Component : <Navigate to="/signIn" />;
+const PrivateRoute = ({ user, children: Component }: Props) => {
+  return user ? Component : <Navigate to="/signIn" />;
 };
 export default PrivateRoute;
