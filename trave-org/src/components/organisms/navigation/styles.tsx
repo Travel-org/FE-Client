@@ -6,26 +6,7 @@ const NavigationStyle = styled.div`
   width: 100%;
   z-index: 1001;
 `;
-const Wrapper = styled.div`
-  background: white;
-  position: relative;
-  padding: 0px 24px;
-  height: 8vh;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  div {
-    display: inline-flex;
-    column-gap: 1rem;
-  }
-  p {
-    cursor: pointer;
-    :hover {
-      opacity: 50%;
-    }
-  }
-`;
+
 const Logo = styled.img`
   padding: 0.4rem;
   box-sizing: border-box;
@@ -41,4 +22,4 @@ const Margin = styled.div`
   position: relative;
 `;
 
-export { NavigationStyle, Logo, Wrapper, Margin };
+export { NavigationStyle, Logo, Margin };
