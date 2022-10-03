@@ -17,10 +17,11 @@ import {
   KAKAO_CALLBACK_URL,
 } from "@constants/index";
 import OAuth2RedirectHandler from "@routes/oauth";
+import DashboardPage from "@pages/dashboard";
 import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
 const MyPage = lazy(() => import("@pages/myPage"));
-const Main = lazy(() => import("@pages/landingPage"));
+const Main = lazy(() => import("@src/components/pages/landingPage"));
 const SignIn = lazy(() => import("@pages/signIn"));
 const SignUp = lazy(() => import("@pages/signUp"));
 const Admin = lazy(() => import("@pages/admin"));

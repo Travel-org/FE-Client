@@ -1,10 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import isLogin from "@utils/isLogin";
 import { Logo } from "@src/components/logo";
 import styled from "@emotion/styled";
-import { NavigationStyle, Margin } from "./styles";
 import { selectCurrentUser } from "@src/app/api";
 import { useAppSelector } from "@src/app/hooks";
+import { NavigationStyle, Margin } from "./styles";
 
 interface Props {
   user: boolean;
@@ -43,14 +42,20 @@ function Navigation({ user }: Props) {
           <Logo color="#1e52e2" />
         </Link>
         <div>
-          <p onClick={() => navigate("/schedule")}>계획</p>
-          <p onClick={() => navigate("/search")}>조회</p>
-          <p onClick={() => navigate("/settlement")}>정산</p>
+          <Link to="/schedule">
+            <p>계획</p>
+          </Link>
+          <Link to="/search">
+            <p>조회</p>
+          </Link>
+          <Link to="/settlement">
+            <p>정산</p>
+          </Link>
         </div>
         {!currentUser && <p onClick={() => navigate("/signIn")}>로그인</p>}
         {currentUser && <p>로그아웃</p>}
       </Wrapper>
     </NavigationStyle>
   );
-};
+}
 export default Navigation;
