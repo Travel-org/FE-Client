@@ -2,7 +2,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 import * as webpack from 'webpack';
 import * as path from "path";
 import 'webpack-dev-server';
+
 const mode = (process.env.NODE_ENV || "development") as "development" | "none" | "production";
+
 const config: webpack.Configuration = {
   mode,
   devServer: {
@@ -27,6 +29,7 @@ const config: webpack.Configuration = {
       "@styles": path.resolve(__dirname, "src/styles"),
     },
   },
+
   module: {
     rules: [
       {
@@ -39,12 +42,16 @@ const config: webpack.Configuration = {
       },
     ],
   },
+
   output: {
     path: path.join(__dirname, "/dist"),
     filename: "bundle.js",
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      API_URL: JSON.stringify("http://localhost:8080"),
+    }),
     new webpack.DefinePlugin({
       "process.env": JSON.stringify(process.env),
     }),
@@ -55,4 +62,5 @@ const config: webpack.Configuration = {
     new webpack.HotModuleReplacementPlugin(),
   ],
 };
+
 export default config;

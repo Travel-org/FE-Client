@@ -1,9 +1,6 @@
 import axios from "axios";
-
-// export const SERVER_TARGET_URL = "api." + window.location.host;
-export const SERVER_TARGET_URL = "http://localhost:8080";
 export const Api = axios.create({
-  baseURL: SERVER_TARGET_URL || "",
+  baseURL: API_URL || "",
 });
 Api.defaults.timeout = 8000;
 Api.defaults.withCredentials = true;
