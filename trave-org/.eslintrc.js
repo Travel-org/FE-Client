@@ -14,7 +14,11 @@ module.exports = {
         sourceType: "module",
         project: "./tsconfig.json"
     },
+    plugins: [
+        "@emotion"
+      ],
     rules: {
         "@typescript-eslint/no-unused-vars": "warn",
+        "@emotion/jsx-import": "error"
     }
 }
