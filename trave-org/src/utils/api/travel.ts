@@ -6,13 +6,14 @@ interface createProps {
   startDate: string;
   endDate: string;
 }
+
 export const createTravel = async ({
   startDate,
   endDate,
   title,
   userEmails,
 }: createProps) =>
-    await Api.post(`/v1/travels`, {
+  await Api.post(`/v1/travels`, {
     endDate,
     startDate,
     title,
