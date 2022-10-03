@@ -1,12 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  RouteObject,
-  Routes,
-  Outlet,
-  useRoutes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ThemeProvider, Global, css } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { theme } from "@styles/theme";
@@ -16,6 +9,7 @@ import PublicRoute from "@routes/public";
 import AdminRoute from "@routes/admin";
 import Spinner from "@atoms/spinner";
 import {
+  MAIN_URL,
   MYPAGE_URL,
   SIGNIN_URL,
   SIGNUP_URL,
@@ -23,11 +17,13 @@ import {
   KAKAO_CALLBACK_URL,
 } from "@constants/index";
 import OAuth2RedirectHandler from "@routes/oauth";
-import DashboardPage from "@pages/dashboard";
 import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
+
 const MyPage = lazy(() => import("@pages/myPage"));
-const Main = lazy(() => import("@src/components/pages/landingPage"));
+const Main = lazy(() => import("@pages/main"));
 const SignIn = lazy(() => import("@pages/signIn"));
 const SignUp = lazy(() => import("@pages/signUp"));
 const Admin = lazy(() => import("@pages/admin"));
@@ -37,7 +33,6 @@ const Settlement = lazy(() => import("@pages/settlement"));
 const LiveSchedule = lazy(() => import("@pages/liveSchedule"));
 const Search = lazy(() => import("@pages/search"));
 const Temp = lazy(() => import("@pages/temp"));
-
 function App() {
   const queryClient = new QueryClient();
   const [user, setUser] = useState(false);
@@ -53,121 +48,138 @@ function App() {
       window.removeEventListener("beforeunload", preventClose);
     };
   }, []);
-  const routes: RouteObject[] = [
-    {
-      path: "/",
-      element: (
-        <PublicRoute>
-          <>
-            <Navigation user={user} />
-            <Outlet />
-          </>
-        </PublicRoute>
-      ),
-      children: [
-        {
-          index: true,
-          element: <Main setUser={setUser} />,
-        },
-        {
-          path: KAKAO_CALLBACK_URL,
-          element: <OAuth2RedirectHandler />,
-        },
-        {
-          path: SIGNIN_URL,
-          element: <SignIn />,
-        },
-        {
-          path: SIGNUP_URL,
-          element: <SignUp />,
-        },
-        {
-          path: MYPAGE_URL,
-          element: (
-            <PrivateRoute user={user}>
-              <MyPage />
-            </PrivateRoute>
-          ),
-        },
-        {
-          path: "schedule",
-          element: (
-            <PrivateRoute user={user}>
-              <Schedule />
-            </PrivateRoute>
-          ),
-        },
-        {
-          path: "settlement",
-          element: (
-            <PrivateRoute user={user}>
-              <Settlement />
-            </PrivateRoute>
-          ),
-        },
-        {
-          path: "newSchedule",
-          element: (
-            <PrivateRoute user={user}>
-              <NewSchedule />
-            </PrivateRoute>
-          ),
-        },
-        {
-          path: "liveSchedule",
-          element: (
-            <PrivateRoute user={user}>
-              <LiveSchedule />
-            </PrivateRoute>
-          ),
-        },
-        {
-          path: "temp",
-          element: <Temp />,
-        },
-        {
-          path: "/invite/accept/:id",
-          element: <Invite />,
-        },
-      ],
-    },
-    {
-      path: "/admin",
-      element: (
-        <AdminRoute>
-          <Outlet />
-        </AdminRoute>
-      ),
-    },
-    {
-      path: "/dashboard",
-      element: <DashboardPage />,
-    },
-  ];
 
-  const element = useRoutes(routes);
   return (
-    <ThemeProvider theme={theme}>
-      <Global styles={reset} />
-      <Global
-        styles={css`
-          * {
-            font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif;
-          }
-          *,
-          *::before,
-          *::after {
-            box-sizing: border-box;
-          }
-          body {
-            background: #fcfcfd;
-          }
-        `}
-      />
-      <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<Spinner />}>{element}</Suspense>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Global styles={reset} />
+        <Global
+          styles={css`
+            * {
+              font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif;
+            }
+            *,
+            *::before,
+            *::after {
+              box-sizing: border-box;
+            }
+            body {
+              height: 92vh;
+              margin: 0px;
+              padding: 0px;
+              background: #fcfcfd;
+            }
+          `}
+        />
+        <QueryClientProvider client={queryClient}>
+          <Suspense fallback={<Spinner />}>
+            <Router>
+              <Navigation user={user} />
+              <div
+                css={css`
+                  height: 8vh;
+                `}
+              />
+              <Routes>
+                <Route
+                  path={KAKAO_CALLBACK_URL}
+                  element={<OAuth2RedirectHandler />}
+                />
+                <Route
+                  path={MYPAGE_URL}
+                  element={
+                    <PrivateRoute user={user}>
+                      <MyPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={MAIN_URL}
+                  element={
+                    <PublicRoute>
+                      <Main setUser={setUser} />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path={SIGNIN_URL}
+                  element={
+                    <PublicRoute>
+                      <SignIn />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path={SIGNUP_URL}
+                  element={
+                    <PublicRoute>
+                      <SignUp />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path={"/schedule"}
+                  element={
+                    <PrivateRoute user={user}>
+                      <Schedule />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/settlement"
+                  element={
+                    <PrivateRoute user={user}>
+                      <Settlement />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={"/newSchedule"}
+                  element={
+                    <PrivateRoute user={user}>
+                      <NewSchedule />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={"/liveSchedule"}
+                  element={
+                    <PrivateRoute user={user}>
+                      <LiveSchedule />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={ADMIN_URL}
+                  element={
+                    <AdminRoute>
+                      <Admin />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path={"/temp"}
+                  element={
+                    <PublicRoute>
+                      <Temp />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/invite/accept/:id"
+                  element={
+                    <PublicRoute>
+                      <Invite />
+                    </PublicRoute>
+                  }
+                />
+              </Routes>
+            </Router>
+          </Suspense>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </Provider>
   );
 }
+
 export default App;
