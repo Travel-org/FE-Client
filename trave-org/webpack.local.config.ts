@@ -13,7 +13,7 @@ const config: webpack.Configuration = {
     hot: true,
   },
   entry: {
-    app: path.join(__dirname, "index.tsx"),
+    app: path.join(__dirname, "src", "index.tsx"),
   },
 
   resolve: {

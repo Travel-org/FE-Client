@@ -3,32 +3,33 @@ import { useNavigate } from "react-router-dom";
 import { Api } from "@utils/api";
 import { useEffect } from "react";
 import { useQuery } from "react-query";
+import { api } from "@src/app/api";
 
-const OAuth2RedirectHandler = () => {
+function OAuth2RedirectHandler() {
   const navigate = useNavigate();
-  const { isLoading, error, data } = useQuery("oauth", () => {
-    let code = new URL(window.location.href).searchParams.get("code");
-    return Api.get(`/v1/oauth2/authorization/kakao?code=${code}`, {
-      withCredentials: true,
-    });
-  });
+  const [tryLogin, { isLoading, isSuccess, error }] = api.useLoginMutation();
 
   useEffect(() => {
-    if (data === undefined) return;
-    const { status, kakaoId } = data as any;
+    const code = new URL(window.location.href).searchParams.get("code");
+    if (!code) {
+      navigate("/");
+      return;
+    }
 
-    if (status === 301) navigate("/signUp", { state: { kakaoId } });
-    else navigate("/");
-  }, [data]);
+    tryLogin(code);
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
+
   if (isLoading) return <p>"Loading..."</p>;
 
-  if (error) return <p>{"An error has occurred: " + (error as any).message}</p>;
+  if (error) return <p>{`An error has occurred: ${error}`}</p>;
 
-  return (
-    <>
-      <Spinner />
-    </>
-  );
-};
+  return <Spinner />;
+}
 
 export default OAuth2RedirectHandler;

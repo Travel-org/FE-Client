@@ -20,7 +20,7 @@ import OAuth2RedirectHandler from "@routes/oauth";
 import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
 const MyPage = lazy(() => import("@pages/myPage"));
-const Main = lazy(() => import("@pages/main"));
+const Main = lazy(() => import("@pages/landingPage"));
 const SignIn = lazy(() => import("@pages/signIn"));
 const SignUp = lazy(() => import("@pages/signUp"));
 const Admin = lazy(() => import("@pages/admin"));
@@ -67,8 +67,18 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Suspense fallback={<Spinner />}>
           <Router>
-            <Navigation user={user} />
             <Routes>
+            <Route
+                path={MAIN_URL}
+                element={
+                  <PublicRoute>
+                    <>
+                      <Navigation user={user} />
+                      <Main setUser={setUser} />
+                    </>
+                  </PublicRoute>
+                }
+              />
               <Route
                 path={KAKAO_CALLBACK_URL}
                 element={<OAuth2RedirectHandler />}
@@ -79,14 +89,6 @@ function App() {
                   <PrivateRoute user={user}>
                     <MyPage />
                   </PrivateRoute>
-                }
-              />
-              <Route
-                path={MAIN_URL}
-                element={
-                  <PublicRoute>
-                    <Main setUser={setUser} />
-                  </PublicRoute>
                 }
               />
               <Route
@@ -106,7 +108,7 @@ function App() {
                 }
               />
               <Route
-                path={"/schedule"}
+                path="/schedule"
                 element={
                   <PrivateRoute user={user}>
                     <Schedule />
@@ -122,7 +124,7 @@ function App() {
                 }
               />
               <Route
-                path={"/newSchedule"}
+                path="/newSchedule"
                 element={
                   <PrivateRoute user={user}>
                     <NewSchedule />
@@ -130,7 +132,7 @@ function App() {
                 }
               />
               <Route
-                path={"/liveSchedule"}
+                path="/liveSchedule"
                 element={
                   <PrivateRoute user={user}>
                     <LiveSchedule />
@@ -146,7 +148,7 @@ function App() {
                 }
               />
               <Route
-                path={"/temp"}
+                path="/temp"
                 element={
                   <PublicRoute>
                     <Temp />
