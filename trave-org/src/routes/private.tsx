@@ -9,6 +9,6 @@ interface Props {
 }
 
 const PrivateRoute = ({ user, children: Component }: Props) => {
-  return isLogin() ? Component : <Navigate to="/signIn" />;
+  return Component;
 };
 export default PrivateRoute;

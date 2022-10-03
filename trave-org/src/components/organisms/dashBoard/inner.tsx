@@ -30,7 +30,6 @@ const InnerDashBoard = ({ map, setInnerDashBoardOnOff }: Props) => {
       />
       {type === "search" && (
         <SearchBoard
-          kakao={kakao}
           map={map}
           deleteMarker={deleteMarker}
           setMarkers={setMarkers}

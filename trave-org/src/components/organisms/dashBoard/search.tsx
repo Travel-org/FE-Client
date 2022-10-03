@@ -23,8 +23,7 @@ const SearchBoard: React.FC<Props> = ({
 
   useEffect(() => {
     if (map) {
-      console.log(map);
-      setPs(new map.services.Places());
+      setPs(new kakao.maps.services.Places(map));
     }
   }, [kakao]);
 
