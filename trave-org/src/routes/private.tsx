@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "@src/app/hooks";
-import { selectCurrentUser } from "@src/app/api";
+import { isLoginSelector } from "@src/app/api";
 
 interface Props {
   children: ReactElement;
@@ -9,7 +9,7 @@ interface Props {
 }
 
 function PrivateRoute({ user, children: Component }: Props) {
-  const currentUser = useAppSelector(selectCurrentUser);
+  const currentUser = useAppSelector(isLoginSelector);
   return currentUser ? Component : <Navigate to="/signIn" />;
 }
 export default PrivateRoute;

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { RootState } from "@src/app/store";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -17,8 +17,6 @@ export const api = createApi({
   endpoints: (builder) => ({
     login: builder.mutation<
       {
-        expiration: string;
-        sessionUser: { name: string; userId: number };
         status: number;
         token: string;
       },
@@ -31,21 +29,20 @@ export const api = createApi({
       }),
     }),
     logout: builder.mutation<undefined, void>({
-        queryFn: () => {
-          return {
-            data: undefined,
-          };
-        },
-      }),
+      queryFn: () => {
+        return {
+          data: undefined,
+        };
+      },
+    }),
   }),
 });
 
 type AuthState = {
-  user: { name: string; userId: number } | null;
   token: string | null;
 };
 
-const initialAuthState = { user: null, token: null } as AuthState;
+const initialAuthState = { token: null } as AuthState;
 export const slice = createSlice({
   name: "auth",
   initialState: initialAuthState,
@@ -54,7 +51,6 @@ export const slice = createSlice({
     builder
       .addMatcher(api.endpoints.login.matchFulfilled, (state, { payload }) => {
         state.token = payload.token;
-        state.user = payload.sessionUser;
       })
       .addMatcher(api.endpoints.logout.matchFulfilled, (state) => {
         return initialAuthState;
@@ -62,4 +58,7 @@ export const slice = createSlice({
   },
 });
 
-export const selectCurrentUser = (state: RootState) => state.auth.user;
+export const isLoginSelector = createSelector(
+  (state: RootState) => state.auth.token,
+  (token) => token !== null
+);

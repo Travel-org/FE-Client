@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@src/components/logo";
 import styled from "@emotion/styled";
-import { api, selectCurrentUser } from "@src/app/api";
+import { api, isLoginSelector } from "@src/app/api";
 import { useAppSelector } from "@src/app/hooks";
 import { NavigationStyle, Margin } from "./styles";
 
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
 
 function Navigation({ user }: Props) {
   const navigate = useNavigate();
-  const currentUser = useAppSelector(selectCurrentUser);
+  const currentUser = useAppSelector(isLoginSelector);
   const [logout] = api.useLogoutMutation();
 
   return (
