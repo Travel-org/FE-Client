@@ -6,6 +6,7 @@ export const store = configureStore({
     [api.reducerPath]: api.reducer,
     [slice.name]: slice.reducer,
   },
+  middleware: (gDM) => gDM().concat(api.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;
