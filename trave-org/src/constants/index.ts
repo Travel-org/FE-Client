@@ -1,5 +1,4 @@
 // url
-export const MAIN_URL = "/";
 
 export const KAKAO_API_KEY =
   "//dapi.kakao.com/v2/maps/sdk.js?appkey=244b79eae3d8dcb07b1677e2c4f962ed&libraries=services&autoload=false";
