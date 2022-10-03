@@ -1,33 +1,22 @@
 import { useEffect, useState } from "react";
-import { InnerDashBoardStyle, CancelButton, PastButton } from "./styles";
+import { InnerDashBoardStyle, PastButton } from "./styles";
 import SearchBoard from "./search";
 import RecommandDashBoard from "./recommend";
 
 interface Props {
   map: any;
-
-  setInnerDashBoardOnOff: React.Dispatch<React.SetStateAction<boolean>>;
+  setMarkers: React.Dispatch<React.SetStateAction<any[]>>;
+  deleteMarker: () => void;
 }
 
-const InnerDashBoard = ({ map, setInnerDashBoardOnOff }: Props) => {
+const InnerDashBoard = ({ map, deleteMarker, setMarkers }: Props) => {
   const [type, setType] = useState("search");
-  const [markers, setMarkers] = useState<any[]>([]);
 
   const changeRecommandPage = () => setType("recommand");
 
-  function deleteMarker() {
-    markers.map((v) => v.setMap(null));
-    setMarkers([]);
-  }
   return (
     <InnerDashBoardStyle>
       {type === "recommand" && <PastButton onClick={() => setType("search")} />}
-      <CancelButton
-        onClick={() => {
-          setInnerDashBoardOnOff(false);
-          deleteMarker();
-        }}
-      />
       {type === "search" && (
         <SearchBoard
           map={map}

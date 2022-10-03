@@ -7,7 +7,8 @@ const DashBaordStyle = styled.div`
   z-index: 5;
   box-sizing: border-box;
   background: white;
-  height: 92vh;
+  width: 30vh;
+  height: 100%;
   box-shadow: 0px 0px 3px ${theme.colors.shadow};
   div {
     padding: 1rem;
@@ -16,22 +17,17 @@ const DashBaordStyle = styled.div`
 `;
 
 const InnerDashBoardStyle = styled.div`
+  border-radius: inherit;
   padding: 1rem;
-  height: 92vh;
-  position: relative;
+  height: 100%;
+  width: 30vh;
   box-sizing: border-box;
   background: ${theme.colors.white};
   box-shadow: 0px 0px 3px ${theme.colors.shadow};
-  min-width: 24vw;
   z-index: 4;
-  position: absolute;
   left: 24vw;
   display: flex;
   flex-direction: column;
-  div {
-    padding: 1rem;
-    box-sizing: border-box;
-  }
 `;
 
 const Button = styled.button`
@@ -41,16 +37,6 @@ const Button = styled.button`
   :hover {
     opacity: 50%;
   }
-`;
-
-const CancelButton = styled(Button)`
-  position: absolute;
-  right: 1rem;
-  width: 1rem;
-  height: 1rem;
-  background-size: cover;
-  background-position: center;
-  background-image: url("/cancel.svg");
 `;
 
 const PastButton = styled(Button)`
@@ -86,8 +72,8 @@ const AddButton = styled(Button)`
 `;
 
 const ScheduleContainer = styled.div`
-  padding: 1rem;
-  box-sizing: border-box;
+  /* padding: 1rem;
+  box-sizing: border-box; */
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
@@ -109,10 +95,9 @@ const SearchContainer = styled.div`
 `;
 
 const SearchItem = styled.div<{ selected: boolean }>`
-  box-sizing: border-box;
-  border-radius: 15px;
-  outline-offset: 2px;
-  outline: 1px solid ${({ selected }) => (selected ? "black" : "#00000029")};
+  /* outline: 1px solid ${({ selected }) =>
+    selected ? "black" : "#00000029"}; */
+  border-bottom: 1px solid;
 `;
 
 const TagContainer = styled.div`
@@ -130,6 +115,5 @@ export {
   SearchItem,
   TagButton,
   PastButton,
-  CancelButton,
   AddButton,
 };

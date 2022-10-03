@@ -1,16 +1,14 @@
-import socket from "@utils/socket";
+// import socket from "@utils/socket";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import useKakaoInit from "@src/utils/libs/useKakaoInit";
 import DashBoard from "@organisms/dashBoard";
 import InnerDashBoard from "@organisms/dashBoard/inner";
 import { css } from "@emotion/react";
-import { theme } from "@styles/theme";
 import styled from "@emotion/styled";
-import axios from "axios";
 import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
 import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
-import { Container } from "./styles";
+import { Container, CancelBtn } from "./styles";
 
 interface SocketProps {
   status: string;
@@ -22,18 +20,17 @@ declare global {
     kakao: any;
   }
 }
-
 export const Avatar = styled.img`
   object-fit: cover;
   width: 40px;
   height: 40px;
   border-radius: 50%;
 `;
-
 const LiveSchedule = () => {
   const [innerDashBoardOnOff, setInnerDashBoardOnOff] = useState(false);
   const [roomCode, setRoomCode] = useState("");
   const [map, setMap] = useState<any>();
+  const [markers, setMarkers] = useState<any[]>([]);
   const [userList, setUserList] = useState({});
   const navigate = useNavigate();
 
@@ -41,49 +38,20 @@ const LiveSchedule = () => {
     { lat: number; lng: number } | undefined
   >(undefined);
 
-  const handleLeaveRoom = () => {
-    socket.emit("LEAVE_ROOM", roomCode, ({ status, message }: SocketProps) => {
-      console.log(message);
-      if (status === "SUCESS") {
-        navigate("/");
-      }
-    });
-  };
+  function deleteMarker() {
+    markers.map((v) => v.setMap(null));
+    setMarkers([]);
+  }
 
   useEffect(() => {
-    socket.on("CLIENT_MOVE", (data: any) => {
-      setUserList(data);
-    });
-    document.addEventListener("mousemove", (event) => {
-      setRoomCode((v) => {
-        socket.emit("MOUSE_MOVE", v, { x: event.pageX, y: event.pageY });
-        return v;
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    socket.connect();
-    socket.emit("CREATE_ROOM", ({ status, message, code }: SocketProps) => {
-      setRoomCode(code);
-      console.log(message, code);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (roomCode === "") return;
-    socket.emit("JOIN_ROOM", roomCode, ({ status, message }: SocketProps) => {
-      console.log(message, roomCode);
-    });
-  }, [roomCode]);
+    console.log(innerDashBoardOnOff);
+  }, [innerDashBoardOnOff]);
 
   const isKakaoMapScriptInitialized = useKakaoInit();
 
   const bounds = useMemo(() => {
     if (!isKakaoMapScriptInitialized) return undefined;
-
     const latlngbounds = new kakao.maps.LatLngBounds();
-
     travelLocations.forEach((travelLocation) => {
       latlngbounds.extend(
         new kakao.maps.LatLng(
@@ -96,41 +64,50 @@ const LiveSchedule = () => {
   }, [isKakaoMapScriptInitialized]);
 
   return (
-    <Container
-      css={css`
-        display: flex;
-        > * {
-          margin: 10px 10px;
-        }
-        > *:first-of-type {
-          margin-left: 20px;
-        }
-        > *:last-of-type {
-          margin-right: 20px;
-        }
-      `}
-    >
+    <Container>
       <div
         css={css`
-          min-width: 15vw;
-          border-radius: 25px;
-          box-shadow: 0px 40px 64px -32px rgb(15 15 15 / 10%);
+          position: absolute;
+          display: flex;
+          height: 92vh;
+          z-index: 999;
+          column-gap: 0.4rem;
+          border-radius: 4px;
+          padding: 0.4rem;
+          box-sizing: border-box;
         `}
       >
         <DashBoard setInnerDashBoardOnOff={setInnerDashBoardOnOff} />
         {innerDashBoardOnOff && (
-          <InnerDashBoard
-            map={map}
-            setInnerDashBoardOnOff={setInnerDashBoardOnOff}
-          />
+          <>
+            <InnerDashBoard
+              map={map}
+              setMarkers={setMarkers}
+              deleteMarker={deleteMarker}
+            />
+            <CancelBtn
+              url="/cancel.svg"
+              onClick={() => {
+                setInnerDashBoardOnOff(false);
+                deleteMarker();
+              }}
+            />
+          </>
         )}
+        {/* <AbsoluteWrapper url="/cancel.svg">
+          <button />
+        </AbsoluteWrapper> */}
+        {/* <AbsoluteWrapper>
+          <button>추천</button>
+        </AbsoluteWrapper>
+        <AbsoluteWrapper>
+          <button></button>
+        </AbsoluteWrapper> */}
       </div>
-
       <div
         css={css`
           width: 100%;
-          border-radius: 25px;
-          position: relative;
+          height: 100%;
         `}
       >
         {isKakaoMapScriptInitialized && (
@@ -144,7 +121,6 @@ const LiveSchedule = () => {
               onClick={(target, mouseEvent) => {
                 const clickedLat = mouseEvent.latLng?.getLat();
                 const clickedLng = mouseEvent.latLng?.getLng();
-
                 if (clickedLat && clickedLng) {
                   setSelectedPosition({
                     lat: clickedLat,
@@ -163,7 +139,6 @@ const LiveSchedule = () => {
                   position={seletedPosition}
                 />
               )}
-
               {travelLocations.map((travelLocation) => (
                 <MapMarker // 마커를 생성합니다
                   position={{
@@ -175,7 +150,6 @@ const LiveSchedule = () => {
                   <div>{travelLocation.title}</div>
                 </MapMarker>
               ))}
-
               <Polyline
                 path={travelPaths.map((travelPath) => ({
                   lat: travelPath[1],
@@ -183,7 +157,7 @@ const LiveSchedule = () => {
                 }))}
               />
             </Map>
-            {Object.entries(userList)
+            {/* {Object.entries(userList)
               .filter(([k, v]) => k !== socket.id)
               .map(([key, { x, y, rgb }]: any) => (
                 <div
@@ -207,7 +181,7 @@ const LiveSchedule = () => {
                     />
                   </svg>
                 </div>
-              ))}
+              ))} */}
             <div
               css={css`
                 position: absolute;
@@ -257,25 +231,6 @@ const LiveSchedule = () => {
                 />
               </div>
             </div>
-
-            <div
-              css={css`
-                width: 70%;
-                height: 100px;
-                border-radius: 25px;
-                background: white;
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 10px;
-                margin-top: auto;
-                margin-left: auto;
-                margin-right: auto;
-                z-index: 1000;
-                box-shadow: 0px 40px 64px -32px rgb(15 15 15 / 10%);
-              `}
-            />
           </>
         )}
       </div>
@@ -283,3 +238,39 @@ const LiveSchedule = () => {
   );
 };
 export default LiveSchedule;
+
+// const handleLeaveRoom = () => {
+//   socket.emit("LEAVE_ROOM", roomCode, ({ status, message }: SocketProps) => {
+//     console.log(message);
+//     if (status === "SUCESS") {
+//       navigate("/");
+//     }
+//   });
+// };
+
+// useEffect(() => {
+//   socket.on("CLIENT_MOVE", (data: any) => {
+//     setUserList(data);
+//   });
+//   document.addEventListener("mousemove", (event) => {
+//     setRoomCode((v) => {
+//       socket.emit("MOUSE_MOVE", v, { x: event.pageX, y: event.pageY });
+//       return v;
+//     });
+//   });
+// }, []);
+
+// useEffect(() => {
+//   socket.connect();
+//   socket.emit("CREATE_ROOM", ({ status, message, code }: SocketProps) => {
+//     setRoomCode(code);
+//     console.log(message, code);
+//   });
+// }, []);
+
+// useEffect(() => {
+//   if (roomCode === "") return;
+//   socket.emit("JOIN_ROOM", roomCode, ({ status, message }: SocketProps) => {
+//     console.log(message, roomCode);
+//   });
+// }, [roomCode]);
