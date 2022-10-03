@@ -30,6 +30,13 @@ export const api = createApi({
         params: { code: authorizationCode },
       }),
     }),
+    logout: builder.mutation<undefined, void>({
+        queryFn: () => {
+          return {
+            data: undefined,
+          };
+        },
+      }),
   }),
 });
 
@@ -37,18 +44,21 @@ type AuthState = {
   user: { name: string; userId: number } | null;
   token: string | null;
 };
+
+const initialAuthState = { user: null, token: null } as AuthState;
 export const slice = createSlice({
   name: "auth",
-  initialState: { user: null, token: null } as AuthState,
+  initialState: initialAuthState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addMatcher(
-      api.endpoints.login.matchFulfilled,
-      (state, { payload }) => {
+    builder
+      .addMatcher(api.endpoints.login.matchFulfilled, (state, { payload }) => {
         state.token = payload.token;
         state.user = payload.sessionUser;
-      }
-    );
+      })
+      .addMatcher(api.endpoints.logout.matchFulfilled, (state) => {
+        return initialAuthState;
+      });
   },
 });
 

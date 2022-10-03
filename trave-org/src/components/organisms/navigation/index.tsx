@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@src/components/logo";
 import styled from "@emotion/styled";
-import { selectCurrentUser } from "@src/app/api";
+import { api, selectCurrentUser } from "@src/app/api";
 import { useAppSelector } from "@src/app/hooks";
 import { NavigationStyle, Margin } from "./styles";
 
@@ -34,6 +34,7 @@ const Wrapper = styled.div`
 function Navigation({ user }: Props) {
   const navigate = useNavigate();
   const currentUser = useAppSelector(selectCurrentUser);
+  const [logout] = api.useLogoutMutation();
 
   return (
     <NavigationStyle>
@@ -53,7 +54,7 @@ function Navigation({ user }: Props) {
           </Link>
         </div>
         {!currentUser && <p onClick={() => navigate("/signIn")}>로그인</p>}
-        {currentUser && <p>로그아웃</p>}
+        {currentUser && <p onClick={() => logout()}>로그아웃</p>}
       </Wrapper>
     </NavigationStyle>
   );
