@@ -1,15 +1,16 @@
 import { Container } from "./styles";
 
 interface Props {
-  content: string;
+  title: string;
+  description: string;
 }
 
-const ScheduleBoard = ({ content }: Props) => {
+const ScheduleBoard = ({ title, description }: Props) => {
   return (
     <Container>
       <img src="/rect.png" />
-      <h3>{content}</h3>
-      <p>test</p>
+      <h3>{title}</h3>
+      <p>{description}</p>
     </Container>
   );
 };

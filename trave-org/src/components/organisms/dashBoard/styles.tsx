@@ -2,11 +2,11 @@ import styled from "@emotion/styled";
 import { theme } from "@src/styles/theme";
 
 const DashBaordStyle = styled.div`
+  border-radius: inherit;
   padding: 1rem;
   z-index: 5;
   box-sizing: border-box;
   background: white;
-  min-width: 24vw;
   height: 92vh;
   box-shadow: 0px 0px 3px ${theme.colors.shadow};
   div {

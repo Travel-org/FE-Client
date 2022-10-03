@@ -1,14 +1,15 @@
-import { DashBaordStyle, ScheduleContainer, AddButton } from "./styles";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"; // eslint-disable-line
 import ScheduleBoard from "@atoms/scheduleBoard";
 import { useState } from "react";
+import { travelLocations } from "@pages/liveSchedule/dummyData";
+import { DashBaordStyle, ScheduleContainer, AddButton } from "./styles";
 
 interface Props {
   setInnerDashBoardOnOff: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
-  const [form, setForm] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  const [form, setForm] = useState(travelLocations);
   function handleOnDragEnd(result: any) {
     if (!result.destination) {
       return;
@@ -25,7 +26,6 @@ const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
   return (
     <DashBaordStyle>
       <h2>어디론가 떠나는 여행</h2>
-      <h1>여행 계획하기</h1>
       <ScheduleContainer>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="droppable">
@@ -33,13 +33,16 @@ const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
               <div ref={provided.innerRef}>
                 {form.map((item, index) => (
                   <Draggable index={index} draggableId={`${index}`}>
-                    {(provided) => (
+                    {(providedInner) => (
                       <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
+                        ref={providedInner.innerRef}
+                        {...providedInner.draggableProps}
+                        {...providedInner.dragHandleProps}
                       >
-                        <ScheduleBoard content={item + ""} />
+                        <ScheduleBoard
+                          title={item.title}
+                          description={item.description}
+                        />
                       </div>
                     )}
                   </Draggable>

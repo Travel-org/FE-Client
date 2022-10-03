@@ -1,17 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { KAKAO_API_KEY } from "@src/constants";
 
-export function useKakaoInit(kakao: any, setKakao: any) {
-  useEffect(() => {
-    if (kakao && kakao.maps) return;
-    else {
-      const script = document.createElement("script");
-      script.onload = () =>
-        window.kakao.maps.load(() => setKakao(window.kakao));
+function useKakaoInit() {
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
-      script.type = "text/javascript";
-      script.src = KAKAO_API_KEY;
-      document.head.appendChild(script);
+  useEffect(() => {
+    if (window.kakao && window.kakao.maps) {
+      setIsScriptLoaded(true);
+      return;
     }
-  }, [kakao]);
+
+    const script = document.createElement("script");
+    script.onload = () => window.kakao.maps.load(() => setIsScriptLoaded(true));
+
+    script.type = "text/javascript";
+    script.src = KAKAO_API_KEY;
+    document.head.appendChild(script);
+  }, []);
+
+  return isScriptLoaded;
 }
+
+export default useKakaoInit;

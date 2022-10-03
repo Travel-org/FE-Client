@@ -1,16 +1,15 @@
-import { InnerDashBoardStyle, CancelButton, PastButton } from "./styles";
 import { useEffect, useState } from "react";
+import { InnerDashBoardStyle, CancelButton, PastButton } from "./styles";
 import SearchBoard from "./search";
 import RecommandDashBoard from "./recommend";
 
 interface Props {
-  kakao: any;
   map: any;
 
   setInnerDashBoardOnOff: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const InnerDashBoard = ({ kakao, map, setInnerDashBoardOnOff }: Props) => {
+const InnerDashBoard = ({ map, setInnerDashBoardOnOff }: Props) => {
   const [type, setType] = useState("search");
   const [markers, setMarkers] = useState<any[]>([]);
 
