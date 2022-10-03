@@ -3,7 +3,7 @@ import { Logo } from "@src/components/logo";
 import styled from "@emotion/styled";
 import { api, isLoginSelector } from "@src/app/api";
 import { useAppSelector } from "@src/app/hooks";
-import { NavigationStyle, Margin } from "./styles";
+import { NavigationStyle } from "./styles"; 
 
 interface Props {
   user: boolean;

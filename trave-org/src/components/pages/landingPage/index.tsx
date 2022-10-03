@@ -5,30 +5,9 @@ import Board from "@organisms/board";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import {
-  Container,
-  Background,
-  Banner,
-  Wrapper,
-  SubmitBtn,
-  ArrowImg,
-} from "./styles";
+import { Wrapper, SubmitBtn, ArrowImg } from "./styles";
 import { useNavigate } from "react-router-dom";
-const Content = () => {
-  return (
-    <div style={{ padding: "3rem 12rem" }}>
-      {/* <select style={{ width: "100%", padding: "1rem", borderRadius: "10px" }}>
-        <option>인기순</option>
-        <option>최신순</option>
-      </select>
-      <Board />
-      <Board />
-      <Board />
-      <Board />
-      <Board /> */}
-    </div>
-  );
-};
+
 // const tempData = {
 //   title: "예비군 동원 훈련",
 //   dates: "5월 15일 - 5월 15일",
@@ -227,233 +206,111 @@ const Main = ({ setUser }: Props) => {
     });
   };
   return (
-    <>
-      <div
+    <div
+      css={css`
+        padding: 0 80px;
+        margin: 0 auto;
+      `}
+    >
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          ease: "easeOut",
+          duration: 1,
+        }}
         css={css`
-          margin-bottom: 136px;
-          @media (max-width: 1179px) {
-            margin-bottom: 64px;
-          }
-          @media (max-width: 96px) {
-            margin-bottom: 64px;
-          }
+          position: relative;
         `}
       >
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 1,
-          }}
+        <img
+          src={
+            "https://www.kagoshima-kankou.com/storage/tourism_themes/12/responsive_images/ElwnvZ2u5uZda7Pjcwlk4mMtr08kLNydT8zXA6Ie__1673_1115.jpeg"
+          }
           css={css`
-            padding: 0 80px;
-            margin: 0 auto;
-            max-width: 1440px;
+            width: 100%;
+            max-height: 800px;
+            border-radius: 24px;
+            object-fit: cover;
+          `}
+        />
+        <div
+          css={css`
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 145px 80px;
           `}
         >
-          <div
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ ease: "easeOut", duration: 1 }}
+            style={{
+              fontSize: "6rem",
+              fontWeight: "600",
+              color: "#23262F",
+            }}
+          >
+            지금 여행을
+            <br />
+            계획해보세요
+          </motion.div>
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ ease: "easeOut", duration: 1 }}
             css={css`
-              position: relative;
+              font-size: 3rem;
+              font-weight: 500;
+              color: #23262f;
             `}
           >
-            <img
-              src={
-                "https://www.kagoshima-kankou.com/storage/tourism_themes/12/responsive_images/ElwnvZ2u5uZda7Pjcwlk4mMtr08kLNydT8zXA6Ie__1673_1115.jpeg"
-              }
-              css={css`
-                width: 100%;
-                max-height: 800px;
-                border-radius: 24px;
-                object-fit: cover;
-              `}
+            실시간으로 다양한 여행지를 탐색해보세요.
+          </motion.div>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          css={css`
+            position: absolute;
+            bottom: -4vh;
+            left: 50%;
+            transform: translate(-50%);
+            text-align: center;
+            width: 80%;
+            display: flex;
+            padding: 40px;
+            box-sizing: border-box;
+            justify-content: space-evenly;
+            z-index: 5;
+            align-items: center;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0px 40px 64px -32px rgb(15 15 15 / 10%);
+          `}
+        >
+          <Wrapper>
+            <p>여행 제목</p>
+            <input
+              name="title"
+              placeholder="매력적인 제목을 붙여보세요"
+              required
             />
-            <div
-              css={css`
-                position: absolute;
-                top: 0;
-                left: 0;
-                padding: 145px 80px;
-              `}
-            >
-              <motion.div
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ ease: "easeOut", duration: 1 }}
-                style={{
-                  fontSize: "6rem",
-                  fontWeight: "600",
-                  color: "#23262F",
-                  marginBottom: "16px",
-                }}
-              >
-                지금 여행을
-                <br />
-                계획해보세요
-              </motion.div>
-              <motion.div
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ ease: "easeOut", duration: 1 }}
-                css={css`
-                  font-size: 3rem;
-                  font-weight: 500;
-                  color: #23262f;
-                `}
-              >
-                실시간으로 다양한 여행지를 탐색해보세요.
-              </motion.div>
-            </div>
-          </div>
-          <form
-            onSubmit={handleSubmit}
-            css={css`
-              /* position: relative; */
-              display: flex;
-              justify-content: space-evenly;
-              padding: 40px;
-              z-index: 5;
-              align-items: center;
-              transform: translateY(-70%);
-              margin: 0px 2rem;
-              background: white;
-              border-radius: 24px;
-              box-shadow: 0px 40px 64px -32px rgb(15 15 15 / 10%);
-              height: 167px;
-            `}
-          >
-            <Wrapper>
-              <p>여행 제목</p>
-              <input
-                name="title"
-                placeholder="매력적인 제목을 붙여보세요"
-                required
-              />
-            </Wrapper>
-            <Wrapper>
-              <p>시작일</p>
-              <input name="dayStart" type={"date"} required />
-            </Wrapper>
-            <ArrowImg src="/arrow.svg" />
-            <Wrapper>
-              <p>도착일</p>
-              <input name="dayEnd" type={"date"} required />
-            </Wrapper>
-            <SubmitBtn />
-          </form>
-        </motion.div>
-      </div>
-      {/* <Main2 /> */}
-    </>
+          </Wrapper>
+          <Wrapper>
+            <p>시작일</p>
+            <input name="dayStart" type={"date"} required />
+          </Wrapper>
+          <ArrowImg src="/arrow.svg" />
+          <Wrapper>
+            <p>도착일</p>
+            <input name="dayEnd" type={"date"} required />
+          </Wrapper>
+          <SubmitBtn />
+        </form>
+      </motion.div>
+    </div>
   );
 };
+
 export default Main;
-// <div
-//               css={css`
-//                 display: flex;
-//               `}
-//             >
-//               <div
-//                 css={css`
-//                   flex: 1;
-//                 `}
-//               >
-//                 <input
-//                   value={"출발지"}
-//                   css={css`
-//                     width: 100%;
-//                     height: 100%;
-//                     font-size: 24px;
-//                     font-weight: 600;
-//                     border: 0;
-//                   `}
-//                 />
-//                 <div
-//                   css={css`
-//                     color: #777e90;
-//                   `}
-//                 >
-//                   어디서 출발하시나요?
-//                 </div>
-//               </div>
-//               <div
-//                 css={css`
-//                   flex: 1;
-//                 `}
-//               >
-//                 <input
-//                   value={"도착지"}
-//                   css={css`
-//                     width: 100%;
-//                     height: 100%;
-//                     font-size: 24px;
-//                     font-weight: 600;
-//                     border: 0;
-//                   `}
-//                 />
-//                 <div
-//                   css={css`
-//                     color: #777e90;
-//                   `}
-//                 >
-//                   어디로 떠나시나요?
-//                 </div>
-//               </div>
-//               <div
-//                 css={css`
-//                   flex: 1;
-//                 `}
-//               >
-//                 <input
-//                   value={"시작일"}
-//                   css={css`
-//                     width: 100%;
-//                     height: 100%;
-//                     font-size: 24px;
-//                     font-weight: 600;
-//                     border: 0;
-//                   `}
-//                 />
-//                 <div
-//                   css={css`
-//                     color: #777e90;
-//                   `}
-//                 >
-//                   날짜를 지정해주세요
-//                 </div>
-//               </div>
-//               <div
-//                 css={css`
-//                   flex: 1;
-//                 `}
-//               >
-//                 <input
-//                   value={"종료일"}
-//                   css={css`
-//                     width: 100%;
-//                     height: 100%;
-//                     font-size: 24px;
-//                     font-weight: 600;
-//                     border: 0;
-//                   `}
-//                 />
-//                 <div
-//                   css={css`
-//                     color: #777e90;
-//                   `}
-//                 >
-//                   날짜를 지정해주세요
-//                 </div>
-//               </div>
-//               <div
-//                 css={css`
-//                   width: 64px;
-//                   height: 64px;
-//                   background: #3b71fe;
-//                   border-radius: 50%;
-//                   display: flex;
-//                   justify-content: center;
-//                   align-content: center;
-//                 `}
-//               ></div>
-//             </div>
