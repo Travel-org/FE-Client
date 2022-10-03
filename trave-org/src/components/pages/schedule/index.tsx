@@ -1,5 +1,7 @@
 import Button from "@src/components/atoms/button";
 import { Link, useNavigate } from "react-router-dom";
+import { api } from "@src/app/api";
+import { useEffect } from "react";
 import {
   Container,
   ScheduleWrapper,
@@ -7,45 +9,46 @@ import {
   ScheduleElementContainer,
   AvartarContainer,
   Avartar,
-  Wrapper,
-  NewScheduleBtn,
 } from "./styles";
 
-const data = { content: "충청도", people: 4, startDate: "2022-03-11" };
+const data = { content: "충청도", people: 4 };
 
-const ScheduleElement = ({ content, people, startDate }: typeof data) => {
+function ScheduleElement({ content, people }: typeof data) {
   const navigate = useNavigate();
   return (
     <ScheduleElementContainer onClick={() => navigate("/liveSchedule")}>
       <Image src="https://blog.kakaocdn.net/dn/bvVHDV/btqYIk8ro2Z/EDCkAI9jXb3SMAlISvbWr0/img.jpg" />
-      <Wrapper>
-        <h3>{content}</h3>
-        <div>
-          <AvartarContainer>
-            <Avartar />
-            <Avartar />
-            <Avartar />
-            <Avartar />
-          </AvartarContainer>
-          <p>{startDate}</p>
-        </div>
-      </Wrapper>
+      <p>제목 : {content}</p>
+      <AvartarContainer>
+        <Avartar />
+        <Avartar />
+        <Avartar />
+        <Avartar />
+      </AvartarContainer>
     </ScheduleElementContainer>
   );
-};
-const Schedule = () => {
+}
+
+function Schedule() {
+  const { data: data2 } = api.useMyInfoQuery();
+
+  useEffect(() => {
+    console.log(data2);
+  }, [data2]);
+
   return (
     <Container direction="column">
       <h2>내 여행</h2>
       <ScheduleWrapper>
-        <Link to="/newSchedule">
-          <NewScheduleBtn>+</NewScheduleBtn>
-        </Link>
-        {Array.from({ length: 4 }, () => data).map((e) => (
+        {Array.from({ length: 20 }, () => data).map((e) => (
           <ScheduleElement {...data} />
         ))}
       </ScheduleWrapper>
+      <Link to="/newSchedule">
+        <Button>새여행 계획하기</Button>
+      </Link>
     </Container>
   );
-};
+}
+
 export default Schedule;

@@ -30,7 +30,7 @@ export function Logo({ color }: { color: string }) {
         align-items: center;
       `}
     >
-      <LogoImage color="#1E52E2" />
+      <LogoImage color={color} />
       <div
         css={css`
           color: ${color};
