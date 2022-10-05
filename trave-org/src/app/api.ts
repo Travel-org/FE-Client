@@ -35,7 +35,7 @@ export const api = createApi({
       // By default, if we have a token in the store, let's use that for authenticated requests
       const { token } = (getState() as RootState).auth;
       if (token) {
-        headers.set("Authentication", `${token}`);
+        headers.set("Authentication", `Bearer ${token}`);
       }
       return headers;
     },
@@ -78,9 +78,12 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+    /**
+     * Travel Apis
+     */
     createTravel: builder.mutation<
       any,
-      { title: string; startDate: number; endDate: number }
+      { title: string; startDate: string; endDate: string }
     >({
       query: (arg) => ({
         method: "POST",
@@ -90,13 +93,14 @@ export const api = createApi({
           userEmails: [],
         },
       }),
-      onQueryStarted: async (arg, {}) => {},
+      invalidatesTags: (result, error) => [{ type: "Travel" }],
     }),
     getTravels: builder.query<ITravelResponse[], void>({
       query: () => ({
         url: `/v1/users/travels`,
         method: "GET",
       }),
+      providesTags: (result) => [{ type: "Travel" }],
       // queryFn: () => {
       //   return {
       //     data: Array.from({ length: 10 }, (_, i) => ({
@@ -126,7 +130,7 @@ export const api = createApi({
       //   };
       // },
     }),
-    getTravel: builder.query<ITravelResponse, number>({
+    getTravel: builder.query<ITravelResponse, string>({
       query: (travelId) => ({
         url: `/v1/travels/${travelId}`,
         method: "GET",
@@ -140,7 +144,7 @@ type AuthState = {
 };
 
 const initialAuthState = { token: null } as AuthState;
-export const slice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState: initialAuthState,
   reducers: {},

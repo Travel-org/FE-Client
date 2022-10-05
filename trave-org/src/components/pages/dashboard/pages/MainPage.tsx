@@ -26,15 +26,8 @@ function MainPage() {
           height: 150px;
         `}
       >
-        <div>
-          여행 A
-        </div>
-
-        <div>
-          2022-05-20 ~ 2022-05-23
-        </div>
-
-
+        <div>여행 A</div>
+        <div>2022-05-20 ~ 2022-05-23</div>
       </div>
 
       <div

@@ -1,4 +1,3 @@
-import { api } from "@src/services/schedule";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"; // eslint-disable-line
 import ScheduleBoard from "@atoms/scheduleBoard";
 import { useState } from "react";
@@ -10,8 +9,6 @@ interface Props {
 }
 
 const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
-  const { data, isLoading, error } = api.useGetScheduleQuery(1);
-  const [createSchedule, result] = api.useCreateScheduleMutation();
   const [form, setForm] = useState(travelLocations);
   function handleOnDragEnd(result: any) {
     if (!result.destination) {
@@ -34,23 +31,19 @@ const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
           <Droppable droppableId="droppable">
             {(provided) => (
               <div ref={provided.innerRef}>
-               {data !== undefined &&
-                  data.map((item, index) => (
-                    <Draggable index={index} draggableId={`${index}`}>
-                      {(providedInner) => (
-                        <div
-                          ref={providedInner.innerRef}
-                          {...providedInner.draggableProps}
-                          {...providedInner.dragHandleProps}
-                        >
-                          <ScheduleBoard
-                            title={item.title}
-                            description={item.description}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                {form.map((item, index) => (
+                  <Draggable index={index} draggableId={`${index}`}>
+                    {(providedInner) => (
+                      <div
+                        ref={providedInner.innerRef}
+                        {...providedInner.draggableProps}
+                        {...providedInner.dragHandleProps}
+                      >
+                        <ScheduleBoard title={item.title} description={item.description} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
               </div>
             )}
           </Droppable>

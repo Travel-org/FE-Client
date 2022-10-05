@@ -153,21 +153,11 @@ function App() {
           <Outlet />
 
         </AdminRoute>
-
       ),
-
     },
-
-    dashboardRoute,
-
-
-
-
+    ...dashboardRoute,
   ];
-
-
-
-
+  
   const element = useRoutes(routes);
 
   return (
