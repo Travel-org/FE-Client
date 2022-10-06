@@ -7,12 +7,11 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "build:dev": "webpack --mode development --config webpack.dev.config.ts",
-    "build:prod": "webpack --mode production --config webpack.prod.config.ts",
-    "start:local": "webpack server --mode development --config webpack.local.config.ts --open --hot",
-    "start:dev": "webpack server --mode development --config webpack.dev.config.ts --open --hot",
-    "start:prod": "webpack server --mode production --config webpack.prod.config.ts --open --hot",
-    "prestart": "cross-env NODE_ENV=production npm run build"
+    "build:dev": "webpack --env API_SERVER_URL=https://api.dev.travely.guide --mode development --config webpack.dev.config.ts",
+    "build:prod": "webpack --env API_SERVER_URL=https://api.travely.guide --mode production --config webpack.prod.config.ts",
+    "start:local": "webpack server --env API_SERVER_URL=http://localhost:8080 --mode development --config webpack.local.config.ts --open --hot",
+    "start:dev": "webpack server --env API_SERVER_URL=https://api.dev.travely.guide --mode development --config webpack.dev.config.ts --open --hot",
+    "start:prod": "webpack server --env API_SERVER_URL=https://api.travely.guide --mode production --config webpack.prod.config.ts --open --hot",
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",
