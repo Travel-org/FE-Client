@@ -3,7 +3,6 @@ import { theme } from "./theme";
 
 const reset = css`
   body {
-    width: 100vw;
     height: calc(100vh - 8vh);
     margin: 0px;
     
