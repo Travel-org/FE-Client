@@ -59,7 +59,11 @@ function TravelSinglePage() {
           height: 150px;
         `}
       >
-        asdf
+        <div>지출 예상 금액: 100,000</div>
+        <div>현재 지출 금액: 80,000</div>
+        <div>내 납부 금액: 20,000</div>
+        <div>내 납부 완료: 20,000</div>
+        <div>내 납부 필요: 20,000</div>
       </div>
       <div
         css={css`

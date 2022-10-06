@@ -37,7 +37,9 @@ function MainPage() {
           height: 150px;
         `}
       >
-        asdf
+        <div>여행 B</div>
+
+        <div>2022-05-20 ~ 2022-05-23</div>
       </div>
       <div
         css={css`
@@ -46,7 +48,9 @@ function MainPage() {
           height: 150px;
         `}
       >
-        asdf
+         <div>여행 C</div>
+
+        <div>2022-05-20 ~ 2022-05-23</div>
       </div>
       <div
         css={css`
