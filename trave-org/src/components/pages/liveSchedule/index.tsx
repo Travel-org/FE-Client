@@ -20,14 +20,12 @@ declare global {
     kakao: any;
   }
 }
+
 export const Avatar = styled.img`
   object-fit: cover;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-`;
-export const AvatarGroup = styled.div`
-  display: flex;
 `;
 
 export const AvatarGroup = styled.div`
@@ -59,7 +57,9 @@ function LiveSchedule() {
 
   const bounds = useMemo(() => {
     if (!isKakaoMapScriptInitialized) return undefined;
+
     const latlngbounds = new kakao.maps.LatLngBounds();
+
     travelLocations.forEach((travelLocation) => {
       latlngbounds.extend(
         new kakao.maps.LatLng(
@@ -129,6 +129,7 @@ function LiveSchedule() {
               onClick={(target, mouseEvent) => {
                 const clickedLat = mouseEvent.latLng?.getLat();
                 const clickedLng = mouseEvent.latLng?.getLng();
+
                 if (clickedLat && clickedLng) {
                   setSelectedPosition({
                     lat: clickedLat,
@@ -147,6 +148,7 @@ function LiveSchedule() {
                   position={seletedPosition}
                 />
               )}
+
               {travelLocations.map((travelLocation) => (
                 <MapMarker // 마커를 생성합니다
                   position={{
@@ -158,6 +160,7 @@ function LiveSchedule() {
                   <div>{travelLocation.title}</div>
                 </MapMarker>
               ))}
+
               <Polyline
                 path={travelPaths.map((travelPath) => ({
                   lat: travelPath[1],

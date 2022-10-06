@@ -9,8 +9,8 @@ import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
 
 function TravelSinglePage() {
   const { travelId } = useParams<"travelId">();
-
   const { data: travelData } = api.useGetTravelQuery(travelId!);
+
   const isKakaoMapScriptInitialized = useKakaoInit();
   const [map, setMap] = useState<any>();
   const [seletedPosition, setSelectedPosition] = useState<
@@ -31,6 +31,7 @@ function TravelSinglePage() {
     });
     return latlngbounds;
   }, [isKakaoMapScriptInitialized]);
+
   return (
     <div
       css={css`
@@ -88,6 +89,7 @@ function TravelSinglePage() {
         asdf
         {travelData?.startDate} ~ {travelData?.endDate}
       </div>
+
       <div
         css={css`
           width: 100%;

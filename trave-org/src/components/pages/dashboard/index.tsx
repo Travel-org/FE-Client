@@ -18,9 +18,7 @@ import { Avatar } from "@pages/liveSchedule";
 import styled from "@emotion/styled";
 import FriendsPage from "@pages/dashboard/pages/FriendsPage";
 import MainPage from "@pages/dashboard/pages/MainPage";
-import useBreadcrumbs, {
-  BreadcrumbsRoute,
-} from "use-react-router-breadcrumbs";
+import useBreadcrumbs, { BreadcrumbsRoute } from "use-react-router-breadcrumbs";
 import { api } from "@src/app/api";
 import FeedPage from "@pages/dashboard/pages/FeedPage";
 
@@ -153,6 +151,7 @@ function TravelNameBreadCrumb({ match }) {
 
 function TopBar() {
   const { data: myInfoData } = api.useGetMyInfoQuery();
+
   const breadcrumbs = useBreadcrumbs(dashboardRoute, { disableDefaults: true });
 
   return (
@@ -198,7 +197,6 @@ function DashboardTemplate() {
       <div
         css={css`
           flex-grow: 1;
-
           display: flex;
           flex-direction: column;
         `}

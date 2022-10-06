@@ -67,6 +67,8 @@ function Navigation({ user }: Props) {
         `}
       />
     </>
+  )
 };
+
 
 export default Navigation;
