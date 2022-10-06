@@ -8,7 +8,8 @@ import AddParty from "@organisms/scheduleForm/addParty";
 import { FlexDiv } from "@src/styles";
 import { Container, ChipWrapper, FormWrapper } from "./styles";
 import { createTravel } from "@src/utils/api/travel";
-const NewSchedule = () => {
+
+function NewSchedule() {
   const params = useLocation().state as any;
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<Date[]>([
@@ -69,7 +70,7 @@ const NewSchedule = () => {
       </FormWrapper>
       <FlexDiv direction="row">
         {countChip !== 0 && <Button onClick={handlePast}>이전</Button>}
-        {countChip == 2 ? (
+        {countChip === 2 ? (
           <Button onClick={goNextPage}>생성</Button>
         ) : (
           <Button onClick={handleNext}>다음</Button>
