@@ -3,30 +3,30 @@ import { RootState } from "@src/app/store";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 interface IUserResponse {
-    userId: number;
-    userName: string;
-  }
-  
-  interface IScheduleResponse {
-    scheduleId: number;
-    startDate: number;
-    endDate: number;
-    place: {
-      placeId: number;
-      placeName: string;
-    }[];
-    users: IUserResponse[];
-  }
-  interface ITravelResponse {
-    id: number;
-    title: string;
-    startDate: number;
-    endDate: number;
-    memo: string;
-    managerId: number;
-    users: IUserResponse[];
-    schedules: IScheduleResponse[];
-  }
+  userId: number;
+  userName: string;
+}
+
+interface IScheduleResponse {
+  scheduleId: number;
+  startDate: number;
+  endDate: number;
+  place: {
+    placeId: number;
+    placeName: string;
+  }[];
+  users: IUserResponse[];
+}
+interface ITravelResponse {
+  id: number;
+  title: string;
+  startDate: number;
+  endDate: number;
+  memo: string;
+  managerId: number;
+  users: IUserResponse[];
+  schedules: IScheduleResponse[];
+}
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -35,7 +35,7 @@ export const api = createApi({
       // By default, if we have a token in the store, let's use that for authenticated requests
       const { token } = (getState() as RootState).auth;
       if (token) {
-        headers.set("Authentication", `Bearer ${token}`);
+        headers.set("Authentication", `${token}`);
       }
       return headers;
     },
@@ -63,7 +63,7 @@ export const api = createApi({
         };
       },
     }),
-    getMyInfo: builder.query<
+    myInfo: builder.query<
       {
         email: string;
         name: string;
@@ -74,16 +74,13 @@ export const api = createApi({
       void
     >({
       query: () => ({
-        url: "/v1/users/my-info",
+        url: "/v1/users",
         method: "GET",
       }),
     }),
-    /**
-     * Travel Apis
-     */
     createTravel: builder.mutation<
       any,
-      { title: string; startDate: string; endDate: string }
+      { title: string; startDate: number; endDate: number }
     >({
       query: (arg) => ({
         method: "POST",
@@ -93,14 +90,13 @@ export const api = createApi({
           userEmails: [],
         },
       }),
-      invalidatesTags: (result, error) => [{ type: "Travel" }],
+      onQueryStarted: async (arg, {}) => {},
     }),
     getTravels: builder.query<ITravelResponse[], void>({
       query: () => ({
         url: `/v1/users/travels`,
         method: "GET",
       }),
-      providesTags: (result) => [{ type: "Travel" }],
       // queryFn: () => {
       //   return {
       //     data: Array.from({ length: 10 }, (_, i) => ({
@@ -130,7 +126,7 @@ export const api = createApi({
       //   };
       // },
     }),
-    getTravel: builder.query<ITravelResponse, string>({
+    getTravel: builder.query<ITravelResponse, number>({
       query: (travelId) => ({
         url: `/v1/travels/${travelId}`,
         method: "GET",
@@ -142,9 +138,8 @@ export const api = createApi({
 type AuthState = {
   token: string | null;
 };
-
 const initialAuthState = { token: null } as AuthState;
-export const authSlice = createSlice({
+export const slice = createSlice({
   name: "auth",
   initialState: initialAuthState,
   reducers: {},
@@ -158,7 +153,6 @@ export const authSlice = createSlice({
       });
   },
 });
-
 export const isLoginSelector = createSelector(
   (state: RootState) => state.auth.token,
   (token) => token !== null

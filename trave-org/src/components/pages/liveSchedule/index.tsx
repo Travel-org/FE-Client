@@ -30,6 +30,10 @@ export const AvatarGroup = styled.div`
   display: flex;
 `;
 
+export const AvatarGroup = styled.div`
+  display: flex;
+`;
+
 function LiveSchedule() {
   const [innerDashBoardOnOff, setInnerDashBoardOnOff] = useState(false);
   const [roomCode, setRoomCode] = useState("");

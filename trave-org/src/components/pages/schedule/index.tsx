@@ -30,7 +30,7 @@ function ScheduleElement({ content, people }: typeof data) {
 }
 
 function Schedule() {
-  const { data: data2 } = api.useGetMyInfoQuery();
+  const { data: data2 } = api.useMyInfoQuery();
 
   useEffect(() => {
     console.log(data2);
