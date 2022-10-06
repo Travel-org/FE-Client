@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Button from "@atoms/button";
 import Chip from "@atoms/chip";
 import SelectDate from "@organisms/scheduleForm/selectDate";
@@ -9,9 +8,15 @@ import AddParty from "@organisms/scheduleForm/addParty";
 
 import { FlexDiv } from "@src/styles";
 
-import { Container, ChipWrapper, FormWrapper } from "./styles";
+import {
+  Container,
+  ChipWrapper,
+  FormWrapper,
+  SubContainer,
+  Footer,
+} from "./styles";
 
-const Settlement = () => {
+const NewSettlement = () => {
   const navigate = useNavigate();
   const [countChip, setCountChip] = useState(0);
 
@@ -21,28 +26,33 @@ const Settlement = () => {
   return (
     <Container direction="column">
       <h2>정산 생성</h2>
-      {/* <ChipWrapper>
-        {["결제자 선택", "정산 품목 선택", "정산 세부 항목"].map(
-          (content, num) => (
-            <Chip key={num} {...{ content, num, status: countChip === num }} />
-          )
-        )}
-      </ChipWrapper>
-      <FormWrapper>
-        {countChip === 0 && <SelectDate />}
-        {countChip === 1 && <SelectDestination />}
-        {countChip === 2 && <AddParty />}
-      </FormWrapper>
-      <FlexDiv direction="row">
-        {countChip !== 0 && <Button onClick={handlePast}>이전</Button>}
-        {countChip == 2 ? (
-          <Button onClick={goNextPage}>생성</Button>
-        ) : (
-          <Button onClick={handleNext}>다음</Button>
-        )}s
-      </FlexDiv> */}
-    </Container>
+      <SubContainer>
+        <ChipWrapper>
+          {["결제자 선택", "결제 품목 입력", "청구자 추가"].map(
+            (content, num) => (
+              <Chip
+                key={num}
+                {...{ content, num, status: countChip === num }}
+              />
+            )
+          )}
+        </ChipWrapper>
+        <FormWrapper>
+          {countChip === 0 && <></>}
+          {countChip === 1 && <></>}
+          {countChip === 2 && <></>}
+        </FormWrapper>
+        <Footer direction="row">
+          {countChip !== 0 && <Button onClick={handlePast}>이전</Button>}
+          {countChip == 2 ? (
+            <Button onClick={goNextPage}>생성</Button>
+          ) : (
+            <Button onClick={handleNext}>다음</Button>
+          )}
+        </Footer>
+      </SubContainer>
+      </Container>
   );
 };
 
-export default Settlement;
+export default NewSettlement;
