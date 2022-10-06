@@ -146,10 +146,13 @@ function SideBar() {
 }
 function TravelNameBreadCrumb({ match }) {
   const { data: travelData } = api.useGetTravelQuery(match.params.travelId);
-  return <span>{travelData ? `${travelData.id}-${travelData.title}` : "..."}</span>;
+  return (
+    <span>{travelData ? `${travelData.id}-${travelData.title}` : "..."}</span>
+  );
 }
 
 function TopBar() {
+  const { data: myInfoData } = api.useGetMyInfoQuery();
   const breadcrumbs = useBreadcrumbs(dashboardRoute, { disableDefaults: true });
 
   return (
@@ -166,11 +169,20 @@ function TopBar() {
         </div>
       </div>
 
-      <Avatar
+      <div
         css={css`
-          background: red;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
         `}
-      />
+      >
+        <div>{myInfoData?.name}</div>
+        <Avatar
+          css={css`
+            background: red;
+          `}
+        />
+      </div>
     </>
   );
 }

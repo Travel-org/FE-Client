@@ -63,7 +63,7 @@ export const api = createApi({
         };
       },
     }),
-    myInfo: builder.query<
+    getMyInfo: builder.query<
       {
         email: string;
         name: string;
@@ -74,7 +74,7 @@ export const api = createApi({
       void
     >({
       query: () => ({
-        url: "/v1/users",
+        url: "/v1/users/my-info",
         method: "GET",
       }),
     }),
