@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { api, isLoginSelector } from "@src/app/api";
 import { useAppSelector } from "@src/app/hooks";
 import { NavigationStyle } from "./styles"; 
+import { css } from "@emotion/react";
 
 interface Props {
   user: boolean;
@@ -36,30 +37,36 @@ function Navigation({ user }: Props) {
   const currentUser = useAppSelector(isLoginSelector);
   const [logout] = api.useLogoutMutation();
   return (
-    <NavigationStyle>
-      <Wrapper>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <Logo color="#1e52e2" />
-        </Link>
-        <div>
-          <Link to="/schedule">
-            <p>계획</p>
+      <>
+      <NavigationStyle>
+        <Wrapper>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Logo color="#1e52e2" />
           </Link>
-          <Link to="/search">
-            <p>조회</p>
-          </Link>
-          <Link to="/settlement">
-            <p>정산</p>
-          </Link>
-          <Link to="/dashboard">
-            <p>대시보드</p>
-          </Link>
-        </div>
-        {!currentUser && <p onClick={() => navigate("/signIn")}>로그인</p>}
-        {currentUser && <p onClick={() => logout()}>로그아웃</p>}
-    </Wrapper>
-  </NavigationStyle>
-);
+          <div>
+            <Link to="/schedule">
+              <p>계획</p>
+            </Link>
+            <Link to="/search">
+              <p>조회</p>
+            </Link>
+            <Link to="/settlement">
+              <p>정산</p>
+            </Link>
+            <Link to="/dashboard">
+              <p>대시보드</p>
+            </Link>
+          </div>
+          {!currentUser && <p onClick={() => navigate("/signIn")}>로그인</p>}
+          {currentUser && <p onClick={() => logout()}>로그아웃</p>}
+        </Wrapper>
+      </NavigationStyle>
+      <div
+        css={css`
+          height: 8vh;
+        `}
+      />
+    </>
 };
 
 export default Navigation;
