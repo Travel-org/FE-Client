@@ -17,6 +17,11 @@ interface IScheduleResponse {
   }[];
   users: IUserResponse[];
 }
+interface IPaginationResponse<T> {
+  page: number | null;
+  size: number | null;
+  data: T[];
+}
 interface ITravelResponse {
   id: number;
   title: string;
@@ -47,6 +52,7 @@ export const api = createApi({
       {
         status: number;
         token: string;
+        kakaoId: string;
       },
       string
     >({
@@ -54,6 +60,13 @@ export const api = createApi({
         url: "/v1/oauth2/authorization/kakao",
         method: "GET",
         params: { code: authorizationCode },
+      }),
+    }),
+    signUp: builder.mutation<any, any>({
+      query: (signUpData) => ({
+        url: "/v1/users/signup",
+        method: "POST",
+        body: signUpData,
       }),
     }),
     logout: builder.mutation<undefined, void>({
@@ -96,40 +109,12 @@ export const api = createApi({
       }),
       onQueryStarted: async (arg, {}) => {},
     }),
-    getTravels: builder.query<ITravelResponse[], void>({
+    getTravels: builder.query<IPaginationResponse<ITravelResponse>, void>({
       query: () => ({
         url: `/v1/users/travels`,
         method: "GET",
       }),
       providesTags: (result) => [{ type: "Travel" }],
-      // queryFn: () => {
-      //   return {
-      //     data: Array.from({ length: 10 }, (_, i) => ({
-      //       id: i,
-      //       startDate: Date.now(),
-      //       endDate: Date.now(),
-      //       managerId: 1,
-      //       memo: "",
-      //       schedules: [
-      //         {
-      //           startDate: Date.now(),
-      //           endDate: Date.now(),
-      //           place: [{ placeId: 1, placeName: "test" }],
-      //           scheduleId: 1,
-      //           users: [
-      //             { userId: 1, userName: "userA" },
-      //             { userId: 2, userName: "userB" },
-      //           ],
-      //         },
-      //       ],
-      //       users: [
-      //         { userId: 1, userName: "userA" },
-      //         { userId: 2, userName: "userB" },
-      //       ],
-      //       title: "Test Travel",
-      //     })),
-      //   };
-      // },
     }),
     getTravel: builder.query<ITravelResponse, string>({
       query: (travelId) => ({
@@ -137,9 +122,42 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+     /**
+     * Schedule Apis
+     */
+      createSchedule: builder.query<
+      any,
+      {
+        travelId: number;
+        endTime: "2022-05-23T13:30:07.247Z";
+        place: {
+          addressName: "string";
+          addressRoadName: "string";
+          kakaoMapId: 0;
+          phoneNumber: "string";
+          placeName: "string";
+          placeUrl: "string";
+          x: 0;
+          y: 0;
+        };
+        startTime: "2022-05-23T13:30:07.247Z";
+        userIds: [0];
+      }
+    >({
+      query: (arg) => ({
+        url: `/v1/travels${arg.travelId}`,
+        method: "GET",
+        body: {
+          endTime: arg.endTime,
+          place: arg.place,
+          startTime: arg.startTime,
+          userIds: arg.userIds,
+        },
+      }),
+      providesTags: (result) => [{ type: "Travel" }],
+    }),
   }),
 });
-
 type AuthState = {
   token: string | null;
 };

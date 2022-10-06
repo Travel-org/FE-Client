@@ -1,13 +1,12 @@
 import Spinner from "@atoms/spinner";
 import { useNavigate } from "react-router-dom";
-import { Api } from "@utils/api";
 import { useEffect } from "react";
-import { useQuery } from "react-query";
 import { api } from "@src/app/api";
 
 function OAuth2RedirectHandler() {
   const navigate = useNavigate();
-  const [tryLogin, { isLoading, isSuccess, error }] = api.useLoginMutation();
+  const [tryLogin, { isLoading, isSuccess, error, data }] =
+    api.useLoginMutation();
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get("code");
@@ -20,10 +19,14 @@ function OAuth2RedirectHandler() {
   }, []);
 
   useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
+    if (!data) return;
+
+    if (data.status === 301) {
+      navigate("/signUp", { state: { kakaoId: data.kakaoId } });
+    } else {
+      navigate("/dashboard");
     }
-  }, [isSuccess]);
+  }, [data]);
 
   if (isLoading) return <p>"Loading..."</p>;
 

@@ -6,7 +6,7 @@ function FriendsPage() {
   return (
     <div>
       {travelsData &&
-        travelsData.map((travelData) => (
+       travelsData.data.map((travelData) => (
           <div>
             <div>{travelData.title}</div>
           </div>
