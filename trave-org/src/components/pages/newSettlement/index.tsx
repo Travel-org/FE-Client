@@ -39,7 +39,7 @@ const Settlement = () => {
           <Button onClick={goNextPage}>생성</Button>
         ) : (
           <Button onClick={handleNext}>다음</Button>
-        )}
+        )}s
       </FlexDiv> */}
     </Container>
   );

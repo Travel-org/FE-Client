@@ -22,9 +22,11 @@ import useBreadcrumbs, {
   BreadcrumbsRoute,
   createRoutesFromChildren,
 } from "use-react-router-breadcrumbs";
+import { api } from "@src/app/api";
 
 const LLink = styled(Link)`
   text-decoration: none;
+
   &:focus,
   &:hover,
   &:visited,
@@ -78,7 +80,6 @@ function SideBarMenu({ toPath, children }: { toPath: string; children: any }) {
     </LLink>
   );
 }
-
 function SideBar() {
   return (
     <div
@@ -87,6 +88,7 @@ function SideBar() {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+
         border-right: 1px solid rgba(0, 0, 0, 0.1);
         width: 250px;
       `}
@@ -134,13 +136,17 @@ function SideBar() {
           <BiCertification size={24} style={{ marginRight: 12 }} />
           설정
         </SideBarMenu>
-        <SideBarMenu toPath="/dashboard/setting">
+        <SideBarMenu toPath="/logout">
           <BiLogOut size={24} style={{ marginRight: 12 }} />
           로그아웃
         </SideBarMenu>
       </div>
     </div>
   );
+}
+function TravelNameBreadCrumb({ match }) {
+  const { data: travelData } = api.useGetTravelQuery(match.params.travelId);
+  return <span>{travelData ? `${travelData.id}-${travelData.title}` : "..."}</span>;
 }
 
 function TopBar() {
@@ -168,7 +174,6 @@ function TopBar() {
     </>
   );
 }
-
 function DashboardTemplate() {
   return (
     <div
@@ -182,6 +187,7 @@ function DashboardTemplate() {
       <div
         css={css`
           flex-grow: 1;
+
           display: flex;
           flex-direction: column;
         `}
@@ -227,7 +233,7 @@ const dashboardRoute: BreadcrumbsRoute<string>[] = [
       {
         path: "travels/:travelId",
         element: <TravelSinglePage />,
-        breadcrumb: "ID",
+        breadcrumb: TravelNameBreadCrumb,
       },
       {
         path: "friends",
