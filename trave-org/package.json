@@ -12,6 +12,7 @@
     "start:local": "webpack server --env API_SERVER_URL=http://localhost:8080 --mode development --config webpack.local.config.ts --open --hot",
     "start:dev": "webpack server --env API_SERVER_URL=https://api.dev.travely.guide --mode development --config webpack.dev.config.ts --open --hot",
     "start:prod": "webpack server --env API_SERVER_URL=https://api.travely.guide --mode production --config webpack.prod.config.ts --open --hot",
+    "prestart": "cross-env NODE_ENV=production npm run build"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",

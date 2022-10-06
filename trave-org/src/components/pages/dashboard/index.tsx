@@ -20,9 +20,9 @@ import FriendsPage from "@pages/dashboard/pages/FriendsPage";
 import MainPage from "@pages/dashboard/pages/MainPage";
 import useBreadcrumbs, {
   BreadcrumbsRoute,
-  createRoutesFromChildren,
 } from "use-react-router-breadcrumbs";
 import { api } from "@src/app/api";
+import FeedPage from "@pages/dashboard/pages/FeedPage";
 
 const LLink = styled(Link)`
   text-decoration: none;
@@ -251,6 +251,11 @@ const dashboardRoute: BreadcrumbsRoute<string>[] = [
         path: "friends",
         element: <FriendsPage />,
         breadcrumb: "친구",
+      },
+      {
+        path: "feed",
+        element: <FeedPage />,
+        breadcrumb: "피드",
       },
     ],
   },

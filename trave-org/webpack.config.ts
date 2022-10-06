@@ -55,5 +55,7 @@ const config: webpack.Configuration = {
       template: "./public/index.html",
     }),
     new webpack.HotModuleReplacementPlugin(),
+  ],
 };
+
 export default config;
