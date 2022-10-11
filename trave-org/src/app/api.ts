@@ -137,7 +137,7 @@ export const api = createApi({
   }),
   getTravels: builder.query<IPaginationResponse<ITravelResponse>, void>({
     query: () => ({
-      url: TRAVEL_BASE_URL + `/travels`,
+      url: TRAVEL_BASE_URL,
       method: "GET",
     }),
     providesTags: (result) => [{ type: "Travel" }],
