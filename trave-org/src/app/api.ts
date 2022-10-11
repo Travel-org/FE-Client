@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { RootState } from "@src/app/store";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-
 interface IUserResponse {
   userId: number;
   userName: string;
 }
-
 interface IScheduleResponse {
   scheduleId: number;
   startDate: number;
@@ -17,12 +15,18 @@ interface IScheduleResponse {
   }[];
   users: IUserResponse[];
 }
-interface IPaginationResponse<T> {
-  page: number | null;
-  size: number | null;
-  data: T[];
-}
 interface ITravelResponse {
+  id: number;
+  title: string;
+  startDate: number;
+  endDate: number;
+  memo: string;
+  managerId: number;
+  users: IUserResponse[];
+  schedules: IScheduleResponse[];
+}
+
+interface ICostResponse {
   id: number;
   title: string;
   startDate: number;
@@ -91,7 +95,6 @@ export const api = createApi({
         method: "GET",
       }),
     }),
-
     /**
      * Travel Apis
      */
