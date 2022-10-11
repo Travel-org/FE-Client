@@ -22,7 +22,7 @@ function OAuth2RedirectHandler() {
     if (!data) return;
 
     if (data.status === 301) {
-      navigate("/signUp", { state: { kakaoId: data.kakaoId } });
+      navigate("/signUp/kakao", { state: { kakaoId: data.kakaoId } });
     } else {
       navigate("/dashboard");
     }
