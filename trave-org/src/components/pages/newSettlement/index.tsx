@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Button from "@atoms/button";
 import Chip from "@atoms/chip";
 
@@ -56,7 +57,7 @@ const NewSettlement = () => {
       <h2>정산 생성</h2>
       <SubContainer>
         <ChipWrapper>
-        {["정산 내용 입력", "결제자 선택", "인원 선택", "금액 입력"].map(
+          {["정산 내용 입력", "결제자 선택", "인원 선택", "금액 입력"].map(
             (content, num) => (
               <Chip
                 key={num}
@@ -66,7 +67,7 @@ const NewSettlement = () => {
           )}
         </ChipWrapper>
         <FormWrapper>
-        {countChip === 0 && (
+          {countChip === 0 && (
             <SelectTitle
               memo={memo}
               setMemo={setMemo}
@@ -105,7 +106,7 @@ const NewSettlement = () => {
           )}
         </Footer>
       </SubContainer>
-      </Container>
+    </Container>
   );
 };
 
