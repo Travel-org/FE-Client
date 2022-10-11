@@ -6,7 +6,7 @@ import { api } from "@src/app/api";
 function OAuth2RedirectHandler() {
   const navigate = useNavigate();
   const [tryLogin, { isLoading, isSuccess, error, data }] =
-  api.useOauthLoginMutation();
+  api.useLoginMutation();
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get("code");
