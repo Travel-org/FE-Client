@@ -11,6 +11,7 @@ import {
 interface IUser {
   userId: number;
   userName: string;
+  profilePath: null | string;
 }
 
 interface Props {
