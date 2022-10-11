@@ -4,6 +4,7 @@ import { Container, ElementContainer, Wrapper, Avartar } from "./styles";
 interface IUser {
   userId: number;
   userName: string;
+  profilePath: null | string;
 }
 
 interface Props {
