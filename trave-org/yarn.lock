@@ -3649,10 +3649,10 @@ json5@^2.1.2, json5@^2.2.1:
     array-includes "^3.1.4"
     object.assign "^4.1.2"
 
-kakao.maps.d.ts@^0.1.26:
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/kakao.maps.d.ts/-/kakao.maps.d.ts-0.1.27.tgz#5b305e6d8c02378b75d7dab9c66e481e3922309d"
-  integrity sha512-K+barN/jU9dOyCmwAk16BnPzeMox8nsvfVxhTUxmOTJEYsRua3TpOghFM70ukk9rTcYwUzrzZm+fbdBLYpIXyA==
+kakao.maps.d.ts@^0.1.31:
+  version "0.1.31"
+  resolved "https://registry.yarnpkg.com/kakao.maps.d.ts/-/kakao.maps.d.ts-0.1.31.tgz#da1d352c9bd63b5cc5d08c19d62996fefb3eaca5"
+  integrity sha512-+fLv3yecc+XR3IKgJSqnYwkAz9ai7M5QMV6wz2J0FDyww9asF9ZA7GE28cx6SURQgauPGcwk0/DyNYXqmuLDgg==
 
 kind-of@^6.0.2:
   version "6.0.3"
@@ -4358,12 +4358,12 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.1.0.tgz#61aaed3096d30eacf2a2127118b5b41387d32a67"
   integrity sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==
 
-react-kakao-maps-sdk@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/react-kakao-maps-sdk/-/react-kakao-maps-sdk-1.0.7.tgz#2903c7613ab74f4d9c459bf5842dfec911816608"
-  integrity sha512-Y2uG3Rxsd9IirFmgXqNt3o9IPkTCuZsJcXODSMyeH1FAnSOeYh7pWLIm5S2YvygJMkUNWO+aqWU6fHkCxj1sDQ==
+react-kakao-maps-sdk@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-kakao-maps-sdk/-/react-kakao-maps-sdk-1.1.0.tgz#970f822df99f43c01a13151b930f68296932ebdf"
+  integrity sha512-96m4ipap2KToy1OImy2SXI0OWLAfZuXydbaazDD66d4SKybghVSoEqHW7afYdOe5ptOP023KHvZl+9eETHx3og==
   dependencies:
-    kakao.maps.d.ts "^0.1.26"
+    kakao.maps.d.ts "^0.1.31"
 
 react-query@^3.34.19:
   version "3.39.0"
@@ -4455,6 +4455,11 @@ rechoir@^0.7.0:
   integrity sha512-/njmZ8s1wVeR6pjTZ+0nCnv8SpZNRMT2D1RLOJQESlYFDBvwpTA4KWJpZ+sBJ4+vhjILRcK7JIFdGCdxEAAitg==
   dependencies:
     resolve "^1.9.0"
+
+redux-persist@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-6.0.0.tgz#b4d2972f9859597c130d40d4b146fecdab51b3a8"
+  integrity sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==
 
 redux-thunk@^2.4.1:
   version "2.4.1"
@@ -5185,6 +5190,11 @@ use-memo-one@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/use-memo-one/-/use-memo-one-1.1.2.tgz#0c8203a329f76e040047a35a1197defe342fab20"
   integrity sha512-u2qFKtxLsia/r8qG0ZKkbytbztzRb317XCkT7yP8wxL0tZ/CzK2G+WWie5vWvpyeP7+YoPIwbJoIHJ4Ba4k0oQ==
+
+use-react-router-breadcrumbs@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/use-react-router-breadcrumbs/-/use-react-router-breadcrumbs-3.2.1.tgz#05eba57efa5feb581e7f6f46a7ad88c7d9cb9db8"
+  integrity sha512-GpDhGo/A0I1ckGLER1/YZX/tgX+KOAyCGG2HgFIc0SVzQ30hTilufNdNRN3Gt+WXJW0zgn48CxxKvKSe+xA3TA==
 
 use-sync-external-store@^1.0.0:
   version "1.1.0"

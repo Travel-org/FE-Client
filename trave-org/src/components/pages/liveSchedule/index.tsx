@@ -1,14 +1,14 @@
 // import socket from "@utils/socket";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
-import useKakaoInit from "@src/utils/libs/useKakaoInit";
 import DashBoard from "@organisms/dashBoard";
 import InnerDashBoard from "@organisms/dashBoard/inner";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
+import { Map, MapMarker, Polyline, useInjectKakaoMapApi } from "react-kakao-maps-sdk";
 import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
 import { Container, CancelBtn } from "./styles";
+import { KAKAO_API_APPLICATION_JAVASCRIPT_KEY } from "@src/constants";
 
 interface SocketProps {
   status: string;
@@ -53,10 +53,13 @@ function LiveSchedule() {
     console.log(innerDashBoardOnOff);
   }, [innerDashBoardOnOff]);
 
-  const isKakaoMapScriptInitialized = useKakaoInit();
+  const { loading, error } = useInjectKakaoMapApi({
+    appkey: KAKAO_API_APPLICATION_JAVASCRIPT_KEY,
+    libraries: ["services"],
+  });
 
   const bounds = useMemo(() => {
-    if (!isKakaoMapScriptInitialized) return undefined;
+    if (loading) return undefined;
 
     const latlngbounds = new kakao.maps.LatLngBounds();
 
@@ -69,7 +72,7 @@ function LiveSchedule() {
       );
     });
     return latlngbounds;
-  }, [isKakaoMapScriptInitialized]);
+  }, [loading]);
 
   return (
     <Container>
@@ -118,7 +121,7 @@ function LiveSchedule() {
           height: 100%;
         `}
       >
-        {isKakaoMapScriptInitialized && (
+        {!loading && (
           <>
             <Map
               onCreate={(internalKakaoMap) => {

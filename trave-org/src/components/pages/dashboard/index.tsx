@@ -23,6 +23,7 @@ import { api } from "@src/app/api";
 import FeedPage from "@pages/dashboard/pages/FeedPage";
 import EventPage from "@pages/dashboard/pages/EventPage";
 import NoticePage from "@pages/dashboard/pages/NoticePage";
+import TravelEditPage from "@pages/dashboard/pages/TravelEditPage";
 
 const LLink = styled(Link)`
   text-decoration: none;
@@ -245,6 +246,11 @@ const dashboardRoute: BreadcrumbsRoute<string>[] = [
         path: "travels/:travelId",
         element: <TravelSinglePage />,
         breadcrumb: TravelNameBreadCrumb,
+      },
+      {
+        path: "travels/:travelId/edit",
+        element: <TravelEditPage />,
+        breadcrumb: "수정",
       },
       {
         path: "friends",

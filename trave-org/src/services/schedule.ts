@@ -1,10 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Api, SERVER_TARGET_URL } from "@src/utils/api";
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: SERVER_TARGET_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
 
   tagTypes: ["schedule"],
 

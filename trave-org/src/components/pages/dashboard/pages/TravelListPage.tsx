@@ -13,6 +13,7 @@ function TravelListPage() {
           <div>
             <NavLink to={travelData.id.toString()}>
               {travelData.title}
+              {travelData.startDate}~{travelData.endDate}
             </NavLink>
           </div>
         ))}
