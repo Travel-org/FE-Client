@@ -28,4 +28,15 @@ const KakaoBtnStyle = styled.div`
   }
 `;
 
-export { ButtonStyle, KakaoBtnStyle };
+const LabelBtnStyle = styled.div`
+  /* position: absolute; */
+  background: white;
+  border-radius: 0px 4px 4px 0px;
+  right: -1.2rem;
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.4rem;
+`;
+
+export { ButtonStyle, KakaoBtnStyle, LabelBtnStyle };
