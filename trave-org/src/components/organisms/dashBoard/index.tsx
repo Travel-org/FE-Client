@@ -6,11 +6,20 @@ import { DashBaordStyle, ScheduleContainer, AddButton } from "./styles";
 import { api } from "@src/app/api";
 
 interface Props {
+  map: any;
   travelId: string | undefined;
+  setMarkers: React.Dispatch<React.SetStateAction<any[]>>;
+  deleteMarker: () => void;
   setInnerDashBoardOnOff: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DashBoard = ({ travelId, setInnerDashBoardOnOff }: Props) => {
+const DashBoard = ({
+  map,
+  travelId,
+  setMarkers,
+  deleteMarker,
+  setInnerDashBoardOnOff,
+}: Props) => {
   const { data, isLoading, error } = api.useGetScheduleQuery(travelId!);
   const [form, setForm] = useState(travelLocations);
   function handleOnDragEnd(result: any) {
@@ -26,7 +35,32 @@ const DashBoard = ({ travelId, setInnerDashBoardOnOff }: Props) => {
   }
 
   useEffect(() => {
-    console.log(data);
+    if (data === undefined || kakao === undefined) return;
+    data.map(() => {
+      deleteMarker();
+      data.map(({ place: { lat, lng, placeName } }: any, index: number) => {
+        const geocoder = new kakao.maps.services.Geocoder();
+        geocoder.transCoord(
+          lat,
+          lng,
+          (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              const marker = new kakao.maps.Marker({
+                title: placeName,
+                position: new kakao.maps.LatLng(result[0].y, result[0].x),
+              });
+
+              marker.setMap(map);
+              setMarkers((v) => [...v, marker]);
+            }
+          },
+          {
+            input_coord: kakao.maps.services.Coords.WGS84,
+            output_coord: kakao.maps.services.Coords.WTM,
+          }
+        );
+      });
+    });
   }, [data]);
 
   return (
