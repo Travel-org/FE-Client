@@ -18,10 +18,10 @@ export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id
 export const DAY = ["월", "화", "수", "목", "금", "토", "일"];
 
 export const SIGNIN_INPUT_DATA = {
-  id: {
+  email: {
     type: "text",
-    placeholder: "아이디",
-    content: "아이디",
+    placeholder: "이메일",
+    content: "이메일",
   },
   password: {
     type: "current-password",
