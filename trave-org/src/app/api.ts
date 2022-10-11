@@ -121,28 +121,28 @@ export const api = createApi({
     /**
      * Schedule Apis
      */
-    createSchedule: builder.query<
+     createSchedule: builder.mutation<
       any,
       {
         travelId: number;
         endTime: "2022-05-23T13:30:07.247Z";
         place: {
-          addressName: "string";
-          addressRoadName: "string";
-          kakaoMapId: 0;
-          phoneNumber: "string";
-          placeName: "string";
-          placeUrl: "string";
-          x: 0;
-          y: 0;
+          addressName: string;
+          addressRoadName: string;
+          kakaoMapId: number;
+          phoneNumber: string;
+          placeName: string;
+          placeUrl: string;
+          lat: number;
+          lng: number;
         };
         startTime: "2022-05-23T13:30:07.247Z";
-        userIds: [0];
+        userIds: number[];
       }
     >({
       query: (arg) => ({
-        url: `/v1/travels${arg.travelId}`,
-        method: "GET",
+        url: `/v1/travels/${arg.travelId}/schedules`,
+        method: "POST",
         body: {
           endTime: arg.endTime,
           place: arg.place,
@@ -150,7 +150,6 @@ export const api = createApi({
           userIds: arg.userIds,
         },
       }),
-      providesTags: (result) => [{ type: "Travel" }],
     }),
   }),
 });
