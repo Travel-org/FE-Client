@@ -3,6 +3,7 @@ import SignUpInput from "@organisms/loginInput";
 import { FlexDiv } from "@src/styles";
 import { SIGNUP_INPUT_DATA, CHECK_SIGNUP_DATA } from "@constants/index";
 import Button from "@atoms/button";
+import { Api } from "@src/utils/api";
 import { useNavigate } from "react-router-dom";
 import { api } from "@src/app/api";
 import { useEffect } from "react";
@@ -52,7 +53,8 @@ function SignUpForm({ kakaoId }: { kakaoId?: string }) {
       kakaoId,
       name,
       phoneNumber,
-    //   birth: `${year}-${month}-${day}`,
+      birth: `${year}-${month}-${day}`,
+      userType: "USER",
     });
   };
 

@@ -3,6 +3,7 @@ import SignUpInput from "@organisms/loginInput";
 import { FlexDiv } from "@src/styles";
 import { SIGNUP_INPUT_DATA, CHECK_SIGNUP_DATA } from "@constants/index";
 import Button from "@atoms/button";
+import { Api } from "@src/utils/api";
 import { useNavigate } from "react-router-dom";
 import { api } from "@src/app/api";
 import { useEffect } from "react";
@@ -46,12 +47,14 @@ function SignUpForm() {
   }, [isSuccess]);
 
   const onSubmit = async (data: SignUpFormInterface) => {
-    const { password, email, name, phoneNumber } = data;
-    signUp({
+    const { year, month, day, email, name, phoneNumber } = data;
+    // console.log({ birth: `${year}-${month}-${day}`, ...rest });
+    await signUp({
       email,
       name,
       phoneNumber,
-      password,
+      birth: `${year}-${month}-${day}`,
+      userType: "USER",
     });
   };
 
@@ -111,11 +114,11 @@ function SignUpForm() {
   return (
     <SignFormStyle onSubmit={handleSubmit(onSubmit)}>
       <SignUpInput {...inputProps("name")} />
-       {/* <SignUpInput {...inputProps("nickName")} /> */}
-       <SignUpInput {...inputProps("phoneNumber")} />
-      {/* <SignUpInput {...inputProps("gender")} />
-      <SignUpInput {...inputProps("tendency")} /> */}
-      {/* <BirthInputForm /> */}
+      <SignUpInput {...inputProps("nickName")} />
+      <SignUpInput {...inputProps("phoneNumber")} />
+      <SignUpInput {...inputProps("gender")} />
+      <SignUpInput {...inputProps("tendency")} />
+      <BirthInputForm />
       <SignUpInput {...inputProps("email")} />
       <SignUpInput {...inputProps("password")} />
       <Button>제출</Button>
