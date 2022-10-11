@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Button from "@atoms/button";
 import Chip from "@atoms/chip";
-
 import {
   Container,
   ChipWrapper,
@@ -11,26 +10,23 @@ import {
   SubContainer,
   Footer,
 } from "./styles";
-
 import SelectTitle from "@src/components/organisms/settlementForm/selectTitle";
-import SelectPayer from "@src/components/organisms/settlementForm/selectPayer";
+import SelectPayer from "@src/components/organisms/settlementForm/selectPlayer";
 import SelectBiller from "@src/components/organisms/settlementForm/selectBiller";
 import AddPrice from "@src/components/organisms/settlementForm/addPrice";
+import { api } from "@src/app/api";
 
 interface IUser {
   userId: number;
   userName: string;
+  profilePath: null | string;
 }
-
-const users = [
-  { userId: 0, userName: "난 아니야" },
-  { userId: 1, userName: "난 맞아" },
-  { userId: 2, userName: "난 이거야" },
-  { userId: 3, userName: "난 몰라" },
-];
 
 const NewSettlement = () => {
   const navigate = useNavigate();
+  const { travelId } = useParams<"travelId">();
+  const { data: users } = api.useGetUsersQuery(travelId!);
+  const [createCost] = api.useCreateCostMutation();
   const [memo, setMemo] = useState("");
   const [title, setTitle] = useState("");
   const [payer, setPayer] = useState<IUser | null>(null);
@@ -38,19 +34,26 @@ const NewSettlement = () => {
   const [selectedUser, setSelectedUser] = useState({});
   const [usersPrice, setUsersPrice] = useState({});
   const [countChip, setCountChip] = useState(0);
-
   const handlePast = () => setCountChip(Math.max(0, countChip - 1));
   const handleNext = () =>
     title !== "" && setCountChip(Math.min(3, countChip + 1));
-
   const compareUserPrice =
     price ==
     Object.values(usersPrice).reduce((r: number, v) => r + (v as number), 0);
   const goNextPage = () => {
-    console.log();
-    if (price !== undefined && +price > 0 && compareUserPrice)
-      navigate("/settlement");
-    else alert("금액이 맞지 않습니다.");
+    if (price !== undefined && +price > 0 && compareUserPrice) {
+      {
+        createCost({
+          amountsPerUser: usersPrice as any,
+          title: title,
+          content: memo,
+          payerId: payer?.userId as number,
+          totalAmount: price as number,
+          travelId: travelId as string,
+        });
+        navigate("/settlement");
+      }
+    } else alert("금액이 맞지 않습니다.");
   };
   return (
     <Container direction="column">
@@ -76,12 +79,12 @@ const NewSettlement = () => {
             />
           )}
           {countChip === 1 && (
-            <SelectPayer payer={payer} setPayer={setPayer} users={users} />
+            <SelectPayer payer={payer} setPayer={setPayer} users={users!} />
           )}
           {countChip === 2 && (
             <SelectBiller
               payer={payer}
-              users={users}
+              users={users!}
               selectedUser={selectedUser}
               setSelectedUser={setSelectedUser}
             />
@@ -90,7 +93,7 @@ const NewSettlement = () => {
             <AddPrice
               price={price}
               setPrice={setPrice}
-              users={users}
+              users={users!}
               selectedUser={selectedUser}
               usersPrice={usersPrice}
               setUsersPrice={setUsersPrice}
@@ -109,5 +112,4 @@ const NewSettlement = () => {
     </Container>
   );
 };
-
 export default NewSettlement;
