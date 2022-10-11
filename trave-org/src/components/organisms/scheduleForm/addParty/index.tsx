@@ -8,11 +8,11 @@ import { useRef, useState } from "react";
 const data = { email: "pkb8839@naver.com" };
 
 interface Props {
-  userList: string[];
+  userEmails: string[];
   addUserEmail: (email: any) => void;
 }
 
-const AddParty = ({ userList, addUserEmail }: Props) => {
+const AddParty = ({ userEmails, addUserEmail }: Props) => {
   const [modalOnOff, setModalOnOff] = useState(false);
   const inputRef = useRef<HTMLInputElement>();
 
@@ -24,7 +24,7 @@ const AddParty = ({ userList, addUserEmail }: Props) => {
   return (
     <Container>
       <ElementWrapper>
-        {userList.map((email, i) => (
+      {userEmails.map((email, i) => (
           <PartyElement key={i} email={email} />
         ))}
       </ElementWrapper>
