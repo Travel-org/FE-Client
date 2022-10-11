@@ -3,6 +3,7 @@ import { Container, ElementContainer, Wrapper, Avartar } from "./styles";
 interface IUser {
   userId: number;
   userName: string;
+  profilePath: null | string;
 }
 
 interface Props {
@@ -15,7 +16,7 @@ const SelectPayer = ({ payer, setPayer, users }: Props) => {
   return (
     <Container>
       <h2>결제자를 선택해주세요!</h2>
-      {users.map(({ userId, userName }) => (
+      {users.map(({ userId, userName, profilePath }) => (
         <ElementContainer>
           <Wrapper>
             <Avartar />
@@ -24,9 +25,10 @@ const SelectPayer = ({ payer, setPayer, users }: Props) => {
           <input
             type="radio"
             checked={
-              JSON.stringify(payer) === JSON.stringify({ userId, userName })
+              JSON.stringify(payer) ===
+              JSON.stringify({ userId, userName, profilePath })
             }
-            onClick={() => setPayer({ userId, userName })}
+            onClick={() => setPayer({ userId, userName, profilePath })}
           />
         </ElementContainer>
       ))}
