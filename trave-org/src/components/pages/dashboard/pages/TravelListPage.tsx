@@ -1,6 +1,6 @@
 import { api } from "@src/app/api";
 import { NavLink } from "react-router-dom";
-import { ScheduleElement } from "@pages/schedule";
+import { ScheduleElement } from "@organisms/scheduleElement";
 import { css } from "@emotion/react";
 
 function TravelListPage() {
@@ -31,18 +31,20 @@ function TravelListPage() {
         `}
       >
          {travelsData?.content !== undefined &&
-          travelsData?.content.map((travelData) => (
-            <NavLink to={travelData.id.toString()}>
+         travelsData?.content.map(
+          ({ id, title, startDate, users, endDate }) => (
+            <NavLink to={id.toString()}>
               <div>
                 <ScheduleElement
-                  content={travelData.title}
-                  //people={travelData.users}
-                  startDate={travelData.startDate}
-                  endDate={travelData.endDate}
+                  title={title}
+                  users={users}
+                  startDate={startDate}
+                  endDate={endDate}
                 />
               </div>
             </NavLink>
-          ))}
+          )
+        )}
       </div>
     </div>
   );

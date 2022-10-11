@@ -1,20 +1,22 @@
 import {
-  Loader,
   Map,
   MapMarker,
   Polyline,
   useInjectKakaoMapApi,
 } from "react-kakao-maps-sdk";
 import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { KAKAO_API_APPLICATION_JAVASCRIPT_KEY } from "@src/constants";
 import DashBoard from "@organisms/dashBoard";
 import InnerDashBoard from "@organisms/dashBoard/inner";
-import { CancelBtn } from "@pages/liveSchedule/styles";
 import { css } from "@emotion/react";
 import LabelBtn from "@src/components/atoms/button/label";
+import { useParams } from "react-router-dom";
+import { api } from "@src/app/api";
 
 function TravelEditPage() {
+  const { travelId } = useParams<"travelId">();
+  const { data: travelData } = api.useGetTravelQuery(travelId!);
   const [map, setMap] = useState<any>();
   const [type, setType] = useState<"search" | "recommend">("search");
   const { loading, error } = useInjectKakaoMapApi({
@@ -81,9 +83,13 @@ function TravelEditPage() {
           position: relative;
         `}
       >
-        <DashBoard setInnerDashBoardOnOff={setInnerDashBoardOnOff} />
+        <DashBoard
+          travelId={travelId}
+          setInnerDashBoardOnOff={setInnerDashBoardOnOff}
+        />
         {innerDashBoardOnOff && (
           <InnerDashBoard
+            travelData={travelData}
             type={type}
             map={map}
             setMarkers={setMarkers}

@@ -1,21 +1,22 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"; // eslint-disable-line
 import ScheduleBoard from "@atoms/scheduleBoard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { travelLocations } from "@pages/liveSchedule/dummyData";
 import { DashBaordStyle, ScheduleContainer, AddButton } from "./styles";
+import { api } from "@src/app/api";
 
 interface Props {
+  travelId: string | undefined;
   setInnerDashBoardOnOff: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
-  const { data, isLoading, error } = api.useGetScheduleQuery(1);
+const DashBoard = ({ travelId, setInnerDashBoardOnOff }: Props) => {
+  const { data, isLoading, error } = api.useGetScheduleQuery(travelId!);
   const [form, setForm] = useState(travelLocations);
   function handleOnDragEnd(result: any) {
     if (!result.destination) {
       return;
     }
-
     const currentList = [...form];
     const draggingItemIndex = result.source.index;
     const dropItemIndex = result.destination.index;
@@ -23,6 +24,10 @@ const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
     currentList.splice(dropItemIndex, 0, removeForm[0]);
     setForm(currentList);
   }
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <DashBaordStyle>
@@ -32,26 +37,30 @@ const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
           <Droppable droppableId="droppable">
             {(provided) => (
               <div ref={provided.innerRef}>
-                {form.map((item, index) => (
-                  <Draggable index={index} draggableId={`${index}`}>
-                    {(providedInner) => (
-                      <div
-                        ref={providedInner.innerRef}
-                        {...providedInner.draggableProps}
-                        {...providedInner.dragHandleProps}
-                      >
-                        <ScheduleBoard title={item.title} description={item.description} />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                {data !== undefined &&
+                  data.map(({ place }, index) => (
+                    <Draggable index={index} draggableId={`${index}`}>
+                      {(providedInner) => (
+                        <div
+                          ref={providedInner.innerRef}
+                          {...providedInner.draggableProps}
+                          {...providedInner.dragHandleProps}
+                        >
+                          <ScheduleBoard
+                            title={place.placeName}
+                            description={""}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
               </div>
             )}
           </Droppable>
         </DragDropContext>
       </ScheduleContainer>
       <div>
-      <AddButton onClick={() => setInnerDashBoardOnOff(true)}>
+        <AddButton onClick={() => setInnerDashBoardOnOff(true)}>
           + 일정 추가하기
         </AddButton>
       </div>

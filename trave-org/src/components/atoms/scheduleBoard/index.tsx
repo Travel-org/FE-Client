@@ -8,7 +8,7 @@ interface Props {
 const ScheduleBoard = ({ title, description }: Props) => {
   return (
     <Container>
-      <img src="/rect.png" />
+      {/* <img src="/rect.png" /> */}
       <h3>{title}</h3>
       <p>{description}</p>
     </Container>

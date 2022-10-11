@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet, RouteObject, useMatch } from "react-router-dom";
+import { Link, NavLink, Outlet, useMatch } from "react-router-dom";
 import TravelListPage from "@pages/dashboard/pages/TravelListPage";
 import TravelSinglePage from "@pages/dashboard/pages/TravelSinglePage";
 import { css } from "@emotion/react";
@@ -13,7 +13,7 @@ import {
   BiMapAlt,
   BiUserCircle,
 } from "react-icons/bi";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import { Avatar } from "@pages/liveSchedule";
 import styled from "@emotion/styled";
 import FriendsPage from "@pages/dashboard/pages/FriendsPage";
