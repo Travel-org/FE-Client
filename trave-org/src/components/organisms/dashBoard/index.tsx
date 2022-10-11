@@ -9,6 +9,7 @@ interface Props {
 }
 
 const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
+  const { data, isLoading, error } = api.useGetScheduleQuery(1);
   const [form, setForm] = useState(travelLocations);
   function handleOnDragEnd(result: any) {
     if (!result.destination) {

@@ -73,6 +73,9 @@ function TravelEditPage() {
             lat: travelLocations[0].lnglat[1],
             lng: travelLocations[0].lnglat[0],
           }}
+          onDragEnd={(internalMap) => {
+          console.log(internalMap.getCenter());
+          }}
           style={{ height: "92vh" }}
         >
           {seletedPosition && (
