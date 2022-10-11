@@ -51,7 +51,7 @@ const DashBoard = ({ setInnerDashBoardOnOff }: Props) => {
         </DragDropContext>
       </ScheduleContainer>
       <div>
-        <AddButton onClick={() => setInnerDashBoardOnOff((v) => !v)}>
+      <AddButton onClick={() => setInnerDashBoardOnOff(true)}>
           + 일정 추가하기
         </AddButton>
       </div>

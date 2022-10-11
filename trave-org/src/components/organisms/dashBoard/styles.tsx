@@ -52,6 +52,8 @@ const PastButton = styled(Button)`
 const TagButton = styled(Button)<{ status: boolean }>`
   border-radius: 30px;
   padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+  font-size: 0.1rem;
   box-sizing: border-box;
   color: white;
   box-shadow: 0px 0px 3px ${theme.colors.shadow};

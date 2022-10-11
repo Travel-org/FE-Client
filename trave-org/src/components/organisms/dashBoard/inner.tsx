@@ -4,28 +4,23 @@ import SearchBoard from "./search";
 import RecommandDashBoard from "./recommend";
 
 interface Props {
+  type: "search" | "recommend";
   map: any;
   setMarkers: React.Dispatch<React.SetStateAction<any[]>>;
   deleteMarker: () => void;
 }
 
-const InnerDashBoard = ({ map, deleteMarker, setMarkers }: Props) => {
-  const [type, setType] = useState("search");
-
-  const changeRecommandPage = () => setType("recommand");
-
+const InnerDashBoard = ({ type, map, deleteMarker, setMarkers }: Props) => {
   return (
     <InnerDashBoardStyle>
-      {type === "recommand" && <PastButton onClick={() => setType("search")} />}
       {type === "search" && (
         <SearchBoard
           map={map}
           deleteMarker={deleteMarker}
           setMarkers={setMarkers}
-          changeRecommandPage={changeRecommandPage}
         />
       )}
-      {type === "recommand" && <RecommandDashBoard />}
+      {type === "recommend" && <RecommandDashBoard />}
     </InnerDashBoardStyle>
   );
 };

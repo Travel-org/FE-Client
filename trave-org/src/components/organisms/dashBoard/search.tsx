@@ -6,15 +6,9 @@ interface Props {
   map: any;
   setMarkers: React.Dispatch<React.SetStateAction<any[]>>;
   deleteMarker: Function;
-  changeRecommandPage: () => void;
 }
 
-const SearchBoard: React.FC<Props> = ({
-  map,
-  changeRecommandPage,
-  deleteMarker,
-  setMarkers,
-}) => {
+const SearchBoard: React.FC<Props> = ({ map, deleteMarker, setMarkers }) => {
   const InputRef = useRef<HTMLInputElement>();
   const [searchResult, setSearchResult] = useState<any[]>([]);
   const [selectItem, setSelectItem] = useState<any>({});
@@ -54,7 +48,6 @@ const SearchBoard: React.FC<Props> = ({
     <>
       <Wrapper>
         <h2>여행지 검색</h2>
-        <button onClick={changeRecommandPage}>추천받기</button>
       </Wrapper>
       <input
         ref={(el) => (InputRef.current = el as HTMLInputElement)}
