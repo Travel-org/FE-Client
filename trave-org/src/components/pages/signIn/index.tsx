@@ -12,27 +12,27 @@ import {
   ERROR_MESSAGE,
   KAKAO_AUTH_URL,
 } from "@constants/index";
-
-import { Api } from "@src/utils/api";
+import { api } from "@src/app/api";
+import { useEffect } from "react";
 
 interface SignInFormInterface {
-  id: string;
+  email: string;
   password: string;
 }
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const [tryLogin, { isLoading, isSuccess, error, data }] =
+  api.useLoginMutation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignInFormInterface>({});
 
-  const onSubmit = (dd: SignInFormInterface) => {
-    console.log(dd);
-  };
+  const onSubmit = async (data: SignInFormInterface) => tryLogin(data);
 
-  const inputProps = (type: "id" | "password") => {
+  const inputProps = (type: "email" | "password") => {
     return {
       ...register(type, { required: ERROR_MESSAGE }),
       ...SIGNIN_INPUT_DATA[type],
@@ -40,17 +40,18 @@ const SignIn = () => {
     };
   };
 
-   // const handleTest = async () => {
-  // const data = await Api.get("/v1/test");
-  //   console.log(data);
-  // };
+    useEffect(() => {
+    if (!data) return;
+    if (data.status === 400) alert(data.message);
+    else navigate("/dashboard");
+    }, [data]);
 
   return (
     <Container direction="row">
       <ContentContainer direction="column">
         <h1>로그인</h1>
         <LoginForm onSubmit={handleSubmit(onSubmit)}>
-          <SignInInput {...inputProps("id")} />
+          <SignInInput {...inputProps("email")} />
           <SignInInput {...inputProps("password")} />
           <Wrapper direction="row" style={{ columnGap: "1rem" }}>
             <p onClick={() => navigate("/find")}>아이디/비밀번호 찾기</p>
