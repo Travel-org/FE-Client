@@ -16,6 +16,7 @@ function TravelListPage() {
             title: "Test Title",
             startDate: "2022-05-22",
             endDate: "2022-05-23",
+            userEmails: [],
           })
         }
       >
@@ -29,13 +30,13 @@ function TravelListPage() {
           gap: 24px;
         `}
       >
-        {travelsData &&
-          travelsData.data.map((travelData) => (
+         {travelsData?.content !== undefined &&
+          travelsData?.content.map((travelData) => (
             <NavLink to={travelData.id.toString()}>
               <div>
                 <ScheduleElement
                   content={travelData.title}
-                  people={travelData.users}
+                  //people={travelData.users}
                   startDate={travelData.startDate}
                   endDate={travelData.endDate}
                 />

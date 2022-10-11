@@ -12,9 +12,11 @@ import DashBoard from "@organisms/dashBoard";
 import InnerDashBoard from "@organisms/dashBoard/inner";
 import { CancelBtn } from "@pages/liveSchedule/styles";
 import { css } from "@emotion/react";
+import LabelBtn from "@src/components/atoms/button/label";
 
 function TravelEditPage() {
   const [map, setMap] = useState<any>();
+  const [type, setType] = useState<"search" | "recommend">("search");
   const { loading, error } = useInjectKakaoMapApi({
     appkey: KAKAO_API_APPLICATION_JAVASCRIPT_KEY,
     libraries: ["services"],
@@ -72,23 +74,46 @@ function TravelEditPage() {
         flex-direction: row;
       `}
     >
-      <DashBoard setInnerDashBoardOnOff={setInnerDashBoardOnOff} />
-      {innerDashBoardOnOff && (
-        <>
+        <div
+        css={css`
+          display: flex;
+          flex-direction: row;
+          position: relative;
+        `}
+      >
+        <DashBoard setInnerDashBoardOnOff={setInnerDashBoardOnOff} />
+        {innerDashBoardOnOff && (
           <InnerDashBoard
+            type={type}
             map={map}
             setMarkers={setMarkers}
             deleteMarker={deleteMarker}
           />
-          <CancelBtn
-            url="/cancel.svg"
-            onClick={() => {
-              setInnerDashBoardOnOff(false);
-              deleteMarker();
-            }}
-          />
-        </>
-      )}
+        )}
+
+        {innerDashBoardOnOff && (
+          <div
+            css={css`
+              position: absolute;
+              right: -2rem;
+              z-index: 3;
+            `}
+          >
+            <LabelBtn
+              url="/cancel.svg"
+              onClick={() => {
+                setInnerDashBoardOnOff(false);
+                deleteMarker();
+              }}
+            />
+            <LabelBtn url="/search.svg" onClick={() => setType("search")} />
+            <LabelBtn
+              url="/recommend.svg"
+              onClick={() => setType("recommend")}
+            />
+          </div>
+        )}
+      </div>
       {/* FIXME: 현재 라이브러리 문제로 Map 자동 Refresh가 안됨 Optional 처리해야함 */}
       {!loading && (
         <div

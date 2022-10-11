@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import { api } from "@src/app/api";
 import { css } from "@emotion/react";
 import { Avatar } from "@pages/liveSchedule";
@@ -80,19 +80,21 @@ function TravelSinglePage() {
           create schedule
         </button>
       </div>
-      <div
-        css={css`
-          background: antiquewhite;
-          border-radius: 10px;
-          height: 150px;
-        `}
-      >
-        <div>지출 예상 금액: 100,000</div>
-        <div>현재 지출 금액: 80,000</div>
-        <div>내 납부 금액: 20,000</div>
-        <div>내 납부 완료: 20,000</div>
-        <div>내 납부 필요: 20,000</div>
-      </div>
+      <NavLink to={"/settlement/" + travelId}>
+        <div
+          css={css`
+            background: antiquewhite;
+            border-radius: 10px;
+            height: 150px;
+          `}
+        >
+          <div>지출 예상 금액: 100,000</div>
+          <div>현재 지출 금액: 80,000</div>
+          <div>내 납부 금액: 20,000</div>
+          <div>내 납부 완료: 20,000</div>
+          <div>내 납부 필요: 20,000</div>
+        </div>
+      </NavLink>
       <div
         css={css`
           background: antiquewhite;
@@ -168,7 +170,9 @@ function TravelSinglePage() {
         `}
       >
         {travelData &&
-          travelData.schedules.map((schedule) => <div>{schedule.place.placeName}</div>)}
+           travelData.schedules.map((schedule) => (
+            <div>{schedule.place.placeName}</div>
+          ))}
       </div>
     </div>
   );
