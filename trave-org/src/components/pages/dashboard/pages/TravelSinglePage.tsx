@@ -15,7 +15,6 @@ import { KAKAO_API_APPLICATION_JAVASCRIPT_KEY } from "@src/constants";
 function TravelSinglePage() {
   const { travelId } = useParams<"travelId">();
   const { data: travelData } = api.useGetTravelQuery(travelId!);
-  const [createSchedule, result] = api.useCreateScheduleMutation();
 
   const { loading, error } = useInjectKakaoMapApi({
     appkey: KAKAO_API_APPLICATION_JAVASCRIPT_KEY,
@@ -56,32 +55,8 @@ function TravelSinglePage() {
         `}
       >
         <div>여행 A</div>
-
         <div>2022-05-20 ~ 2022-05-23</div>
-        <button
-          onClick={() =>
-            createSchedule({
-              travelId: parseInt(travelId!),
-              place: {
-                placeUrl: "",
-                placeName: "test",
-                addressName: "address",
-                addressRoadName: "aa",
-                lat: 0,
-                lng: 0,
-                kakaoMapId: 1,
-                phoneNumber: "000",
-              },
-              userIds: [1],
-              endTime: "2022-05-23T13:30:07.247Z",
-              startTime: "2022-05-23T13:30:07.247Z",
-            })
-          }
-        >
-          create schedule
-        </button>
       </div>
-
       <div
         css={css`
           background: antiquewhite;
@@ -118,7 +93,6 @@ function TravelSinglePage() {
         asdf
         {travelData?.startDate} ~ {travelData?.endDate}
       </div>
-
       <div
         css={css`
           width: 100%;
@@ -137,8 +111,6 @@ function TravelSinglePage() {
               lat: travelLocations[0].lnglat[1],
               lng: travelLocations[0].lnglat[0],
             }}
-            draggable={false}
-            zoomable={false}
             style={{ height: "30vh" }}
           >
             {travelLocations.map((travelLocation) => (
@@ -161,19 +133,6 @@ function TravelSinglePage() {
             />
           </Map>
         )}
-      </div>
-      <div
-        css={css`
-          display: flex;
-          flex-direction: column;
-          background: lightgrey;
-          height: 700px;
-        `}
-      >
-        {travelData &&
-          travelData.schedules.map((schedule) => (
-            <div>{schedule.place.placeName}</div>
-          ))}
       </div>
     </div>
   );

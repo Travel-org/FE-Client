@@ -22,14 +22,13 @@ interface SignUpFormInterface {
   password: string;
 }
 
-function SignUpForm() {
+function SignUpForm({ kakaoId }: { kakaoId?: string }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignUpFormInterface>({});
   const navigate = useNavigate();
-
   const inputProps = (type: keyof SignUpFormInterface) => {
     return {
       ...register(type, CHECK_SIGNUP_DATA[type]),
@@ -49,8 +48,9 @@ function SignUpForm() {
   const onSubmit = async (data: SignUpFormInterface) => {
     const { year, month, day, email, name, phoneNumber } = data;
     // console.log({ birth: `${year}-${month}-${day}`, ...rest });
-   await signUp({
+    await signUp({
       email,
+      kakaoId,
       name,
       phoneNumber,
       birth: `${year}-${month}-${day}`,
@@ -109,7 +109,7 @@ function SignUpForm() {
         <ErrorMessage>{dayError}</ErrorMessage>
       </Container>
     );
-  };
+  }
 
   return (
     <SignFormStyle onSubmit={handleSubmit(onSubmit)}>
@@ -120,10 +120,9 @@ function SignUpForm() {
       <SignUpInput {...inputProps("tendency")} />
       <BirthInputForm />
       <SignUpInput {...inputProps("email")} />
-      <SignUpInput {...inputProps("password")} />
       <Button>제출</Button>
     </SignFormStyle>
   );
-};
+}
 
 export default SignUpForm;

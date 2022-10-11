@@ -11,10 +11,8 @@ export const api = createApi({
         url: `/v1/travels/${arg}/schedules`,
         method: "POST",
       }),
-
       onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
         const updateResponse = await queryFulfilled;
-
         dispatch(
           api.util.updateQueryData("getSchedule", arg, (draft) => {
             draft.push(updateResponse);

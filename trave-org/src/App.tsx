@@ -143,7 +143,7 @@ function App() {
         </AdminRoute>
       ),
     },
-    dashboardRoute,
+    ...dashboardRoute,
   ];
   
   const element = useRoutes(routes);

@@ -121,28 +121,28 @@ export const api = createApi({
     /**
      * Schedule Apis
      */
-    createSchedule: builder.mutation<
+    createSchedule: builder.query<
       any,
       {
         travelId: number;
         endTime: "2022-05-23T13:30:07.247Z";
         place: {
-          addressName: string;
-          addressRoadName: string;
-          kakaoMapId: number;
-          phoneNumber: string;
-          placeName: string;
-          placeUrl: string;
-          lat: number;
-          lng: number;
+          addressName: "string";
+          addressRoadName: "string";
+          kakaoMapId: 0;
+          phoneNumber: "string";
+          placeName: "string";
+          placeUrl: "string";
+          x: 0;
+          y: 0;
         };
         startTime: "2022-05-23T13:30:07.247Z";
-        userIds: number[];
+        userIds: [0];
       }
     >({
       query: (arg) => ({
-        url: `/v1/travels/${arg.travelId}/schedules`,
-        method: "POST",
+        url: `/v1/travels${arg.travelId}`,
+        method: "GET",
         body: {
           endTime: arg.endTime,
           place: arg.place,
@@ -150,6 +150,7 @@ export const api = createApi({
           userIds: arg.userIds,
         },
       }),
+      providesTags: (result) => [{ type: "Travel" }],
     }),
   }),
 });
@@ -171,6 +172,7 @@ export const authSlice = createSlice({
       });
   },
 });
+
 export const isLoginSelector = createSelector(
   (state: RootState) => state.auth.token,
   (token) => token !== null
