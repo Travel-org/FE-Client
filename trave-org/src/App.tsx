@@ -9,13 +9,11 @@ import {
 } from "react-router-dom";
 import { ThemeProvider, Global, css } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
-
 import { theme } from "@styles/theme";
 import reset from "@styles/global";
 import PrivateRoute from "@routes/private";
 import PublicRoute from "@routes/public";
 import AdminRoute from "@routes/admin";
-
 import Spinner from "@atoms/spinner";
 import {
   MYPAGE_URL,
@@ -23,19 +21,15 @@ import {
   SIGNUP_URL,
   ADMIN_URL,
   KAKAO_CALLBACK_URL,
-
 } from "@constants/index";
-
-
-
-
 import OAuth2RedirectHandler from "@routes/oauth";
-
 import dashboardRoute from "@pages/dashboard";
-
 import Navigation from "./components/organisms/navigation";
-
 import Invite from "./components/pages/invite";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
+import NewSettlement from "./components/pages/newSettlement";
+import OauthSignUp from "./components/pages/signUp/kakao";
 
 const Main = lazy(() => import("@pages/landingPage"));
 const SignIn = lazy(() => import("@pages/signIn"));
@@ -93,6 +87,10 @@ function App() {
           element: <SignUp />,
         },
         {
+          path: "/signUp/kakao",
+          element: <OauthSignUp />,
+        },
+        {
           path: "schedule",
           element: (
             <PrivateRoute user={user}>
@@ -105,6 +103,14 @@ function App() {
           element: (
             <PrivateRoute user={user}>
               <Settlement />
+            </PrivateRoute>
+          ),
+        },
+        {
+          path: "newSettlement",
+          element: (
+            <PrivateRoute user={user}>
+              <NewSettlement />
             </PrivateRoute>
           ),
         },
