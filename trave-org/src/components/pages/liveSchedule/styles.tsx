@@ -13,8 +13,10 @@ const CancelBtn = styled.div<{ url: string }>`
   position: absolute;
   background: white;
   border-radius: 0px 4px 4px 0px;
-  top: 2rem;
-  right: -2rem;
+  right: -1rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.4rem;
   outline-offset: 1rem;
   box-sizing: border-box;
   display: flex;
@@ -25,8 +27,6 @@ const CancelBtn = styled.div<{ url: string }>`
   :hover {
     opacity: 70%;
   }
-  width: 0.5rem;
-  height: 0.5rem;
   background-size: cover;
   background-position: center;
   background-image: ${({ url }) => `url(${url})`};
