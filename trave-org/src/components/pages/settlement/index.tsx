@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
+import { api } from "@src/app/api";
 import { theme } from "@src/styles/theme";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   Footer,
@@ -25,13 +26,7 @@ const Chip = ({ content, color }: { content: string; color: string }) => {
   );
 };
 
-const SettlementElement = ({
-  chipContent,
-  color,
-  content,
-  userList,
-  price,
-}: any) => {
+const SettlementElement = ({ title, totalAmount, userIds }: any) => {
   return (
     <div
       css={css`
@@ -54,10 +49,18 @@ const SettlementElement = ({
           padding: 0px 1rem;
           justify-content: space-between;
           align-items: center;
+          p {
+            text-align: center;
+            width: 5vw;
+          }
+          p:nth-child(1) {
+            text-align: start;
+            max-width: 10vw;
+            width: 10vw;
+          }
         `}
       >
-        <Chip content={chipContent} color={color} />
-        <p>{content}</p>
+        <p>{title}</p>
         <div
           css={css`
             display: flex;
@@ -77,18 +80,20 @@ const SettlementElement = ({
             }
           `}
         >
-          {userList.map((img) => (
+          {userIds.map((img) => (
             <div />
           ))}
         </div>
-        <p>{price}</p>
+        <p>{totalAmount}</p>
       </div>
     </div>
   );
 };
 
 const Settlement = () => {
+  const { travelId } = useParams<"travelId">();
   const navigate = useNavigate();
+  const { data: costData } = api.useGetCostByTravelIdQuery(travelId!);
   return (
     <>
       <Container>
@@ -103,46 +108,22 @@ const Settlement = () => {
           </div>
         </Header>
         <SettlementElementContainer>
-          <p>2022년 05월 23일</p>
-          {Array.from({ length: 10 }).map((v) => (
-            <SettlementElement
-              {...{
-                chipContent: "생활",
-                color: "green",
-                content: "음료",
-                price: 3000,
-                userList: ["", "", ""],
-              }}
-            />
-          ))}
-          <p>2022년 05월 24일</p>
-          {Array.from({ length: 10 }).map((v) => (
-            <SettlementElement
-              {...{
-                chipContent: "생활",
-                color: "green",
-                content: "음료",
-                price: 3000,
-                userList: ["", "", ""],
-              }}
-            />
-          ))}
-          <p>2022년 05월 25일</p>
-          {Array.from({ length: 5 }).map((v) => (
-            <SettlementElement
-              {...{
-                chipContent: "생활",
-                color: "green",
-                content: "음료",
-                price: 3000,
-                userList: ["", "", ""],
-              }}
-            />
-          ))}
+          {costData !== undefined &&
+            costData.map(({ title, totalAmount, userIds }) => (
+              <SettlementElement
+                {...{
+                  title,
+                  totalAmount,
+                  userIds,
+                }}
+              />
+            ))}
         </SettlementElementContainer>
         <Footer>
           <button>일괄정산</button>
-          <button onClick={() => navigate("/newSettlement")}>추가하기</button>
+          <NavLink to={"/newSettlement/" + travelId}>
+            <button>추가하기</button>
+          </NavLink>
         </Footer>
       </Container>
     </>
