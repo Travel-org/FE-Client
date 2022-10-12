@@ -10,17 +10,11 @@ import {
   useInjectKakaoMapApi,
 } from "react-kakao-maps-sdk";
 import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
-import { KAKAO_API_APPLICATION_JAVASCRIPT_KEY } from "@src/constants";
 
 function TravelSinglePage() {
   const { travelId } = useParams<"travelId">();
   const { data: travelData } = api.useGetTravelQuery(travelId!);
   const [createSchedule, result] = api.useCreateScheduleMutation();
-
-  const { loading, error } = useInjectKakaoMapApi({
-    appkey: KAKAO_API_APPLICATION_JAVASCRIPT_KEY,
-    libraries: ["services"],
-  });
 
   const [map, setMap] = useState<any>();
 
@@ -102,7 +96,7 @@ function TravelSinglePage() {
           create schedule 2
         </button>
       </div>
-      <NavLink to={"/settlement/" + travelId}>
+      <NavLink to={`/settlement/${travelId}`}>
         <div
           css={css`
             background: antiquewhite;
@@ -151,38 +145,37 @@ function TravelSinglePage() {
           <div>일정 수정하기</div>
         </Link>
         {/* FIXME: 현재 라이브러리 문제로 Map 자동 Refresh가 안됨 Optional 처리해야함 */}
-        {!loading && (
-          <Map
-            onCreate={onMapCreated}
-            center={{
-              lat: travelLocations[0].lnglat[1],
-              lng: travelLocations[0].lnglat[0],
-            }}
-            draggable={false}
-            zoomable={false}
-            style={{ height: "30vh" }}
-          >
-            {travelLocations.map((travelLocation) => (
-              <MapMarker // 마커를 생성합니다
-                position={{
-                  // 마커가 표시될 위치입니다
-                  lat: travelLocation.lnglat[1],
-                  lng: travelLocation.lnglat[0],
-                }}
-              >
-                <div>{travelLocation.title}</div>
-              </MapMarker>
-            ))}
+        <Map
+          onCreate={onMapCreated}
+          center={{
+            lat: travelLocations[0].lnglat[1],
+            lng: travelLocations[0].lnglat[0],
+          }}
+          draggable={false}
+          zoomable={false}
+          style={{ height: "30vh" }}
+        >
+          {travelLocations.map((travelLocation) => (
+            <MapMarker // 마커를 생성합니다
+              position={{
+                // 마커가 표시될 위치입니다
+                lat: travelLocation.lnglat[1],
+                lng: travelLocation.lnglat[0],
+              }}
+            >
+              <div>{travelLocation.title}</div>
+            </MapMarker>
+          ))}
 
-            <Polyline
-              path={travelPaths.map((travelPath) => ({
-                lat: travelPath[1],
-                lng: travelPath[0],
-              }))}
-            />
-          </Map>
-        )}
+          <Polyline
+            path={travelPaths.map((travelPath) => ({
+              lat: travelPath[1],
+              lng: travelPath[0],
+            }))}
+          />
+        </Map>
       </div>
+      
       <div
         css={css`
           display: flex;

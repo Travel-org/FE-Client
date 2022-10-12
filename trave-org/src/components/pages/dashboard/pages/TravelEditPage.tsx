@@ -6,7 +6,6 @@ import {
 } from "react-kakao-maps-sdk";
 import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { KAKAO_API_APPLICATION_JAVASCRIPT_KEY } from "@src/constants";
 import DashBoard from "@organisms/dashBoard";
 import InnerDashBoard from "@organisms/dashBoard/inner";
 import { css } from "@emotion/react";
@@ -20,10 +19,6 @@ function TravelEditPage() {
   const { data: travelData } = api.useGetTravelQuery(travelId!);
   const [map, setMap] = useState<any>();
   const [type, setType] = useState<"search" | "recommend">("search");
-  const { loading, error } = useInjectKakaoMapApi({
-    appkey: KAKAO_API_APPLICATION_JAVASCRIPT_KEY,
-    libraries: ["services"],
-  });
   const [routeInfos, setRouteInfos] = useState<any[]>();
 
   useEffect(() => {
@@ -169,8 +164,7 @@ function TravelEditPage() {
           </div>
         )}
       </div>
-      {/* FIXME: 현재 라이브러리 문제로 Map 자동 Refresh가 안됨 Optional 처리해야함 */}
-      {!loading && bounds && (
+      {bounds && (
         <div
           css={css`
             flex-grow: 1;

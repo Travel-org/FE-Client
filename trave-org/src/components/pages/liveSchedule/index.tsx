@@ -12,9 +12,8 @@ import {
   useInjectKakaoMapApi,
 } from "react-kakao-maps-sdk";
 import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
-import { Container } from "./styles";
-import { KAKAO_API_APPLICATION_JAVASCRIPT_KEY } from "@src/constants";
 import LabelBtn from "@src/components/atoms/button/label";
+import { Container } from "./styles";
 
 interface SocketProps {
   status: string;
@@ -26,18 +25,15 @@ declare global {
     kakao: any;
   }
 }
-
 export const Avatar = styled.img`
   object-fit: cover;
   width: 40px;
   height: 40px;
   border-radius: 50%;
 `;
-
 export const AvatarGroup = styled.div`
   display: flex;
 `;
-
 function LiveSchedule() {
   const [innerDashBoardOnOff, setInnerDashBoardOnOff] = useState(false);
   const [roomCode, setRoomCode] = useState("");
@@ -45,28 +41,18 @@ function LiveSchedule() {
   const [map, setMap] = useState<any>();
   const [markers, setMarkers] = useState<any[]>([]);
   const navigate = useNavigate();
-
   const [seletedPosition, setSelectedPosition] = useState<
     { lat: number; lng: number } | undefined
   >(undefined);
-
   function deleteMarker() {
     markers.map((v) => v.setMap(null));
     setMarkers([]);
   }
-
   useEffect(() => {
     console.log(innerDashBoardOnOff);
   }, [innerDashBoardOnOff]);
 
-  const { loading, error } = useInjectKakaoMapApi({
-    appkey: KAKAO_API_APPLICATION_JAVASCRIPT_KEY,
-    libraries: ["services"],
-  });
-
   const bounds = useMemo(() => {
-    if (loading) return undefined;
-
     const latlngbounds = new kakao.maps.LatLngBounds();
 
     travelLocations.forEach((travelLocation) => {
@@ -78,7 +64,7 @@ function LiveSchedule() {
       );
     });
     return latlngbounds;
-  }, [loading]);
+  }, []);
 
   return (
     <Container>
@@ -94,7 +80,7 @@ function LiveSchedule() {
           box-sizing: border-box;
         `}
       >
-               {/* <DashBoard setInnerDashBoardOnOff={setInnerDashBoardOnOff} /> */}
+        {/* <DashBoard setInnerDashBoardOnOff={setInnerDashBoardOnOff} /> */}
         {/* {innerDashBoardOnOff && (
           <InnerDashBoard
             type={type}
@@ -128,57 +114,55 @@ function LiveSchedule() {
           height: 100%;
         `}
       >
-        {!loading && (
-          <>
-            <Map
-              onCreate={(internalKakaoMap) => {
-                setMap(internalKakaoMap);
-                internalKakaoMap.setBounds(bounds!);
-                console.log(internalKakaoMap);
-              }}
-              onClick={(target, mouseEvent) => {
-                const clickedLat = mouseEvent.latLng?.getLat();
-                const clickedLng = mouseEvent.latLng?.getLng();
+        <Map
+          onCreate={(internalKakaoMap) => {
+            setMap(internalKakaoMap);
+            internalKakaoMap.setBounds(bounds!);
+            console.log(internalKakaoMap);
+          }}
+          onClick={(target, mouseEvent) => {
+            const clickedLat = mouseEvent.latLng?.getLat();
+            const clickedLng = mouseEvent.latLng?.getLng();
 
-                if (clickedLat && clickedLng) {
-                  setSelectedPosition({
-                    lat: clickedLat,
-                    lng: clickedLng,
-                  });
-                }
+            if (clickedLat && clickedLng) {
+              setSelectedPosition({
+                lat: clickedLat,
+                lng: clickedLng,
+              });
+            }
+          }}
+          center={{
+            lat: travelLocations[0].lnglat[1],
+            lng: travelLocations[0].lnglat[0],
+          }}
+          style={{ height: "92vh" }}
+        >
+          {seletedPosition && (
+            <MapMarker // 마커를 생성합니다
+              position={seletedPosition}
+            />
+          )}
+
+          {travelLocations.map((travelLocation) => (
+            <MapMarker // 마커를 생성합니다
+              position={{
+                // 마커가 표시될 위치입니다
+                lat: travelLocation.lnglat[1],
+                lng: travelLocation.lnglat[0],
               }}
-              center={{
-                lat: travelLocations[0].lnglat[1],
-                lng: travelLocations[0].lnglat[0],
-              }}
-              style={{ height: "92vh" }}
             >
-              {seletedPosition && (
-                <MapMarker // 마커를 생성합니다
-                  position={seletedPosition}
-                />
-              )}
+              <div>{travelLocation.title}</div>
+            </MapMarker>
+          ))}
 
-              {travelLocations.map((travelLocation) => (
-                <MapMarker // 마커를 생성합니다
-                  position={{
-                    // 마커가 표시될 위치입니다
-                    lat: travelLocation.lnglat[1],
-                    lng: travelLocation.lnglat[0],
-                  }}
-                >
-                  <div>{travelLocation.title}</div>
-                </MapMarker>
-              ))}
-
-              <Polyline
-                path={travelPaths.map((travelPath) => ({
-                  lat: travelPath[1],
-                  lng: travelPath[0],
-                }))}
-              />
-            </Map>
-            {/* {Object.entries(userList)
+          <Polyline
+            path={travelPaths.map((travelPath) => ({
+              lat: travelPath[1],
+              lng: travelPath[0],
+            }))}
+          />
+        </Map>
+        {/* {Object.entries(userList)
               .filter(([k, v]) => k !== socket.id)
               .map(([key, { x, y, rgb }]: any) => (
                 <div
@@ -203,63 +187,60 @@ function LiveSchedule() {
                   </svg>
                 </div>
               ))} */}
-            <div
-              css={css`
-                position: absolute;
-                top: 10px;
-                left: auto;
-                right: 10px;
-                bottom: auto;
-                margin-bottom: auto;
-                margin-left: auto;
-                margin-right: auto;
-                z-index: 1000;
-              `}
-            >
-              <div
-                css={css`
-                  > * {
-                    margin: 5px 5px;
-                  }
-                  > *:first-of-type {
-                    margin-left: 0px;
-                  }
-                  > *:last-of-type {
-                    margin-right: 0px;
-                  }
-                `}
-              >
-                <Avatar
-                  src="https://pbs.twimg.com/profile_images/798463233774350336/KlHqUNgL_400x400.jpg"
-                  style={{
-                    border: "solid",
-                    borderColor: "black",
-                  }}
-                />
-                <Avatar
-                  src="https://pbs.twimg.com/profile_images/798463233774350336/KlHqUNgL_400x400.jpg"
-                  style={{
-                    border: "solid",
-                    borderColor: "blue",
-                  }}
-                />
-                <Avatar
-                  src="https://pbs.twimg.com/profile_images/798463233774350336/KlHqUNgL_400x400.jpg"
-                  style={{
-                    border: "solid",
-                    borderColor: "red",
-                  }}
-                />
-              </div>
-            </div>
-          </>
-        )}
+        <div
+          css={css`
+            position: absolute;
+            top: 10px;
+            left: auto;
+            right: 10px;
+            bottom: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 1000;
+          `}
+        >
+          <div
+            css={css`
+              > * {
+                margin: 5px 5px;
+              }
+              > *:first-of-type {
+                margin-left: 0px;
+              }
+              > *:last-of-type {
+                margin-right: 0px;
+              }
+            `}
+          >
+            <Avatar
+              src="https://pbs.twimg.com/profile_images/798463233774350336/KlHqUNgL_400x400.jpg"
+              style={{
+                border: "solid",
+                borderColor: "black",
+              }}
+            />
+            <Avatar
+              src="https://pbs.twimg.com/profile_images/798463233774350336/KlHqUNgL_400x400.jpg"
+              style={{
+                border: "solid",
+                borderColor: "blue",
+              }}
+            />
+            <Avatar
+              src="https://pbs.twimg.com/profile_images/798463233774350336/KlHqUNgL_400x400.jpg"
+              style={{
+                border: "solid",
+                borderColor: "red",
+              }}
+            />
+          </div>
+        </div>
       </div>
     </Container>
   );
 }
 export default LiveSchedule;
-
 // const handleLeaveRoom = () => {
 //   socket.emit("LEAVE_ROOM", roomCode, ({ status, message }: SocketProps) => {
 //     console.log(message);
@@ -268,7 +249,6 @@ export default LiveSchedule;
 //     }
 //   });
 // };
-
 // useEffect(() => {
 //   socket.on("CLIENT_MOVE", (data: any) => {
 //     setUserList(data);
@@ -280,7 +260,6 @@ export default LiveSchedule;
 //     });
 //   });
 // }, []);
-
 // useEffect(() => {
 //   socket.connect();
 //   socket.emit("CREATE_ROOM", ({ status, message, code }: SocketProps) => {
@@ -288,7 +267,6 @@ export default LiveSchedule;
 //     console.log(message, code);
 //   });
 // }, []);
-
 // useEffect(() => {
 //   if (roomCode === "") return;
 //   socket.emit("JOIN_ROOM", roomCode, ({ status, message }: SocketProps) => {
