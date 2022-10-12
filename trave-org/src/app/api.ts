@@ -289,6 +289,66 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+     /**
+     * Friends Apis
+     */
+      getFriends: builder.query<
+      {
+        profilePath: string;
+        userId: number;
+        userName: string;
+      }[],
+      void
+    >({
+      query: () => ({
+        url: USER_BASE_URL + `/friends`,
+        method: "GET",
+      }),
+    }),
+    getGivenRequests: builder.query<
+      {
+        profilePath: string;
+        userId: number;
+        userName: string;
+      }[],
+      void
+    >({
+      query: () => ({
+        url: USER_BASE_URL + `/friends/given-requests`,
+        method: "GET",
+      }),
+    }),
+    getGivingRequests: builder.query<
+      {
+        profilePath: string;
+        userId: number;
+        userName: string;
+      }[],
+      void
+    >({
+      query: () => ({
+        url: USER_BASE_URL + `/friends/giving-requests`,
+        method: "GET",
+      }),
+    }),
+    deleteFriends: builder.mutation<void, number>({
+      query: (targetId) => ({
+        url: USER_BASE_URL + `/friends/${targetId}`,
+        method: "DELETE",
+      }),
+    }),
+    acceptFriendsRequest: builder.mutation<void, number>({
+      query: (targetId) => ({
+        url: USER_BASE_URL + `/friends/request/${targetId}`,
+        method: "POST",
+      }),
+    }),
+    rejectFriendsRequest: builder.mutation<void, number>({
+      query: (targetId) => ({
+        url: USER_BASE_URL + `/friends/request/${targetId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
