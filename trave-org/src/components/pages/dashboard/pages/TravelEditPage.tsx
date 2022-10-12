@@ -76,7 +76,7 @@ function TravelEditPage() {
         flex-direction: row;
       `}
     >
-        <div
+      <div
         css={css`
           display: flex;
           flex-direction: row;
@@ -84,19 +84,12 @@ function TravelEditPage() {
         `}
       >
         <DashBoard
+          map={map}
           travelId={travelId}
+          setMarkers={setMarkers}
+          deleteMarker={deleteMarker}
           setInnerDashBoardOnOff={setInnerDashBoardOnOff}
         />
-        {innerDashBoardOnOff && (
-          <InnerDashBoard
-            travelData={travelData}
-            type={type}
-            map={map}
-            setMarkers={setMarkers}
-            deleteMarker={deleteMarker}
-          />
-        )}
-
         {innerDashBoardOnOff && (
           <div
             css={css`

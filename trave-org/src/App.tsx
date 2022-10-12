@@ -35,7 +35,6 @@ const Main = lazy(() => import("@pages/landingPage"));
 const SignIn = lazy(() => import("@pages/signIn"));
 const SignUp = lazy(() => import("@pages/signUp"));
 const Admin = lazy(() => import("@pages/admin"));
-const Schedule = lazy(() => import("@pages/schedule"));
 const NewSchedule = lazy(() => import("@pages/newSchedule"));
 const Settlement = lazy(() => import("@pages/settlement"));
 const LiveSchedule = lazy(() => import("@pages/liveSchedule"));
@@ -89,14 +88,6 @@ function App() {
         {
           path: "/signUp/kakao",
           element: <OauthSignUp />,
-        },
-        {
-          path: "schedule",
-          element: (
-            <PrivateRoute user={user}>
-              <Schedule />
-            </PrivateRoute>
-          ),
         },
         {
           path: "settlement/:travelId",
