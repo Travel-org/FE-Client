@@ -203,6 +203,31 @@ export const api = createApi({
       }),
       // providesTags: ["schedule"],
     }),
+    updateSchedule: builder.mutation<
+      any,
+      {
+        endTime: "2022-05-26T14:49:48.223Z";
+        startTime: "2022-05-26T14:49:48.223Z";
+        userIds: number[];
+        place: {
+          addressName: string;
+          addressRoadName: string;
+          kakaoMapId: number;
+          lat: number;
+          lng: number;
+          phoneNumber: string;
+          placeName: string;
+          placeUrl: string;
+        };
+        travelId: string;
+        scheduleId: string;
+      }
+    >({
+      query: (arg) => ({
+        url: TRAVEL_BASE_URL + `/${arg.travelId}​/schedules​/${arg.scheduleId}`,
+        method: "PUT",
+      }),
+    }),
     /**
      * Cost Apis
      */
