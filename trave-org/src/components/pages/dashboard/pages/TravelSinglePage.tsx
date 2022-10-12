@@ -60,8 +60,8 @@ function TravelSinglePage() {
                 placeName: "남산타워",
                 addressName: "address",
                 addressRoadName: "aa",
-                lat: 126.98822659999999,
-                lng: 37.5511694,
+                lat: 37.5511694,
+                lng: 126.98822659999999,
                 kakaoMapId: 1,
                 phoneNumber: "000",
               },
@@ -82,8 +82,8 @@ function TravelSinglePage() {
                 placeName: "강남역",
                 addressName: "address",
                 addressRoadName: "aa",
-                lat: 127.0116218,
-                lng: 37.4789929,
+                lat: 37.4789929,
+                lng: 127.0116218,
                 kakaoMapId: 2,
                 phoneNumber: "000",
               },
@@ -94,6 +94,28 @@ function TravelSinglePage() {
           }
         >
           create schedule 2
+        </button>
+        <button
+          onClick={() =>
+            createSchedule({
+              travelId: parseInt(travelId!),
+              place: {
+                placeUrl: "",
+                placeName: "양재역",
+                addressName: "address",
+                addressRoadName: "서울 강남구 도곡동 958-3",
+                lat: 37.484721724747196,
+                lng: 127.03467752208076,
+                kakaoMapId: 3,
+                phoneNumber: "000",
+              },
+              userIds: [1],
+              endTime: "2022-05-23T13:30:07.247Z",
+              startTime: "2022-05-23T13:30:07.247Z",
+            })
+          }
+        >
+          create schedule 3
         </button>
       </div>
       <NavLink to={`/settlement/${travelId}`}>
@@ -175,7 +197,7 @@ function TravelSinglePage() {
           />
         </Map>
       </div>
-      
+
       <div
         css={css`
           display: flex;
