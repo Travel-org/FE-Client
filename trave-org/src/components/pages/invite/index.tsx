@@ -5,7 +5,7 @@ const Invite = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const handleRedirect = () => {
-    navigate("/liveSchedule", { state: { id } });
+    navigate("/dashboard/travels");
   };
   return (
     <Container direction="column">

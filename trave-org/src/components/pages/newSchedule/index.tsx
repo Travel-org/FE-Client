@@ -56,7 +56,7 @@ function NewSchedule() {
   }, [params]);
 
   useEffect(() => {
-    if (data !== undefined) navigate("/liveSchedule/" + data);
+    if (data !== undefined) navigate("/dashboard/travels");
   }, [data]);
 
   return (
