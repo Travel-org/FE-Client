@@ -30,6 +30,7 @@ function TravelEditPage() {
       return;
     }
 
+    console.log(travelData);
     async function getRoute(origLat, origLng, destLat, destLng) {
       const routeResponse = await axios.get(
         "http://123.214.75.32:18080/ors/v2/directions/driving-car",

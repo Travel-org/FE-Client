@@ -2,8 +2,9 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"; // 
 import ScheduleBoard from "@atoms/scheduleBoard";
 import { useEffect, useState } from "react";
 import { travelLocations } from "@pages/liveSchedule/dummyData";
-import { DashBaordStyle, ScheduleContainer, AddButton } from "./styles";
 import { api } from "@src/app/api";
+import { useAppDispatch } from "@src/app/hooks";
+import { DashBaordStyle, ScheduleContainer, AddButton } from "./styles";
 
 interface Props {
   map: any;
@@ -13,25 +14,34 @@ interface Props {
   setInnerDashBoardOnOff: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DashBoard = ({
+function DashBoard({
   map,
   travelId,
   setMarkers,
   deleteMarker,
   setInnerDashBoardOnOff,
-}: Props) => {
+}: Props) {
+  const dispatch = useAppDispatch();
+
+  const { data: travelData } = api.useGetTravelQuery(travelId!);
   const { data, isLoading, error } = api.useGetScheduleQuery(travelId!);
-  const [form, setForm] = useState(travelLocations);
+
   function handleOnDragEnd(result: any) {
     if (!result.destination) {
       return;
     }
-    const currentList = [...form];
     const draggingItemIndex = result.source.index;
     const dropItemIndex = result.destination.index;
-    const removeForm = currentList.splice(draggingItemIndex, 1);
-    currentList.splice(dropItemIndex, 0, removeForm[0]);
-    setForm(currentList);
+
+    console.log("from", draggingItemIndex);
+    console.log("to", dropItemIndex);
+
+    dispatch(
+      api.util.updateQueryData("getTravel", travelId!, (draft) => {
+        const removeForm = draft.schedules.splice(draggingItemIndex, 1);
+        draft.schedules.splice(dropItemIndex, 0, removeForm[0]);
+      })
+    );
   }
 
   useEffect(() => {
@@ -71,9 +81,9 @@ const DashBoard = ({
           <Droppable droppableId="droppable">
             {(provided) => (
               <div ref={provided.innerRef}>
-                {data !== undefined &&
-                  data.map(({ place }, index) => (
-                    <Draggable index={index} draggableId={`${index}`}>
+               {travelData !== undefined &&
+                  travelData.schedules.map(({ place, scheduleId }, index) => (
+                    <Draggable key={scheduleId} index={index} draggableId={`${scheduleId}`}>
                       {(providedInner) => (
                         <div
                           ref={providedInner.innerRef}
@@ -82,7 +92,7 @@ const DashBoard = ({
                         >
                           <ScheduleBoard
                             title={place.placeName}
-                            description={""}
+                            description=""
                           />
                         </div>
                       )}
