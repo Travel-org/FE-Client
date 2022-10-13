@@ -10,6 +10,8 @@ import {
   useInjectKakaoMapApi,
 } from "react-kakao-maps-sdk";
 import { travelLocations, travelPaths } from "@pages/liveSchedule/dummyData";
+import { BiCar, BiWalk } from "react-icons/bi";
+import ListProto from "@pages/dashboard/components/timeline/ListProto";
 
 function TravelSinglePage() {
   const { travelId } = useParams<"travelId">();

@@ -242,8 +242,5 @@ function FriendsPage() {
     </div>
   );
 }
-    </div>
-  );
-}
 
 export default FriendsPage;

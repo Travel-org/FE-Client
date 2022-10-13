@@ -24,9 +24,9 @@ import {
 } from "@constants/index";
 import OAuth2RedirectHandler from "@routes/oauth";
 import dashboardRoute from "@pages/dashboard";
+import { Provider } from "react-redux";
 import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
-import { Provider } from "react-redux";
 import { store } from "./app/store";
 import NewSettlement from "./components/pages/newSettlement";
 import OauthSignUp from "./components/pages/signUp/kakao";
