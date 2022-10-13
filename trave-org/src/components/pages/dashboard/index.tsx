@@ -24,6 +24,8 @@ import FeedPage from "@pages/dashboard/pages/FeedPage";
 import EventPage from "@pages/dashboard/pages/EventPage";
 import NoticePage from "@pages/dashboard/pages/NoticePage";
 import TravelEditPage from "@pages/dashboard/pages/TravelEditPage";
+import Modal from "@src/components/modal";
+import CreateTravelModal from "@pages/dashboard/CreateTravelModal";
 
 const LLink = styled(Link)`
   text-decoration: none;
@@ -69,7 +71,6 @@ function SideBarMenu({ toPath, children }: { toPath: string; children: any }) {
         <div
           css={css`
             padding: 10px 24px;
-            z-index: 1000;
             display: flex;
             align-items: center;
             font-weight: 600;
@@ -250,6 +251,12 @@ const dashboardRoute: BreadcrumbsRoute<string>[] = [
         path: "travels",
         element: <TravelListPage />,
         breadcrumb: "여행",
+        children: [
+          {
+            path: "add",
+            element: <CreateTravelModal/>,
+          },
+        ],
       },
       {
         path: "travels/:travelId",

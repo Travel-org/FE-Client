@@ -32,10 +32,14 @@ function ListProtoItem({
   index,
   name,
   address,
+  startTime,
+  endTime
 }: {
   index: number;
   name: string;
   address: string;
+  startTime: string;
+  endTime: string;
 }) {
   return (
     <div
@@ -87,14 +91,14 @@ function ListProtoItem({
             top: 0;
           `}
         >
-          10:00
+          {startTime}
         </span>
         <span
           css={css`
             top: 100%;
           `}
         >
-          10:00
+         {endTime}
         </span>
       </span>
       <div
@@ -202,7 +206,7 @@ function ListProto({
                 )}
               </div>
             )}
-            <ListProtoItem index={i} name={item.name} address={item.address} />
+            <ListProtoItem index={i} name={item.name} address={item.address} startTime={"10:00"} endTime={"12:00"}/>
           </Reorder.Item>
         ))}
       </Reorder.Group>

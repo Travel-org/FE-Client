@@ -202,16 +202,8 @@ function Content() {
 //     // </Container>
 //   );
 // };
-interface Props {
-  setUser: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Main({ setUser }: Props) {
+function Main() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setUser(!!Cookies.get("SESSION"));
-  }, []);
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const title = e.target.title.value;

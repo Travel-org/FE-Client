@@ -199,20 +199,6 @@ function TravelSinglePage() {
           />
         </Map>
       </div>
-
-      <div
-        css={css`
-          display: flex;
-          flex-direction: column;
-          background: lightgrey;
-          height: 700px;
-        `}
-      >
-        {travelData &&
-           travelData.schedules.map((schedule) => (
-            <div>{schedule.place.placeName}</div>
-          ))}
-      </div>
     </div>
   );
 }

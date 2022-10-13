@@ -17,5 +17,8 @@ module.exports = {
     rules: {
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/no-unused-vars": "warn",
+        "react/function-component-definition": [2, { "namedComponents": "arrow-function" }],
+        "object-shorthand": ["error", "never"],
+        "no-param-reassign": "off"
     }
 }
