@@ -315,7 +315,7 @@ export const api = createApi({
      */
      sendEmail: builder.mutation<void, string>({
       query: (targetEmail) => ({
-        url: `${USER_BASE_URL}/friends`,
+        url: `${USER_BASE_URL}/friends/${targetEmail}`,
         method: "POST",
       }),
     }),

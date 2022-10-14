@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function Navigation({ user }: Props) {
+const Navigation = ({ user }: Props) => {
   const navigate = useNavigate();
   const currentUser = useAppSelector(isLoginSelector);
   const [logout] = api.useLogoutMutation();
@@ -72,7 +72,7 @@ function Navigation({ user }: Props) {
         `}
       />
     </>
-  )
+  );
 };
 
 

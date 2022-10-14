@@ -1,8 +1,4 @@
-import {
-  Map,
-  MapMarker,
-  Polyline,
-} from "react-kakao-maps-sdk";
+import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
 import { travelLocations } from "@pages/liveSchedule/dummyData";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import InnerDashBoard from "@organisms/dashBoard/inner";
@@ -13,7 +9,7 @@ import { api } from "@src/app/api";
 import axios from "axios";
 
 import ListProto from "@pages/dashboard/components/timeline/ListProto";
-import SplitBill from "@pages/dashboard/components/timeline/SplitBill"; 
+import SplitBill from "@pages/dashboard/components/timeline/SplitBill";
 import CreateTravelDateModal from "@pages/dashboard/CreateTravelDateModal";
 
 const TravelEditPage = () => {
@@ -22,7 +18,7 @@ const TravelEditPage = () => {
   const [map, setMap] = useState<any>();
   const [type, setType] = useState<"search" | "recommend">("search");
 
- const [selectedDate] = useState<null | string>(null);
+  const [selectedDate] = useState<null | string>(null);
 
   const selectedDateSchedules = useMemo(() => {
     if (!travelData || !selectedDate) return [];
@@ -42,7 +38,7 @@ const TravelEditPage = () => {
     { name: "양재역", address: "서울특별시 서초구" },
   ]);
 
-   /**
+  /**
    * Update Route Info Data
    */
   const [routeInfos, setRouteInfos] = useState<any[]>();
@@ -99,7 +95,10 @@ const TravelEditPage = () => {
     { lat: number; lng: number } | undefined
   >(undefined);
   const bounds = useMemo(() => {
-   if (!travelData) return undefined;
+    if (selectedDateSchedules.length === 0) {
+      return undefined;
+    }
+
     const latlngbounds = new kakao.maps.LatLngBounds();
     selectedDateSchedules.forEach((travelLocation) => {
       latlngbounds.extend(
@@ -110,17 +109,14 @@ const TravelEditPage = () => {
       );
     });
     return latlngbounds;
-  }, [travelData]);
-
-  useEffect(() => {
-    if (map && bounds) {
-      map.setBounds(bounds);
-    }
-  }, [map, bounds]);
+  }, [selectedDateSchedules]);
 
   const onMapCreated = useCallback(
     (internalKakaoMap) => {
       setMap(internalKakaoMap);
+      if (bounds) {
+        internalKakaoMap.setBounds(bounds);
+      }
     },
     [bounds]
   );
@@ -152,6 +148,9 @@ const TravelEditPage = () => {
     setCreateDateModalOpened(false);
   }, []);
 
+  const [createSplitBillModalOpened, setCreateSplitBillModalOpened] =
+    useState(false);
+
   if (!travelData) {
     return <div>Loading...</div>;
   }
@@ -159,6 +158,7 @@ const TravelEditPage = () => {
   return (
     <div
       css={css`
+        height: 100%;
         display: flex;
         flex-direction: row;
       `}
@@ -186,12 +186,14 @@ const TravelEditPage = () => {
           )}
 
           {travelData.dates.map((dateData) => (
-            <div>
-              <input type="radio" value="Day 1" />
+            <div key={dateData.date}>
+              <input type="radio" value={dateData.date} />
               <label>{dateData.date}</label>
             </div>
           ))}
         </div>
+        <div>{travelData.title}</div>
+        <div>{travelData.users.map((user) => user.userName)}</div>
         <SplitBill />
         <ListProto data={tempData} updateData={setTempData} />
       </div>
@@ -202,7 +204,7 @@ const TravelEditPage = () => {
           position: relative;
         `}
       >
-         {/* <DashBoard */}
+        {/* <DashBoard */}
         {/*  map={map} */}
         {/*  travelId={travelId} */}
         {/*  setMarkers={setMarkers} */}
@@ -241,52 +243,51 @@ const TravelEditPage = () => {
           </div>
         )}
       </div>
-      {bounds && (
-        <div
-          css={css`
-            flex-grow: 1;
-          `}
-        >
-          <Map
-            onCreate={onMapCreated}
-            onClick={onMapClicked}
-            center={{
-              lat: travelLocations[0].lnglat[1],
-              lng: travelLocations[0].lnglat[0],
-            }}
-            style={{ width: "100%", height: "100%" }}
-          >
-            {seletedPosition && (
-              <MapMarker // 마커를 생성합니다
-                position={seletedPosition}
-              />
-            )}
 
-            {selectedDateSchedules.map((schedule) => (
-              <MapMarker // 마커를 생성합니다
-                position={{
-                  // 마커가 표시될 위치입니다
-                  lat: schedule.place.lat,
-                  lng: schedule.place.lng,
-                }}
-              >
-                <div>{schedule.place.placeName}</div>
-              </MapMarker>
+      <div
+        css={css`
+          flex-grow: 1;
+        `}
+      >
+        <Map
+          onCreate={onMapCreated}
+          onClick={onMapClicked}
+          center={{
+            lat: travelLocations[0].lnglat[1],
+            lng: travelLocations[0].lnglat[0],
+          }}
+          style={{ width: "100%", height: "100%" }}
+        >
+          {seletedPosition && (
+            <MapMarker // 마커를 생성합니다
+              position={seletedPosition}
+            />
+          )}
+
+          {selectedDateSchedules.map((schedule) => (
+            <MapMarker // 마커를 생성합니다
+              position={{
+                // 마커가 표시될 위치입니다
+                lat: schedule.place.lat,
+                lng: schedule.place.lng,
+              }}
+            >
+              <div>{schedule.place.placeName}</div>
+            </MapMarker>
+          ))}
+
+          {routeInfos &&
+            routeInfos.map((routeInfo) => (
+              <Polyline
+                path={routeInfo.path.map(([lng, lat]) => ({
+                  lat: lat,
+                  lng: lng,
+                }))}
+              />
             ))}
-            {routeInfos &&
-              routeInfos.map((routeInfo) => (
-                <Polyline
-                  path={routeInfo.path.map(([lng, lat]) => ({
-                    lat: lat,
-                    lng: lng,
-                  }))}
-                />
-              ))}
-          </Map>
-        </div>
-      )}
+        </Map>
+      </div>
     </div>
   );
 };
-
 export default TravelEditPage;

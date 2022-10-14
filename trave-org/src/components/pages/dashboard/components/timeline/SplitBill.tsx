@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { api } from "@src/app/api";
 
 function stringToColor(str) {
   let hash = 0;
@@ -15,7 +16,7 @@ function stringToColor(str) {
   return colour;
 }
 
-function TextAvatar({ name }: { name: string }) {
+const TextAvatar = ({ name }: { name: string }) => {
   return (
     <div
       css={css`
@@ -36,10 +37,14 @@ function TextAvatar({ name }: { name: string }) {
       {name.substring(0, 1)}
     </div>
   );
-}
-function SplitBill() {
+};
+const SplitBill = () => {
+  const [createCost] = api.useCreateCostMutation();
+
   const [isExpand, setIsExpand] = useState(false);
 
+  const [amount] = useState(10000);
+  const [val, setVal] = useState(10000);
   return (
     <div
       css={css`
@@ -48,6 +53,25 @@ function SplitBill() {
         flex-direction: column;
       `}
     >
+       <button onClick={() => createCost({travelId: travelId, title: "test", content: "", amountsPerUser: [{}]})}>create</button>
+      <input
+        type="range"
+        step={1}
+        max={amount}
+        value={val}
+        onChange={(e) => {
+          setVal(e.target.value as unknown as number);
+        }}
+      />
+      <input
+        type="number"
+        value={val}
+        onChange={(e) => {
+          setVal(e.target.value as unknown as number);
+        }}
+      />
+      <input type="range" step={1} max={amount} />
+      <input type="range" step={1} max={amount} />
       <div
         onClick={() => setIsExpand(!isExpand)}
         css={css`
@@ -69,7 +93,6 @@ function SplitBill() {
           <div>CU 우만파크점</div>
           <div>24,000 원</div>
         </div>
-
         <div
           css={css`
             display: flex;
