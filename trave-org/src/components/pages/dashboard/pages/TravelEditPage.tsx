@@ -7,16 +7,16 @@ import LabelBtn from "@src/components/atoms/button/label";
 import { useParams } from "react-router-dom";
 import { api } from "@src/app/api";
 import axios from "axios";
-
 import ListProto from "@pages/dashboard/components/timeline/ListProto";
 import SplitBill from "@pages/dashboard/components/timeline/SplitBill";
 import CreateTravelDateModal from "@pages/dashboard/CreateTravelDateModal";
 import { Avartar } from "@src/components/organisms/scheduleElement/styles";
 import styled from "@emotion/styled";
+import { useAppDispatch } from "@src/app/hooks";
 
 const BtnWarpper = styled.div`
   width: 100%;
-  background: #ababab;
+  background: #e8e8e8;
 `;
 
 const Button = styled.button<{ state: boolean }>`
@@ -34,34 +34,29 @@ const TravelEditPage = () => {
   const [type, setType] = useState<"schedule" | "image" | "settlement">(
     "schedule"
   );
+  const dispatch = useAppDispatch();
   const { travelId } = useParams<"travelId">();
   const { data: travelData } = api.useGetTravelQuery(travelId!);
   const [map, setMap] = useState<any>();
-  const [selectedDate] = useState<null | string>(null);
+
+  const [selectedDate, setSelectedDate] = useState<null | string>(null);
 
   const selectedDateSchedules = useMemo(() => {
     if (!travelData || !selectedDate) return [];
 
     const selectedDateData = travelData.dates.find(
-      (date) => date.date !== selectedDate
+      (date) => date.date === selectedDate
     );
 
     if (!selectedDateData) return [];
 
     return selectedDateData.schedules;
-  }, [travelData]);
-
-  const [tempData, setTempData] = useState([
-    { name: "N서울타워", address: "서울특별시 용산구 남산공원길 105" },
-    { name: "강남역", address: "서울특별시 강남구" },
-    { name: "양재역", address: "서울특별시 서초구" },
-  ]);
+  }, [travelData, selectedDate]);
 
   /**
    * Update Route Info Data
    */
   const [routeInfos, setRouteInfos] = useState<any[]>();
-
   useEffect(() => {
     if (!travelData) {
       return;
@@ -119,6 +114,7 @@ const TravelEditPage = () => {
     }
 
     const latlngbounds = new kakao.maps.LatLngBounds();
+
     selectedDateSchedules.forEach((travelLocation) => {
       latlngbounds.extend(
         new kakao.maps.LatLng(
@@ -127,21 +123,25 @@ const TravelEditPage = () => {
         )
       );
     });
+
     return latlngbounds;
   }, [selectedDateSchedules]);
 
   const onMapCreated = useCallback(
     (internalKakaoMap) => {
       setMap(internalKakaoMap);
+
       if (bounds) {
         internalKakaoMap.setBounds(bounds);
       }
     },
     [bounds]
   );
+
   const onMapClicked = useCallback((mouseEvent) => {
     const clickedLat = mouseEvent.latLng?.getLat();
     const clickedLng = mouseEvent.latLng?.getLng();
+
     if (clickedLat && clickedLng) {
       setSelectedPosition({
         lat: clickedLat,
@@ -156,19 +156,30 @@ const TravelEditPage = () => {
     markers.map((v) => v.setMap(null));
     setMarkers([]);
   }
+
   const [createDateModalOpened, setCreateDateModalOpened] = useState(false);
+
   const openCreateDateModal = useCallback(() => {
     setCreateDateModalOpened(true);
   }, []);
+
   const closeCreateDateModal = useCallback(() => {
     setCreateDateModalOpened(false);
   }, []);
+
+   const [createSplitBillModalOpened, setCreateSplitBillModalOpened] =
+    useState(false);
+    const [createSchedule, result] = api.useCreateScheduleMutation();
+
   if (!travelData) {
     return <div>Loading...</div>;
   }
+
   return (
     <div
       css={css`
+        height: 100%;
+
         display: flex;
         flex-direction: row;
       `}
@@ -177,6 +188,7 @@ const TravelEditPage = () => {
         css={css`
           display: flex;
           flex-direction: column;
+
           background: white;
         `}
       >
@@ -185,7 +197,7 @@ const TravelEditPage = () => {
             padding: 2rem;
             display: flex;
             flex-direction: column;
-            background: #ababab;
+            background: #e8e8e8;
           `}
         >
           <h3>여행 제목입니다!</h3>
@@ -232,17 +244,80 @@ const TravelEditPage = () => {
               onSuccess={closeCreateDateModal}
             />
           )}
+        </div>
+        <div>{travelData.title}</div>
+        <div>{travelData.users.map((user) => user.userName)}</div>
+        <button
+          onClick={() =>
+            createSchedule({
+              travelId: parseInt(travelId!),
+              date: "2022-05-09",
+              place: {
+                placeUrl: "",
+                placeName: "222222",
+                addressName: "address",
+                addressRoadName: "aa",
+                lat: 37.5511694,
+                lng: 126.98822659999999,
+                kakaoMapId: 2,
+                phoneNumber: "000",
+              },
+              userIds: [1],
+              endTime: "13:30:07",
+              startTime: "13:30:07",
+            })
+          }
+        >
+          create schedule 1
+        </button>
+        <button
+          onClick={() =>
+            createSchedule({
+              travelId: parseInt(travelId!),
+              date: "2022-05-09",
+              place: {
+                placeUrl: "",
+                placeName: "3333",
+                addressName: "address",
+                addressRoadName: "aa",
+                lat: 37.5511694,
+                lng: 126.98822659999999,
+                kakaoMapId: 3,
+                phoneNumber: "000",
+              },
+              userIds: [1],
+              endTime: "13:30:07",
+              startTime: "13:30:07",
+            })
+          }
+        >
+          create schedule 2
+        </button>
+        <div>
           {travelData.dates.map((dateData) => (
-            <div>
-              <input type="radio" value="Day 1" />
-              <label>{dateData.date}</label>
-            </div>
+            <button
+              key={dateData.date}
+              onClick={(e) => {
+                setSelectedDate(dateData.date);
+              }}
+            >
+              {dateData.date}
+            </button>
           ))}
         </div>
+
+        <ListProto
+          data={selectedDateSchedules}
+          updateData={(updatedData) => {
+            console.log("Outer Update Data", updatedData);
+            dispatch(
+              api.util.updateQueryData("getTravel", travelId!, (draft) => {
+                draft.dates.find((date) => date.date === selectedDate)!.schedules = updatedData;
+              })
+            );
+          }}
+        />
         <SplitBill />
-	
-        <SplitBill />
-        <ListProto data={tempData} updateData={setTempData} />
       </div>
       <div
         css={css`
@@ -267,6 +342,7 @@ const TravelEditPage = () => {
             deleteMarker={deleteMarker}
           />
         )}
+
         {innerDashBoardOnOff && (
           <div
             css={css`
@@ -337,4 +413,5 @@ const TravelEditPage = () => {
     </div>
   );
 };
+
 export default TravelEditPage;

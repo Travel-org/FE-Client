@@ -3,7 +3,7 @@ import { BiCar, BiWalk } from "react-icons/bi";
 import React, { useEffect, useState } from "react";
 import { Reorder, motion } from "framer-motion";
 
-function Marker({ children }: { children: any }) {
+const Marker = ({ children }: { children: any }) => {
   return (
     <div
       css={css`
@@ -27,20 +27,20 @@ function Marker({ children }: { children: any }) {
       </span>
     </div>
   );
-}
-function ListProtoItem({
+};
+const ListProtoItem = ({
   index,
   name,
   address,
   startTime,
-  endTime
+  endTime,
 }: {
   index: number;
   name: string;
   address: string;
   startTime: string;
   endTime: string;
-}) {
+}) => {
   return (
     <div
       css={css`
@@ -131,22 +131,43 @@ function ListProtoItem({
       </div>
     </div>
   );
-}
+};
 
-function ListProto({
-  data,
+const ListProto = ({
+  data: outerData,
   updateData,
 }: {
   data: any[];
   updateData: (newData: any) => void;
-}) {
-  const [isGrabbed, setIsGrabbed] = useState(false);
-
-  const [internalData, setInternalData] = useState(data);
+}) => {
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchResult, setSearchResult] =
+    useState<kakao.maps.services.PlacesSearchResult>();
 
   useEffect(() => {
-    setInternalData(data);
-  }, [data]);
+    if (searchKeyword === "") {
+      setSearchResult(undefined);
+    }
+
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(searchKeyword, (data, status, _pagination) => {
+      if (status === kakao.maps.services.Status.OK) {
+        setSearchResult(data);
+      }
+    });
+  }, [searchKeyword]);
+  const [isGrabbed, setIsGrabbed] = useState(false);
+
+  const [internalData, setInternalData] = useState(outerData);
+
+  useEffect(() => {
+    console.log("Internal Updated");
+  }, [internalData]);
+
+  useEffect(() => {
+    console.log("Outer Updated", outerData);
+    setInternalData(outerData);
+  }, [outerData]);
 
   return (
     <div
@@ -181,7 +202,7 @@ function ListProto({
       >
         {internalData.map((item, i) => (
           <Reorder.Item
-            key={item.name}
+           key={item.scheduleId}
             value={item}
             onDragStart={() => setIsGrabbed(true)}
             onDragEnd={() => {
@@ -206,12 +227,37 @@ function ListProto({
                 )}
               </div>
             )}
-            <ListProtoItem index={i} name={item.name} address={item.address} startTime={"10:00"} endTime={"12:00"}/>
+              <ListProtoItem
+              index={i}
+              name={item.place.placeName}
+              address={item.place.address_name}
+              startTime="10:00"
+              endTime="12:00"
+            />
           </Reorder.Item>
         ))}
+         <div
+          css={css`
+            margin-left: 30px;
+            margin-top: 10px;
+          `}
+        >
+          <input
+            type="text"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+          />
+
+          <div>
+            {searchResult &&
+              searchResult.map((result) => {
+                return <div>{result.place_name}</div>;
+              })}
+          </div>
+        </div>
       </Reorder.Group>
     </div>
   );
-}
+};
 
 export default ListProto;

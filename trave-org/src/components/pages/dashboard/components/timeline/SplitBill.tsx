@@ -45,36 +45,36 @@ const SplitBill = () => {
 
   const [amount] = useState(10000);
   const [val, setVal] = useState(10000);
-  return (
-    <div
-      css={css`
-        height: 500px;
-        display: flex;
-        flex-direction: column;
-      `}
-    >
-       <button onClick={() => createCost({travelId: travelId, title: "test", content: "", amountsPerUser: [{}]})}>create</button>
-      <input
-        type="range"
-        step={1}
-        max={amount}
-        value={val}
-        onChange={(e) => {
-          setVal(e.target.value as unknown as number);
-        }}
-      />
-      <input
-        type="number"
-        value={val}
-        onChange={(e) => {
-          setVal(e.target.value as unknown as number);
-        }}
-      />
-      <input type="range" step={1} max={amount} />
-      <input type="range" step={1} max={amount} />
+    return (
       <div
-        onClick={() => setIsExpand(!isExpand)}
         css={css`
+          height: 500px;
+          display: flex;
+          flex-direction: column;
+        `}
+      >
+        <button onClick={() => createCost({travelId: travelId, title: "test", content: "", amountsPerUser: [{}]})}>create</button>
+        <input
+          type="range"
+          step={1}
+          max={amount}
+          value={val}
+          onChange={(e) => {
+            setVal(e.target.value as unknown as number);
+          }}
+        />
+        <input
+          type="number"
+          value={val}
+          onChange={(e) => {
+            setVal(e.target.value as unknown as number);
+          }}
+        />
+        <input type="range" step={1} max={amount} />
+        <input type="range" step={1} max={amount} />
+        <div
+          onClick={() => setIsExpand(!isExpand)}
+          css={css`
           display: flex;
           flex-direction: row;
           align-items: center;

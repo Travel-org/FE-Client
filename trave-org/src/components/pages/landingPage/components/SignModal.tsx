@@ -7,30 +7,17 @@ import produce from "immer";
 import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 
-interface ICreateTravelModalProps {
+interface ISignInModalProps {
   onClose: () => void;
   onSuccess: () => void;
 }
 
-const formatDate = (date: Date) => {
-  let month = (date.getMonth() + 1).toString();
-  let day = date.getDate().toString();
-  const year = date.getFullYear();
-  if (month.length < 2) {
-    month = `0${month}`;
-  }
-  if (day.length < 2) {
-    day = `0${day}`;
-  }
-  return [year, month, day].join("-");
-};
-
-const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
+const CreateTravelModal: React.FC<ISignInModalProps> = ({
   onClose,
   onSuccess,
 }) => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [dataRange, setDateRange] = useState<any>();
   const [emails, setEmails] = useState<string[]>(["", "", ""]);
   const [createTravel, { error, isSuccess, isLoading }] =
     api.useCreateTravelMutation();
@@ -91,6 +78,7 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
         </div>
         <div
           css={css`
+            height: 300px;
             display: flex;
             flex-direction: column;
           `}
@@ -108,14 +96,6 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-
-          <Calendar selectRange returnValue={"range"} value={dataRange} onChange={(v) => setDateRange(v)} />
-          <div
-            css={css`
-              display: flex;
-              flex-direction: column;
-            `}
-          >
             <span>참여자</span>
             {emails.map((email, index) => (
               <div
@@ -154,8 +134,6 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
               createTravel({
                 title: title,
                 userEmails: emails.filter((email) => email !== ""),
-                startDate: formatDate(dateRange[0]),
-                endDate: formatDate(dateRange[1]),
               })
             }
           >
