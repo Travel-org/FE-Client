@@ -13,7 +13,7 @@ import { api } from "@src/app/api";
 import axios from "axios";
 
 import ListProto from "@pages/dashboard/components/timeline/ListProto";
-import SplitBill from "@pages/dashboard/components/timeline/SplitBill";
+import SplitBill from "@pages/dashboard/components/timeline/SplitBill"; 
 import CreateTravelDateModal from "@pages/dashboard/CreateTravelDateModal";
 
 const TravelEditPage = () => {
@@ -21,7 +21,8 @@ const TravelEditPage = () => {
   const { data: travelData } = api.useGetTravelQuery(travelId!);
   const [map, setMap] = useState<any>();
   const [type, setType] = useState<"search" | "recommend">("search");
-  const [selectedDate] = useState<null | string>(null);
+
+ const [selectedDate] = useState<null | string>(null);
 
   const selectedDateSchedules = useMemo(() => {
     if (!travelData || !selectedDate) return [];

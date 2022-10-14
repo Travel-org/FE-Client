@@ -1,6 +1,5 @@
 import { Link, NavLink, Outlet, useMatch } from "react-router-dom";
 import TravelListPage from "@pages/dashboard/pages/TravelListPage";
-import TravelSinglePage from "@pages/dashboard/pages/TravelSinglePage";
 import { css } from "@emotion/react";
 import { Logo } from "@src/components/logo";
 import {
@@ -251,22 +250,11 @@ const dashboardRoute: BreadcrumbsRoute<string>[] = [
         path: "travels",
         element: <TravelListPage />,
         breadcrumb: "여행",
-        children: [
-          {
-            path: "add",
-            element: <CreateTravelModal/>,
-          },
-        ],
       },
       {
         path: "travels/:travelId",
-        element: <TravelSinglePage />,
-        breadcrumb: TravelNameBreadCrumb,
-      },
-      {
-        path: "travels/:travelId/edit",
         element: <TravelEditPage />,
-        breadcrumb: "수정",
+        breadcrumb: TravelNameBreadCrumb,
       },
       {
         path: "friends",

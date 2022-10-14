@@ -1,41 +1,60 @@
 import { api } from "@src/app/api";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ScheduleElement } from "@organisms/scheduleElement";
 import { css } from "@emotion/react";
-import Modal from "@src/components/modal";
+import CreateTravelModal from "@pages/dashboard/CreateTravelModal";
+import { useCallback, useState } from "react";
 
 const TravelListPage = () => {
   const { data: travelsData } = api.useGetTravelsQuery();
 
-  return (
-    <div>
-      <Link to="add">생성하기</Link>
+  const [isCrateTravelModelOpened, setIsCreateTravelModalOpened] =
+    useState(false);
 
-      <div
-        css={css`
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
-        `}
-      >
-        {travelsData?.content !== undefined &&
-          travelsData?.content.map(
-            ({ id, title, startDate, users, endDate }) => (
-              <NavLink to={id.toString()}>
-                <div>
-                  <ScheduleElement
-                    title={title}
-                    users={users}
-                    startDate={startDate}
-                    endDate={endDate}
-                  />
-                </div>
-              </NavLink>
-            )
-          )}
+  const openCreateTravelModal = useCallback(() => {
+    setIsCreateTravelModalOpened(true);
+  }, []);
+
+  const closeCreateTravelModal = useCallback(() => {
+    setIsCreateTravelModalOpened(false);
+  }, []);
+
+  return (
+    <>
+      {isCrateTravelModelOpened && (
+        <CreateTravelModal
+          onClose={closeCreateTravelModal}
+          onSuccess={closeCreateTravelModal}
+        />
+      )}
+      <div>
+        <button onClick={openCreateTravelModal}>새 여행 추가</button>
+
+        <div
+          css={css`
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+          `}
+        >
+          {travelsData?.content !== undefined &&
+            travelsData?.content.map(
+              ({ id, title, startDate, users, endDate }) => (
+                <NavLink to={id.toString()}>
+                  <div>
+                    <ScheduleElement
+                      title={title}
+                      users={users}
+                      startDate={startDate}
+                      endDate={endDate}
+                    />
+                  </div>
+                </NavLink>
+              )
+            )}
+        </div>
       </div>
-      <Outlet />
-    </div>
+    </>
   );
 };
 

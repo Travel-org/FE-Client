@@ -159,23 +159,33 @@ export const api = createApi({
         url: `${TRAVEL_BASE_URL}/${travelId}`,
         method: "GET",
       }),
+      providesTags: (result, error, travelId) => [
+        { type: "Travel", id: travelId },
+      ],
+    }),
+
+    getUsers: builder.query<any, string>({
+      query: (travelId) => ({
+        url: `${TRAVEL_BASE_URL}/${travelId}/users`,
+        method: "GET",
+      }),
     }),
     createTravelDate: builder.mutation<
-    any,
-    { travelId: string; date: string; title: string }
-  >({
-    query: ({ travelId, date, title }) => ({
-      url: `${TRAVEL_BASE_URL}/${travelId}/travelDates`,
-      method: "POST",
-      body: {
-        date: date,
-        title: title,
-      },
+      any,
+      { travelId: string; date: string; title: string }
+    >({
+      query: ({ travelId, date, title }) => ({
+        url: `${TRAVEL_BASE_URL}/${travelId}/travelDates`,
+        method: "POST",
+        body: {
+          date: date,
+          title: title,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Travel", id: arg.travelId },
+      ],
     }),
-    invalidatesTags: (result, error, arg) => [
-      { type: "Travel", id: arg.travelId },
-    ],
-  }),
   /**
    * Schedule Apis
    */
@@ -305,7 +315,7 @@ export const api = createApi({
      */
      sendEmail: builder.mutation<void, string>({
       query: (targetEmail) => ({
-        url: USER_BASE_URL + `/friends/${targetEmail}`,
+        url: `${USER_BASE_URL}/friends`,
         method: "POST",
       }),
     }),
