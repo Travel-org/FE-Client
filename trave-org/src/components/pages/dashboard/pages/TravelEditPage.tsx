@@ -11,13 +11,32 @@ import axios from "axios";
 import ListProto from "@pages/dashboard/components/timeline/ListProto";
 import SplitBill from "@pages/dashboard/components/timeline/SplitBill";
 import CreateTravelDateModal from "@pages/dashboard/CreateTravelDateModal";
+import { Avartar } from "@src/components/organisms/scheduleElement/styles";
+import styled from "@emotion/styled";
+
+const BtnWarpper = styled.div`
+  width: 100%;
+  background: #ababab;
+`;
+
+const Button = styled.button<{ state: boolean }>`
+  padding: 1rem;
+  border: none;
+  border-radius: 10px 10px 0px 0px;
+  background: ${({ state }) => (state ? "white" : "none")};
+  cursor: pointer;
+  :hover {
+    opacity: 50%;
+  }
+`;
 
 const TravelEditPage = () => {
+  const [type, setType] = useState<"schedule" | "image" | "settlement">(
+    "schedule"
+  );
   const { travelId } = useParams<"travelId">();
   const { data: travelData } = api.useGetTravelQuery(travelId!);
   const [map, setMap] = useState<any>();
-  const [type, setType] = useState<"search" | "recommend">("search");
-
   const [selectedDate] = useState<null | string>(null);
 
   const selectedDateSchedules = useMemo(() => {
@@ -137,28 +156,19 @@ const TravelEditPage = () => {
     markers.map((v) => v.setMap(null));
     setMarkers([]);
   }
-
   const [createDateModalOpened, setCreateDateModalOpened] = useState(false);
-
   const openCreateDateModal = useCallback(() => {
     setCreateDateModalOpened(true);
   }, []);
-
   const closeCreateDateModal = useCallback(() => {
     setCreateDateModalOpened(false);
   }, []);
-
-  const [createSplitBillModalOpened, setCreateSplitBillModalOpened] =
-    useState(false);
-
   if (!travelData) {
     return <div>Loading...</div>;
   }
-
   return (
     <div
       css={css`
-        height: 100%;
         display: flex;
         flex-direction: row;
       `}
@@ -170,6 +180,44 @@ const TravelEditPage = () => {
           background: white;
         `}
       >
+        <div
+          css={css`
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            background: #ababab;
+          `}
+        >
+          <h3>여행 제목입니다!</h3>
+          <div
+            css={css`
+              display: flex;
+              justify-content: flex-end;
+            `}
+          >
+            <Avartar />
+            <Avartar />
+            <Avartar />
+            <Avartar />
+          </div>
+        </div>
+        <BtnWarpper>
+          <Button
+            state={type === "schedule"}
+            onClick={() => setType("schedule")}
+          >
+            일정
+          </Button>
+          <Button state={type === "image"} onClick={() => setType("image")}>
+            사진
+          </Button>
+          <Button
+            state={type === "settlement"}
+            onClick={() => setType("settlement")}
+          >
+            정산
+          </Button>
+        </BtnWarpper>
         <div
           css={css`
             display: flex;
@@ -184,16 +232,15 @@ const TravelEditPage = () => {
               onSuccess={closeCreateDateModal}
             />
           )}
-
           {travelData.dates.map((dateData) => (
-            <div key={dateData.date}>
-              <input type="radio" value={dateData.date} />
+            <div>
+              <input type="radio" value="Day 1" />
               <label>{dateData.date}</label>
             </div>
           ))}
         </div>
-        <div>{travelData.title}</div>
-        <div>{travelData.users.map((user) => user.userName)}</div>
+        <SplitBill />
+	
         <SplitBill />
         <ListProto data={tempData} updateData={setTempData} />
       </div>
