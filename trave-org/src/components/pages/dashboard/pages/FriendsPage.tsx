@@ -105,12 +105,20 @@ function FriendsPage() {
   const { data: friendsData } = api.useGetFriendsQuery();
   const { data: givenRequestData } = api.useGetGivenRequestsQuery();
   const { data: givingRequestData } = api.useGetGivingRequestsQuery();
+  const [sendEmail] = api.useSendEmailMutation();
   const [deleteFriends] = api.useDeleteFriendsMutation();
   const [acceptRequest] = api.useAcceptFriendsRequestMutation();
   const [rejectRequest] = api.useRejectFriendsRequestMutation();
   const addEmailRef = useRef<HTMLInputElement>(null);
   const [type, setType] = useState<"list" | "given" | "giving">("list");
-  const handleAddFriends = () => {};
+  const handleAddFriends = () => {
+    if (
+      addEmailRef.current?.value === "" ||
+      addEmailRef.current?.value === undefined
+    )
+      return;
+    sendEmail(addEmailRef.current?.value);
+  };
 
   return (
     <div
@@ -151,7 +159,8 @@ function FriendsPage() {
                 <button>검색</button>
               </div>
               {friendsData !== undefined &&
-                friendsData.map(({ profilePath, userId, userName }) => (
+               friendsData?.content.map(
+                ({ profilePath, userId, userName }) => (
                   <UserContainer key={1}>
                     <img src={profilePath} />
                     <p>{userName}</p>
@@ -159,51 +168,54 @@ function FriendsPage() {
                       <img src="/cancel.svg" />
                     </p>
                   </UserContainer>
-                ))}
+                )
+              )}
             </>
           )}
 
-          {type === "given" && (
+{type === "given" && (
             <>
               {givenRequestData !== undefined &&
-                givenRequestData.map(({ profilePath, userId, userName }) => (
-                  <UserContainer
-                    key={userId}
-                    css={css`
-                      height: 6rem;
-                      flex-direction: column;
-                    `}
-                  >
-                    <div
+                givenRequestData?.content.map(
+                  ({ profilePath, userId, userName }) => (
+                    <UserContainer
+                      key={userId}
                       css={css`
-                        display: flex;
-                        width: 100%;
-                        justify-content: space-evenly;
+                        height: 6rem;
+                        flex-direction: column;
                       `}
                     >
-                      <img src={profilePath} />
-                      <p>{userName}</p>
-                    </div>
-                    <div
-                      css={css`
-                        display: flex;
-                        width: 100%;
-                        justify-content: space-between;
-                        svg {
-                          width: 1rem;
-                          height: 1rem;
-                          cursor: pointer;
-                          :hover {
-                            opacity: 50%;
+                      <div
+                        css={css`
+                          display: flex;
+                          width: 100%;
+                          justify-content: space-evenly;
+                        `}
+                      >
+                        <img src={profilePath} />
+                        <p>{userName}</p>
+                      </div>
+                      <div
+                        css={css`
+                          display: flex;
+                          width: 100%;
+                          justify-content: space-between;
+                          svg {
+                            width: 1rem;
+                            height: 1rem;
+                            cursor: pointer;
+                            :hover {
+                              opacity: 50%;
+                            }
                           }
-                        }
-                      `}
-                    >
-                      <Cancel onClick={() => rejectRequest(userId)} />
-                      <Check onClick={() => acceptRequest(userId)} />
-                    </div>
-                  </UserContainer>
-                ))}
+                        `}
+                      >
+                        <Cancel onClick={() => rejectRequest(userId)} />
+                        <Check onClick={() => acceptRequest(userId)} />
+                      </div>
+                    </UserContainer>
+                  )
+                )}
             </>
           )}
           {type === "giving" && (
@@ -225,15 +237,17 @@ function FriendsPage() {
                 <button onClick={handleAddFriends}>추가</button>
               </div>
               {givingRequestData !== undefined &&
-                givingRequestData.map(({ profilePath, userId, userName }) => (
-                  <UserContainer key={1}>
-                    <img src={profilePath} />
-                    <p>{userName}</p>
-                    <p onClick={() => {}}>
-                      <img src="/cancel.svg" />
-                    </p>
-                  </UserContainer>
-                ))}
+              givingRequestData?.content.map(
+              ({ profilePath, userId, userName }) => (
+                <UserContainer key={1}>
+                  <img src={profilePath} />
+                  <p>{userName}</p>
+                  <p onClick={() => {}}>
+                    <img src="/cancel.svg" />
+                  </p>
+                </UserContainer>
+              )
+            )}
             </>
           )}
         </FriendsListContainer>
