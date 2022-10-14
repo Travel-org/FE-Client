@@ -303,40 +303,25 @@ export const api = createApi({
     /**
      * Friends Apis
      */
-    getFriends: builder.query<
-      {
-        profilePath: string;
-        userId: number;
-        userName: string;
-      }[],
-      void
-    >({
+     sendEmail: builder.mutation<void, string>({
+      query: (targetEmail) => ({
+        url: USER_BASE_URL + `/friends/${targetEmail}`,
+        method: "POST",
+      }),
+    }),
+    getFriends: builder.query<any, void>({
       query: () => ({
         url: `${USER_BASE_URL}/friends`,
         method: "GET",
       }),
     }),
-    getGivenRequests: builder.query<
-      {
-        profilePath: string;
-        userId: number;
-        userName: string;
-      }[],
-      void
-    >({
+    getGivenRequests: builder.query<any, void>({
       query: () => ({
         url: `${USER_BASE_URL}/friends/given-requests`,
         method: "GET",
       }),
     }),
-    getGivingRequests: builder.query<
-      {
-        profilePath: string;
-        userId: number;
-        userName: string;
-      }[],
-      void
-    >({
+    getGivingRequests: builder.query<any, void>({
       query: () => ({
         url: `${USER_BASE_URL}/friends/giving-requests`,
         method: "GET",
