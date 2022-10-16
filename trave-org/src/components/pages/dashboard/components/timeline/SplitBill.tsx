@@ -1,117 +1,94 @@
-import { css } from "@emotion/react";
 import React, { useState } from "react";
+import { BiChevronDown, BiChevronUp, BiX } from "react-icons/bi";
 import { api } from "@src/app/api/api";
+import CostElement from "@src/components/organisms/costElement";
+import Modal from "@src/components/organisms/modal";
+import AddCostModal from "@src/components/organisms/addCostModal";
+import { theme } from "@src/styles/theme";
 
-function stringToColor(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  let colour = "#";
-  for (let i = 0; i < 3; i++) {
-    const value = ((hash >> (i * 8)) & 155) + 100;
-    colour += `00${value.toString(16)}`.slice(-2);
-  }
-  console.log(colour);
-  return colour;
+interface Props {
+  costData: any[];
+  travelId: string | undefined;
 }
 
-const TextAvatar = ({ name }: { name: string }) => {
-  return (
-    <div
-      css={css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        font-weight: 600;
-        color: black;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-      `}
-      style={{
-        background: stringToColor(name),
-      }}
-    >
-      {name.substring(0, 1)}
-    </div>
-  );
-};
-const SplitBill = () => {
+const SplitBill = ({ costData, travelId }: Props) => {
   const [createCost] = api.useCreateCostMutation();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isExpand, setIsExpand] = useState(false);
 
   const [amount] = useState(10000);
   const [val, setVal] = useState(10000);
-    return (
+
+  return (
+    <>
       <div
         css={css`
-          height: 500px;
-          display: flex;
-          flex-direction: column;
-        `}
-      >
-        <button onClick={() => createCost({travelId: travelId, title: "test", content: "", amountsPerUser: [{}]})}>create</button>
-        <input
-          type="range"
-          step={1}
-          max={amount}
-          value={val}
-          onChange={(e) => {
-            setVal(e.target.value as unknown as number);
-          }}
-        />
-        <input
-          type="number"
-          value={val}
-          onChange={(e) => {
-            setVal(e.target.value as unknown as number);
-          }}
-        />
-        <input type="range" step={1} max={amount} />
-        <input type="range" step={1} max={amount} />
-        <div
-          onClick={() => setIsExpand(!isExpand)}
-          css={css`
-          display: flex;
-          flex-direction: row;
+          width: 100%;
+          position: relative;
           align-items: center;
-          gap: 24px;
-          width: 350px;
-          background-color: rgba(255, 255, 255);
-          border-radius: 6px;
-          box-shadow: 0 0 4px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.08);
+          height: 60vh;
         `}
       >
-        <div>
-          <TextAvatar name="손진혁" />
-        </div>
-
-        <div>
-          <div>CU 우만파크점</div>
-          <div>24,000 원</div>
-        </div>
         <div
           css={css`
+            height: 100%;
+            overflow: auto;
+            padding: 1rem;
+            box-sizing: border-box;
             display: flex;
-            flex-direction: row;
-            > * {
-              margin-left: -10px;
-              border: 2px solid white;
-            }
+            row-gap: 1rem;
+            flex-direction: column;
           `}
         >
-          <TextAvatar name="박상혁" />
-          <TextAvatar name="차재명" />
-          <TextAvatar name="이호용" />
+          {costData.map(
+            ({ costId, title, content, totalAmount, userCosts, payerId }) => (
+              <CostElement
+                key={costId}
+                title={title}
+                payerId={payerId}
+                content={content}
+                totalAmount={totalAmount}
+                userCosts={userCosts}
+              />
+            )
+          )}
         </div>
-
-        {isExpand && <div style={{ height: "500px" }}>ttseste</div>}
+        <button
+          css={css`
+            display: flex;
+            position: absolute;
+            bottom: 0px;
+            justify-content: center;
+            background: white;
+            cursor: pointer;
+            :hover {
+              opacity: 50%;
+            }
+            right: 1rem;
+            width: 3rem;
+            height: 3rem;
+            border: 0px;
+            padding: 1rem;
+            align-items: center;
+            text-align: center;
+            border-radius: 100vw;
+            box-shadow: 0px 0px 6px ${theme.colors.shadow};
+          `}
+          onClick={() => setIsModalOpen((v) => !v)}
+        >
+          +
+        </button>
       </div>
-    </div>
+      {isModalOpen && (
+        <Modal onClick={() => setIsModalOpen(false)}>
+          <AddCostModal
+            travelId={travelId}
+            isClose={() => setIsModalOpen(false)}
+          />
+        </Modal>
+      )}
+    </>
   );
-}
+};
 
 export default SplitBill;
