@@ -10,7 +10,7 @@ import {
 import { ThemeProvider, Global, css } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { theme } from "@styles/theme";
-import reset from "@styles/global";
+import normalize from "@styles/normalize";
 import PrivateRoute from "@routes/private";
 import PublicRoute from "@routes/public";
 import AdminRoute from "@routes/admin";
@@ -148,7 +148,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Global styles={reset} />
+      <Global styles={normalize} />
       <Global
         styles={css`
           * {

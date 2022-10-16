@@ -1,6 +1,7 @@
 import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
 import { TRAVEL_BASE_URL } from "@utils/type";
 import { ITravelResponse } from "@src/app/api/api";
+import socketClient from "socket.io-client";
 
 const travelApi = baseApi
   .enhanceEndpoints({
@@ -26,6 +27,30 @@ const travelApi = baseApi
         providesTags: (result, error, travelId) => [
           { type: "Travel", id: travelId },
         ],
+        onCacheEntryAdded: async function (
+            travelId,
+            { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+          ) {
+            const socket = socketClient("http://123.214.75.32:9999/", {
+              transports: ["websocket"],
+              query: {
+                travelId: travelId,
+                userId: 1,
+              },
+            });
+  
+            await cacheDataLoaded;
+  
+            socket.emit("travelUpdate", 123);
+  
+            socket.on("travelUpdated", (message) => {
+              console.log(message);
+            });
+  
+            await cacheEntryRemoved;
+  
+            socket.close();
+          },
       }),
 
       createTravel: builder.mutation<

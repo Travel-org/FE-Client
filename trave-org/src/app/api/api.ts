@@ -257,7 +257,6 @@ export const api = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-
   }),
 });
 

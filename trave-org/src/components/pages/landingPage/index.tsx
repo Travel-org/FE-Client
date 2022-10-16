@@ -5,14 +5,7 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Background,
-  Banner,
-  Wrapper,
-  SubmitBtn,
-  ArrowImg,
-} from "./styles";
+import { Wrapper, SubmitBtn, ArrowImg } from "./styles";
 
 function Content() {
   return (
@@ -202,7 +195,7 @@ function Content() {
 //     // </Container>
 //   );
 // };
-function Main() {
+const Main = () => {
   const navigate = useNavigate();
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -211,9 +204,9 @@ function Main() {
     const dayEnd = new Date(e.target.dayEnd.value);
     navigate("/newSchedule", {
       state: {
-        title,
-        dayStart,
-        dayEnd,
+        title: title,
+        dayStart: dayStart,
+        dayEnd: dayEnd,
       },
     });
   };
@@ -249,7 +242,7 @@ function Main() {
             `}
           >
             <img
-              src="https://www.kagoshima-kankou.com/storage/tourism_themes/12/responsive_images/ElwnvZ2u5uZda7Pjcwlk4mMtr08kLNydT8zXA6Ie__1673_1115.jpeg"
+             src="https://www.kagoshima-kankou.com/storage/tourism_themes/12/responsive_images/ElwnvZ2u5uZda7Pjcwlk4mMtr08kLNydT8zXA6Ie__1673_1115.jpeg"
               css={css`
                 width: 100%;
                 max-height: 800px;
