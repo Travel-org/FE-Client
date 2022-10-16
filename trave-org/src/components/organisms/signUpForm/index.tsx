@@ -4,7 +4,7 @@ import { FlexDiv } from "@src/styles";
 import { SIGNUP_INPUT_DATA, CHECK_SIGNUP_DATA } from "@constants/index";
 import Button from "@atoms/button";
 import { useNavigate } from "react-router-dom";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { useEffect } from "react";
 import { Container, SignFormStyle, ErrorMessage } from "./styles";
 

@@ -2,7 +2,7 @@ import Modal from "@src/components/modal";
 import React, { useCallback, useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import { BiX } from "react-icons/bi";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";

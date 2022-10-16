@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { theme } from "@src/styles/theme";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import {

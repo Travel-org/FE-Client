@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "@src/app/hooks";
-import { isLoginSelector } from "@src/app/api";
+import { isLoginSelector } from "@src/app/api/api";
 
 interface Props {
   children: ReactElement;

@@ -2,8 +2,9 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"; // 
 import ScheduleBoard from "@atoms/scheduleBoard";
 import { useEffect, useState } from "react";
 import { travelLocations } from "@pages/liveSchedule/dummyData";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { useAppDispatch } from "@src/app/hooks";
+import travelApi from "@src/app/api/travelApi";
 import { DashBaordStyle, ScheduleContainer, AddButton } from "./styles";
 
 interface Props {
@@ -14,16 +15,16 @@ interface Props {
   setInnerDashBoardOnOff: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DashBoard({
+const DashBoard = ({
   map,
   travelId,
   setMarkers,
   deleteMarker,
   setInnerDashBoardOnOff,
-}: Props) {
+}: Props) => {
   const dispatch = useAppDispatch();
 
-  const { data: travelData } = api.useGetTravelQuery(travelId!);
+  const { data: travelData } = travelApi.useGetTravelQuery(travelId!);
   const { data, isLoading, error } = api.useGetScheduleQuery(travelId!);
 
   function handleOnDragEnd(result: any) {
@@ -37,7 +38,7 @@ function DashBoard({
     console.log("to", dropItemIndex);
 
     dispatch(
-      api.util.updateQueryData("getTravel", travelId!, (draft) => {
+      travelApi.util.updateQueryData("getTravel", travelId!, (draft) => {
         const removeForm = draft.schedules.splice(draggingItemIndex, 1);
         draft.schedules.splice(dropItemIndex, 0, removeForm[0]);
       })
@@ -83,7 +84,11 @@ function DashBoard({
               <div ref={provided.innerRef}>
                {travelData !== undefined &&
                   travelData.schedules.map(({ place, scheduleId }, index) => (
-                    <Draggable key={scheduleId} index={index} draggableId={`${scheduleId}`}>
+                    <Draggable
+                    key={scheduleId}
+                    index={index}
+                    draggableId={`${scheduleId}`}
+                  >
                       {(providedInner) => (
                         <div
                           ref={providedInner.innerRef}

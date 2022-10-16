@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { InnerDashBoardStyle, PastButton } from "./styles";
 import SearchBoard from "./search";
 import RecommandDashBoard from "./recommend";
-import { ITravelResponse } from "@src/app/api";
+import { ITravelResponse } from "@src/app/api/api";
 
 interface Props {
   travelData: ITravelResponse | undefined;

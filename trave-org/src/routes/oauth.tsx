@@ -1,7 +1,7 @@
 import Spinner from "@atoms/spinner";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 
 function OAuth2RedirectHandler() {
   const navigate = useNavigate();

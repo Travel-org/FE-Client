@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import React, { useState } from "react";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 
 function stringToColor(str) {
   let hash = 0;

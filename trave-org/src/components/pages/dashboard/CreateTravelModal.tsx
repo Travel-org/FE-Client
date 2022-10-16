@@ -2,10 +2,11 @@ import Modal from "@src/components/modal";
 import React, { useCallback, useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import { BiX } from "react-icons/bi";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import produce from "immer";
 import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
+import travelApi from "@src/app/api/travelApi";
 
 interface ICreateTravelModalProps {
   onClose: () => void;
@@ -33,7 +34,7 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
   const [dataRange, setDateRange] = useState<any>();
   const [emails, setEmails] = useState<string[]>(["", "", ""]);
   const [createTravel, { error, isSuccess, isLoading }] =
-    api.useCreateTravelMutation();
+  travelApi.useCreateTravelMutation();
 
   const updateEmail = useCallback((index: number, value: string) => {
     setEmails(

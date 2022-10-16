@@ -1,4 +1,4 @@
-import { api, ITravelResponse } from "@src/app/api";
+import { api, ITravelResponse } from "@src/app/api/api";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Wrapper, SearchContainer, SearchItem } from "./styles";

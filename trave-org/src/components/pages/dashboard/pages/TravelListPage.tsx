@@ -1,4 +1,4 @@
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { NavLink } from "react-router-dom";
 import { ScheduleElement } from "@organisms/scheduleElement";
 import { css } from "@emotion/react";

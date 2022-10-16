@@ -18,13 +18,14 @@ import styled from "@emotion/styled";
 import FriendsPage from "@pages/dashboard/pages/FriendsPage";
 import MainPage from "@pages/dashboard/pages/MainPage";
 import useBreadcrumbs, { BreadcrumbsRoute } from "use-react-router-breadcrumbs";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import FeedPage from "@pages/dashboard/pages/FeedPage";
 import EventPage from "@pages/dashboard/pages/EventPage";
 import NoticePage from "@pages/dashboard/pages/NoticePage";
 import TravelEditPage from "@pages/dashboard/pages/TravelEditPage";
 import Modal from "@src/components/modal";
 import CreateTravelModal from "@pages/dashboard/CreateTravelModal";
+import travelApi from "@src/app/api/travelApi";
 
 const LLink = styled(Link)`
   text-decoration: none;
@@ -38,7 +39,13 @@ const LLink = styled(Link)`
   }
 `;
 
-function SideBarMenu({ toPath, children }: { toPath: string; children: any }) {
+const SideBarMenu = ({
+  toPath,
+  children,
+}: {
+  toPath: string;
+  children: any;
+}) => {
   const isMatch = useMatch(toPath);
 
   return (
@@ -80,8 +87,9 @@ function SideBarMenu({ toPath, children }: { toPath: string; children: any }) {
       </div>
     </LLink>
   );
-}
-function SideBar() {
+};
+
+const SideBar = () => {
   return (
     <div
       css={css`
@@ -147,14 +155,16 @@ function SideBar() {
     </div>
   );
 }
-function TravelNameBreadCrumb({ match }) {
-  const { data: travelData } = api.useGetTravelQuery(match.params.travelId);
+const TravelNameBreadCrumb = ({ match }) => {
+  const { data: travelData } = travelApi.useGetTravelQuery(
+    match.params.travelId
+  );
   return (
     <span>{travelData ? `${travelData.id}-${travelData.title}` : "..."}</span>
   );
 }
 
-function TopBar() {
+const TopBar = () => {
   const { data: myInfoData } = api.useGetMyInfoQuery();
 
   const breadcrumbs = useBreadcrumbs(dashboardRoute, { disableDefaults: true });
@@ -195,8 +205,9 @@ function TopBar() {
       </div>
     </>
   );
-}
-function DashboardTemplate() {
+};
+
+const DashboardTemplate = () => {
   return (
     <div
       css={css`

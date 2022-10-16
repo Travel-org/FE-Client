@@ -5,7 +5,7 @@ import InnerDashBoard from "@organisms/dashBoard/inner";
 import { css } from "@emotion/react";
 import LabelBtn from "@src/components/atoms/button/label";
 import { useParams } from "react-router-dom";
-import { api } from "@src/app/api";
+import { api, IScheduleResponse } from "@src/app/api/api";
 import axios from "axios";
 import ListProto from "@pages/dashboard/components/timeline/ListProto";
 import SplitBill from "@pages/dashboard/components/timeline/SplitBill";
@@ -37,6 +37,7 @@ const TravelEditPage = () => {
   const dispatch = useAppDispatch();
   const { travelId } = useParams<"travelId">();
   const { data: travelData } = api.useGetTravelQuery(travelId!);
+  const [updateScheduleOrder] = api.useChangeTravelScheduleOrderMutation();
   const [map, setMap] = useState<any>();
 
   const [selectedDate, setSelectedDate] = useState<null | string>(null);
@@ -62,7 +63,6 @@ const TravelEditPage = () => {
       return;
     }
 
-    console.log(travelData);
     async function getRoute(origLat, origLng, destLat, destLng) {
       const routeResponse = await axios.get(
         "http://123.214.75.32:18080/ors/v2/directions/driving-car",
@@ -308,8 +308,13 @@ const TravelEditPage = () => {
 
         <ListProto
           data={selectedDateSchedules}
-          updateData={(updatedData) => {
+          updateData={(updatedData: IScheduleResponse[]) => {
             console.log("Outer Update Data", updatedData);
+            updateScheduleOrder({
+              travelId: travelId!,
+              date: selectedDate!,
+              scheduleOrder: updatedData.map((data) => data.scheduleId),
+            });
             dispatch(
               api.util.updateQueryData("getTravel", travelId!, (draft) => {
                 draft.dates.find((date) => date.date === selectedDate)!.schedules = updatedData;

@@ -1,4 +1,4 @@
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container } from "./styles";
 

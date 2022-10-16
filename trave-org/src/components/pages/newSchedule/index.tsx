@@ -13,7 +13,7 @@ import {
   SubContainer,
   Footer,
 } from "./styles";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 
 function NewSchedule() {
   const params = useLocation().state as any;

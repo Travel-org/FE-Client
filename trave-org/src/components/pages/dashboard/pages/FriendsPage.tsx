@@ -1,8 +1,10 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { theme } from "@src/styles/theme";
 import { useRef, useState } from "react";
+import friendApi from "@src/app/api/friendApi";
+import travelApi from "@src/app/api/travelApi";
 
 const BtnWarpper = styled.div`
   width: 100%;
@@ -101,14 +103,14 @@ const Check = ({ onClick }: { onClick: () => void }) => (
 );
 
 function FriendsPage() {
-  const { data: travelsData } = api.useGetTravelsQuery();
-  const { data: friendsData } = api.useGetFriendsQuery();
-  const { data: givenRequestData } = api.useGetGivenRequestsQuery();
-  const { data: givingRequestData } = api.useGetGivingRequestsQuery();
-  const [sendEmail] = api.useSendEmailMutation();
-  const [deleteFriends] = api.useDeleteFriendsMutation();
-  const [acceptRequest] = api.useAcceptFriendsRequestMutation();
-  const [rejectRequest] = api.useRejectFriendsRequestMutation();
+  const { data: travelsData } = travelApi.useGetTravelsQuery();
+  const { data: friendsData } = friendApi.useGetFriendsQuery();
+  const { data: givenRequestData } = friendApi.useGetGivenRequestsQuery();
+  const { data: givingRequestData } = friendApi.useGetGivingRequestsQuery();
+  const [sendEmail] = friendApi.useSendEmailMutation();
+  const [deleteFriends] = friendApi.useDeleteFriendsMutation();
+  const [acceptRequest] = friendApi.useAcceptFriendsRequestMutation();
+  const [rejectRequest] = friendApi.useRejectFriendsRequestMutation();
   const addEmailRef = useRef<HTMLInputElement>(null);
   const [type, setType] = useState<"list" | "given" | "giving">("list");
   const handleAddFriends = () => {

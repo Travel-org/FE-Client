@@ -12,7 +12,7 @@ import {
   ERROR_MESSAGE,
   KAKAO_AUTH_URL,
 } from "@constants/index";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { useEffect } from "react";
 
 interface SignInFormInterface {

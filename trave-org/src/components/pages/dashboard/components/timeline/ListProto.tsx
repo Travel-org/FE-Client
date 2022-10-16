@@ -161,11 +161,11 @@ const ListProto = ({
   const [internalData, setInternalData] = useState(outerData);
 
   useEffect(() => {
-    console.log("Internal Updated");
+    console.log("[Schedule List] Internal Updated", internalData);
   }, [internalData]);
 
   useEffect(() => {
-    console.log("Outer Updated", outerData);
+    console.log("[Schedule List] Outer Updated", outerData);
     setInternalData(outerData);
   }, [outerData]);
 
@@ -230,7 +230,7 @@ const ListProto = ({
               <ListProtoItem
               index={i}
               name={item.place.placeName}
-              address={item.place.address_name}
+              address={item.place.addressName}
               startTime="10:00"
               endTime="12:00"
             />

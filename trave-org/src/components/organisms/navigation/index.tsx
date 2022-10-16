@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@src/components/logo";
 import styled from "@emotion/styled";
-import { api, isLoginSelector } from "@src/app/api";
+import { api, isLoginSelector } from "@src/app/api/api";
 import { useAppSelector } from "@src/app/hooks";
 import { css } from "@emotion/react";
 import { NavigationStyle } from "./styles";

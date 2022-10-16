@@ -1,5 +1,5 @@
 import { Link, NavLink, useParams } from "react-router-dom";
-import { api } from "@src/app/api";
+import { api } from "@src/app/api/api";
 import { css } from "@emotion/react";
 import { Avatar } from "@pages/liveSchedule";
 import React, { useCallback, useMemo, useState } from "react";
