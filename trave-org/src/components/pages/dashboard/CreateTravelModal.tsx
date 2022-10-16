@@ -154,8 +154,8 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
               createTravel({
                 title: title,
                 userEmails: emails.filter((email) => email !== ""),
-                startDate: formatDate(dateRange[0]),
-                endDate: formatDate(dateRange[1]),
+                startDate: formatDate(dataRange[0]),
+                endDate: formatDate(dataRange[1]),
               })
             }
           >

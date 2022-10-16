@@ -134,13 +134,14 @@ const CreateTravelModal: React.FC<ISignInModalProps> = ({
               createTravel({
                 title: title,
                 userEmails: emails.filter((email) => email !== ""),
+                startDate: "",
+                endDate: ""
               })
             }
           >
             생성
           </button>
         </div>
-      </div>
     </Modal>
   );
 };
