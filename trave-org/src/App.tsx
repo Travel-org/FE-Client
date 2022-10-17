@@ -29,7 +29,6 @@ import Modal from "@src/components/modal";
 import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
 import { store } from "./app/store";
-import NewSettlement from "./components/pages/newSettlement";
 import OauthSignUp from "./components/pages/signUp/kakao";
 
 const Main = lazy(() => import("@pages/landingPage"));
@@ -102,7 +101,6 @@ const App = () => {
           path: "newSettlement/:travelId",
           element: (
             <PrivateRoute user={user}>
-              <NewSettlement />
             </PrivateRoute>
           ),
         },

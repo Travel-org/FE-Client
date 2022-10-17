@@ -31,9 +31,11 @@ export interface ITravelResponse {
   endDate: string;
   memo: string;
   managerId: number;
+  costs: any[];
   users: IUserResponse[];
   dates: {
     date: string;
+    scheduleOrders: number[];
     schedules: IScheduleResponse[];
   }[];
 }
