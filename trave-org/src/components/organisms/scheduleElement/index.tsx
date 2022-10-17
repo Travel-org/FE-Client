@@ -1,3 +1,4 @@
+import TextAvatar from "@src/components/atoms/textAvatar";
 import {
   Image,
   ScheduleElementContainer,
@@ -26,8 +27,8 @@ export const ScheduleElement = ({
         <h3>{title}</h3>
         <div>
           <AvartarContainer>
-            {users.map((user) => (
-              <Avartar />
+            {users.map(({ userName }) => (
+              <TextAvatar name={userName} />
             ))}
           </AvartarContainer>
           <p>
