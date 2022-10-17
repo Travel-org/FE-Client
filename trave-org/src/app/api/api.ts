@@ -7,6 +7,7 @@ import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
 interface IUserResponse {
   userId: number;
   userName: string;
+  profilePath: string;
 }
 
 export interface IScheduleResponse {
@@ -49,6 +50,27 @@ interface ICostResponse {
   managerId: number;
   users: IUserResponse[];
   schedules: IScheduleResponse[];
+}
+
+export interface IPostResponse {
+  postId: number;
+  scheduleId: number;
+  userInfo: IUserResponse;
+  title: string;
+  text: string;
+  comments: ICommentResponse[];
+  photoInfos: IPhotoResponse[];
+}
+
+interface ICommentResponse{
+  commentId: number;
+  userInfo: IUserResponse;
+  content: string;
+}
+
+interface IPhotoResponse {
+  photoId: number;
+  name: string;
 }
 
 interface AmountPerUserProps {
