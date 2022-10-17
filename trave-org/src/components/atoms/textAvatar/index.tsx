@@ -14,7 +14,17 @@ function stringToColor(str) {
   return colour;
 }
 
-const TextAvatar = ({ name }: { name: string }) => {
+const TextAvatar = ({
+  name,
+  size = 1,
+  width = "2rem",
+  height = "2rem",
+}: {
+  name: string;
+  size?: number;
+  width?: string;
+  height?: string;
+}) => {
   return (
     <div
       css={css`
@@ -22,11 +32,11 @@ const TextAvatar = ({ name }: { name: string }) => {
         align-items: center;
         justify-content: center;
         text-align: center;
-        font-size: 1rem;
+        font-size: ${size}rem;
         font-weight: 600;
         color: black;
-        width: 2rem;
-        height: 2rem;
+        width: ${width};
+        height: ${height};
         border-radius: 50%;
       `}
       style={{
