@@ -1,8 +1,10 @@
 import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
 import { TRAVEL_BASE_URL } from "@utils/type";
 import { ITravelResponse } from "@src/app/api/api";
-import socketClient from "socket.io-client";
+import socketClient, { Socket } from "socket.io-client";
 import { RootState } from "@src/app/store";
+
+let socket: Socket;
 
 const travelApi = baseApi
   .enhanceEndpoints({
@@ -32,7 +34,7 @@ const travelApi = baseApi
             travelId,
             { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
           ) {
-            const socket = socketClient("http://123.214.75.32:9999/", {
+            socket = socketClient("http://123.214.75.32:9999/", {
               transports: ["websocket"],
               auth: {
                 token: (getState() as RootState).auth.token,
@@ -42,13 +44,14 @@ const travelApi = baseApi
                 userId: 1,
               },
             });
-  
-            await cacheDataLoaded;
-  
-            socket.emit("travelUpdate", 123);
-  
+
             socket.on("travelUpdated", (message) => {
               console.log(message);
+              updateCachedData((draft) => {
+                draft.dates.find(
+                  (date) => date.date === message.date
+                )!.scheduleOrders = message.scheduleOrder;
+              });
             });
   
             await cacheEntryRemoved;
@@ -107,26 +110,16 @@ const travelApi = baseApi
             getCacheEntry,
           }
         ) => {
-          const patchResult = dispatch(
-            travelApi.util.updateQueryData("getTravel", travelId, (draft) => {
-              const dateDatas = draft.dates.find(
-                (dateData) => dateData.date === date
-              )!;
-
-              dateDatas.schedules = scheduleOrder.map(
-                (scheduleId) =>
-                  dateDatas.schedules.find(
-                    (scheduleData) => scheduleData.scheduleId === scheduleId
-                  )!
-              );
-            })
-          );
-          try {
-            await queryFulfilled;
-          } catch {
-            patchResult.undo();
-          }
-        },
+          await queryFulfilled;
+          socket.emit("travelUpdate", {
+            travelId: travelId,
+            data: {
+              type: "scheduleOrderChanged",
+              date: date,
+              scheduleOrder: scheduleOrder,
+            },
+          });
+        }
       }),
       createTravelDate: builder.mutation<
         any,

@@ -5,7 +5,7 @@ import InnerDashBoard from "@organisms/dashBoard/inner";
 import { css } from "@emotion/react";
 import LabelBtn from "@src/components/atoms/button/label";
 import { useParams } from "react-router-dom";
-import { api } from "@src/app/api/api";
+import { api, IScheduleResponse } from "@src/app/api/api";
 import axios from "axios";
 import ListProto from "@pages/dashboard/components/timeline/ListProto";
 import SplitBill from "@pages/dashboard/components/timeline/SplitBill";
@@ -15,8 +15,8 @@ import styled from "@emotion/styled";
 import { useAppDispatch } from "@src/app/hooks";
 import travelApi from "@src/app/api/travelApi";
 import _ from "lodash";
-import Schedule from "../components/schedule";
 import TextAvatar from "@src/components/atoms/textAvatar";
+import Schedule from "../components/schedule";
 
 const BtnWarpper = styled.div`
   width: 100%;
@@ -58,7 +58,11 @@ const TravelEditPage = () => {
 
     if (!selectedDateData) return [];
 
-    return selectedDateData.schedules;
+    return selectedDateData.scheduleOrders.map((scheduleId) =>
+      selectedDateData.schedules.find(
+        (schedule) => schedule.scheduleId === scheduleId
+      )
+    );
   }, [travelData, selectedDate]);
 
   /**
@@ -339,30 +343,31 @@ const TravelEditPage = () => {
           ))}
         </div>
 
-        {/* <ListProto
-          data={selectedDateSchedules}
-          updateData={(updatedData: IScheduleResponse[]) => {
-            console.log("Outer Update Data", updatedData);
-            updateScheduleOrder({
-              travelId: travelId!,
-              date: selectedDate!,
-              scheduleOrder: updatedData.map((data) => data.scheduleId),
-            });
-            dispatch(
-              travelApi.util.updateQueryData(
-                "getTravel",
-                travelId!,
-                (draft) => {
-                  draft.dates.find(
-                    (date) => date.date === selectedDate
-                  )!.schedules = updatedData;
-                }
-              )
-            );
-          }}
-        /> */}
+        {/*  */}
         {type === "schedule" && (
-          <Schedule travelData={travelData} travelId={travelId} />
+          // <Schedule travelData={travelData} travelId={travelId} />
+          <ListProto
+            data={selectedDateSchedules}
+            updateData={(updatedData: IScheduleResponse[]) => {
+              console.log("Outer Update Data", updatedData);
+              updateScheduleOrder({
+                travelId: travelId!,
+                date: selectedDate!,
+                scheduleOrder: updatedData.map((data) => data.scheduleId),
+              });
+              dispatch(
+                travelApi.util.updateQueryData(
+                  "getTravel",
+                  travelId!,
+                  (draft) => {
+                    draft.dates.find(
+                      (date) => date.date === selectedDate
+                    )!.schedules = updatedData;
+                  }
+                )
+              );
+            }}
+          />
         )}
         {type === "settlement" && (
           <SplitBill costData={travelData.costs} travelId={travelId} />
@@ -374,7 +379,7 @@ const TravelEditPage = () => {
           flex-direction: row;
           position: relative;
         `}
-      ></div>
+      />
       <div
         css={css`
           flex-grow: 1;
