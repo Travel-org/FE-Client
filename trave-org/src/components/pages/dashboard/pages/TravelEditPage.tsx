@@ -264,7 +264,7 @@ const TravelEditPage = () => {
         <button
           onClick={() =>
             createSchedule({
-              travelId: parseInt(travelId!),
+              travelId: travelId!,
               date: selectedDate!,
               place: {
                 placeUrl: "",
@@ -287,7 +287,7 @@ const TravelEditPage = () => {
         <button
           onClick={() =>
             createSchedule({
-              travelId: parseInt(travelId!),
+              travelId: travelId!,
               date: selectedDate!,
               place: {
                 placeUrl: "",
@@ -310,7 +310,7 @@ const TravelEditPage = () => {
         <button
           onClick={() =>
             createSchedule({
-              travelId: parseInt(travelId!),
+              travelId: travelId!,
               date: selectedDate!,
               place: {
                 placeUrl: "",

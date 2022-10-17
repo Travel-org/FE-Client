@@ -156,40 +156,6 @@ export const api = baseApi.injectEndpoints({
     /**
      * Schedule Apis
      */
-    createSchedule: builder.mutation<
-      any,
-      {
-        travelId: number;
-        date: string;
-        endTime: "13:30:07";
-        startTime: "13:30:07";
-        place: {
-          addressName: string;
-          addressRoadName: string;
-          kakaoMapId: number;
-          phoneNumber: string;
-          placeName: string;
-          placeUrl: string;
-          lat: number;
-          lng: number;
-        };
-        userIds: number[];
-      }
-    >({
-      query: (arg) => ({
-        url: `${TRAVEL_BASE_URL}/${arg.travelId}/schedules`,
-        method: "POST",
-        params: {
-          date: arg.date,
-        },
-        body: {
-          endTime: arg.endTime,
-          place: arg.place,
-          startTime: arg.startTime,
-          userIds: arg.userIds,
-        },
-      }),
-    }),
     getSchedule: builder.query<any[], string>({
       query: (arg) => ({
         url: `${TRAVEL_BASE_URL}/${arg}/schedules`,

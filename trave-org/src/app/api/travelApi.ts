@@ -45,13 +45,17 @@ const travelApi = baseApi
               },
             });
 
-            socket.on("travelUpdated", (message) => {
-              console.log(message);
+            socket.on("scheduleOrderChanged", (message) => {
+              console.log("scheduleOrderChanged", message);
               updateCachedData((draft) => {
                 draft.dates.find(
                   (date) => date.date === message.date
                 )!.scheduleOrders = message.scheduleOrder;
               });
+            });
+
+            socket.on("scheduleAdded", (message) => {
+              console.log("scheduleAdded", message);
             });
   
             await cacheEntryRemoved;
@@ -82,7 +86,7 @@ const travelApi = baseApi
       }),
 
       changeTravelScheduleOrder: builder.mutation<
-        any,
+        number[],
         {
           travelId: string;
           date: string;
@@ -100,7 +104,7 @@ const travelApi = baseApi
           },
         }),
         onQueryStarted: async (
-          { travelId, date, scheduleOrder },
+          args,
           {
             dispatch,
             getState,
@@ -110,15 +114,25 @@ const travelApi = baseApi
             getCacheEntry,
           }
         ) => {
-          await queryFulfilled;
-          socket.emit("travelUpdate", {
-            travelId: travelId,
+          const response = await queryFulfilled;
+          socket.emit("scheduleOrderChange", {
+            travelId: args.travelId,
             data: {
-              type: "scheduleOrderChanged",
-              date: date,
-              scheduleOrder: scheduleOrder,
+              date: args.date,
+              scheduleOrder: args.scheduleOrder,
             },
           });
+          dispatch(
+            travelApi.util.updateQueryData(
+              "getTravel",
+              args.travelId,
+              (draft) => {
+                draft.dates.find(
+                  (date) => date.date === args.date
+                )!.scheduleOrders = response.data;
+              }
+            )
+          );
         }
       }),
       createTravelDate: builder.mutation<
@@ -133,6 +147,58 @@ const travelApi = baseApi
             title: title,
           },
         }),
+      }),
+      createSchedule: builder.mutation<
+        any,
+        {
+          travelId: string;
+          date: string;
+          endTime: "13:30:07";
+          startTime: "13:30:07";
+          place: {
+            addressName: string;
+            addressRoadName: string;
+            kakaoMapId: number;
+            phoneNumber: string;
+            placeName: string;
+            placeUrl: string;
+            lat: number;
+            lng: number;
+          };
+          userIds: number[];
+        }
+      >({
+        query: (arg) => ({
+          url: `${TRAVEL_BASE_URL}/${arg.travelId}/schedules`,
+          method: "POST",
+          params: {
+            date: arg.date,
+          },
+          body: {
+            endTime: arg.endTime,
+            place: arg.place,
+            startTime: arg.startTime,
+            userIds: arg.userIds,
+          },
+        }),
+        onQueryStarted: async (
+          args,
+          {
+            dispatch,
+            getState,
+            extra,
+            requestId,
+            queryFulfilled,
+            getCacheEntry,
+          }
+        ) => {
+          const response = await queryFulfilled;
+
+          socket.emit("scheduleAdd", {
+            travelId: args.travelId,
+            data: response,
+          });
+        },
       }),
     }),
   });
