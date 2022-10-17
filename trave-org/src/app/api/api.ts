@@ -4,7 +4,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { TRAVEL_BASE_URL, USER_BASE_URL } from "@utils/type";
 import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
 
-interface IUserResponse {
+export interface IUserResponse {
   userId: number;
   userName: string;
   profilePath: string;
@@ -12,8 +12,8 @@ interface IUserResponse {
 
 export interface IScheduleResponse {
   scheduleId: number;
-  startDate: number;
-  endDate: number;
+  startTime: number;
+  endTime: number;
   place: {
     placeId: number;
     placeName: string;
@@ -23,22 +23,6 @@ export interface IScheduleResponse {
     addressName: string;
   };
   users: IUserResponse[];
-}
-
-export interface ITravelResponse {
-  id: number;
-  title: string;
-  startDate: string;
-  endDate: string;
-  memo: string;
-  managerId: number;
-  costs: any[];
-  users: IUserResponse[];
-  dates: {
-    date: string;
-    scheduleOrders: number[];
-    schedules: IScheduleResponse[];
-  }[];
 }
 
 interface ICostResponse {
@@ -168,13 +152,6 @@ export const api = baseApi.injectEndpoints({
     /**
      * Schedule Apis
      */
-    getSchedule: builder.query<any[], string>({
-      query: (arg) => ({
-        url: `${TRAVEL_BASE_URL}/${arg}/schedules`,
-        method: "GET",
-      }),
-      // providesTags: ["schedule"],
-    }),
     updateSchedule: builder.mutation<
       any,
       {

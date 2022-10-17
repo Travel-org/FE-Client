@@ -1,6 +1,12 @@
 import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
 import { travelLocations } from "@pages/liveSchedule/dummyData";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import InnerDashBoard from "@organisms/dashBoard/inner";
 import { css } from "@emotion/react";
 import LabelBtn from "@src/components/atoms/button/label";
@@ -16,7 +22,8 @@ import { useAppDispatch } from "@src/app/hooks";
 import travelApi from "@src/app/api/travelApi";
 import _ from "lodash";
 import TextAvatar from "@src/components/atoms/textAvatar";
-import Schedule from "../components/schedule";
+import socketClient, { Socket } from "socket.io-client";
+import { RootState } from "@src/app/store";
 
 const BtnWarpper = styled.div`
   width: 100%;
@@ -33,37 +40,39 @@ const Button = styled.button<{ state: boolean }>`
     opacity: 50%;
   }
 `;
+const dummyCenter = {
+  lat: 37.49091340540493,
+  lng: 127.03337782299037,
+};
 
 const TravelEditPage = () => {
-  const [type, setType] = useState<"schedule" | "image" | "settlement">(
-    "schedule"
-  );
+  const { travelId } = useParams<"travelId">();
+
   const dispatch = useAppDispatch();
 
-  const { travelId } = useParams<"travelId">();
+  const [type, setType] = useState("schedule");
+
   const { data: travelData } = travelApi.useGetTravelQuery(travelId!);
   const [updateScheduleOrder] =
     travelApi.useChangeTravelScheduleOrderMutation();
-
   const [map, setMap] = useState<any>();
-
   const [selectedDate, setSelectedDate] = useState<null | string>(null);
-
   const selectedDateSchedules = useMemo(() => {
     if (!travelData || !selectedDate) return [];
-
     const selectedDateData = travelData.dates.find(
       (date) => date.date === selectedDate
     );
 
     if (!selectedDateData) return [];
 
-    return selectedDateData.scheduleOrders.map((scheduleId) =>
-      selectedDateData.schedules.find(
-        (schedule) => schedule.scheduleId === scheduleId
-      )
+    return selectedDateData.scheduleOrders.map(
+      (scheduleId) =>
+        selectedDateData.schedules.find(
+          (schedule) => schedule.scheduleId === scheduleId
+        )!
     );
   }, [travelData, selectedDate]);
+
 
   /**
    * Update Route Info Data
@@ -112,7 +121,7 @@ const TravelEditPage = () => {
         }))
       );
     });
-  }, [travelData]);
+  }, [selectedDateSchedules]);
 
   const [seletedPosition, setSelectedPosition] = useState<
     { lat: number; lng: number } | undefined
@@ -229,21 +238,27 @@ const TravelEditPage = () => {
           </div>
         </div>
         <BtnWarpper>
-          <Button
-            state={type === "schedule"}
-            onClick={() => setType("schedule")}
-          >
-            일정
-          </Button>
-          <Button state={type === "image"} onClick={() => setType("image")}>
-            사진
-          </Button>
-          <Button
-            state={type === "settlement"}
-            onClick={() => setType("settlement")}
-          >
-            정산
-          </Button>
+        {[
+            {
+              type: "schedule",
+              title: "일정",
+            },
+            {
+              type: "image",
+              title: "사진",
+            },
+            {
+              type: "settlement",
+              title: "정산",
+            },
+          ].map((info) => (
+            <Button
+              state={type === info.type}
+              onClick={() => setType(info.type)}
+            >
+              {info.title}
+            </Button>
+          ))}
         </BtnWarpper>
         <div
           css={css`
@@ -347,6 +362,7 @@ const TravelEditPage = () => {
         {type === "schedule" && (
           // <Schedule travelData={travelData} travelId={travelId} />
           <ListProto
+            travelId={travelId!}
             data={selectedDateSchedules}
             updateData={(updatedData: IScheduleResponse[]) => {
               console.log("Outer Update Data", updatedData);
@@ -388,10 +404,7 @@ const TravelEditPage = () => {
         <Map
           onCreate={onMapCreated}
           onClick={onMapClicked}
-          center={{
-            lat: travelLocations[0].lnglat[1],
-            lng: travelLocations[0].lnglat[0],
-          }}
+          center={dummyCenter}
           onMouseMove={mouseMoveOnMapEvent}
           style={{ width: "100%", height: "100%" }}
         >

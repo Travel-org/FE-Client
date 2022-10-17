@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { BiCar, BiWalk } from "react-icons/bi";
 import React, { useEffect, useState } from "react";
 import { Reorder, motion } from "framer-motion";
+import travelApi from "@src/app/api/travelApi";
 
 const Marker = ({ children }: { children: any }) => {
   return (
@@ -29,18 +30,18 @@ const Marker = ({ children }: { children: any }) => {
   );
 };
 const ListProtoItem = ({
+  travelId,
+  scheduleId,
   index,
-  name,
-  address,
-  startTime,
-  endTime,
 }: {
+  travelId: string;
+  scheduleId: string
   index: number;
-  name: string;
-  address: string;
-  startTime: string;
-  endTime: string;
 }) => {
+  const { data } = travelApi.useGetScheduleQuery({
+    travelId: travelId,
+    scheduleId: scheduleId,
+  });
   return (
     <div
       css={css`
@@ -91,14 +92,14 @@ const ListProtoItem = ({
             top: 0;
           `}
         >
-          {startTime}
+          {data?.startTime}
         </span>
         <span
           css={css`
             top: 100%;
           `}
         >
-         {endTime}
+        {data?.endTime}
         </span>
       </span>
       <div
@@ -118,14 +119,14 @@ const ListProtoItem = ({
               color: black;
             `}
           >
-            {name}
+            {data?.place.placeName}
           </div>
           <div
             css={css`
               font-weight: 400;
             `}
           >
-            {address}
+           {data?.place.addressName}
           </div>
         </div>
       </div>
@@ -134,9 +135,11 @@ const ListProtoItem = ({
 };
 
 const ListProto = ({
+  travelId,
   data: outerData,
   updateData,
 }: {
+  travelId: string
   data: any[];
   updateData: (newData: any) => void;
 }) => {
@@ -229,10 +232,8 @@ const ListProto = ({
             )}
               <ListProtoItem
               index={i}
-              name={item.place.placeName}
-              address={item.place.addressName}
-              startTime="10:00"
-              endTime="12:00"
+              travelId={travelId}
+              scheduleId={item.scheduleId}
             />
           </Reorder.Item>
         ))}

@@ -1,8 +1,26 @@
 import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
 import { TRAVEL_BASE_URL } from "@utils/type";
-import { ITravelResponse } from "@src/app/api/api";
+import { IScheduleResponse, IUserResponse } from "@src/app/api/api";
 import socketClient, { Socket } from "socket.io-client";
 import { RootState } from "@src/app/store";
+
+interface IDateData {
+  date: string;
+  scheduleOrders: number[];
+  schedules: IScheduleResponse[];
+}
+
+export interface ITravelResponse {
+  id: number;
+  title: string;
+  startDate: string;
+  endDate: string;
+  memo: string;
+  managerId: number;
+  costs: any[];
+  users: IUserResponse[];
+  dates: IDateData[];
+}
 
 let socket: Socket;
 
@@ -63,6 +81,17 @@ const travelApi = baseApi
             socket.close();
           },
       }),
+
+      getSchedule: builder.query<
+      IScheduleResponse,
+      { travelId: string; scheduleId: string }
+    >({
+      query: (args) => ({
+        url: `${TRAVEL_BASE_URL}/${args.travelId}/schedules/${args.scheduleId}`,
+        method: "GET",
+      }),
+      // providesTags: ["schedule"],
+    }),
 
       createTravel: builder.mutation<
         any,

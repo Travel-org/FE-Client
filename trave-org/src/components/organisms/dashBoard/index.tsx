@@ -25,7 +25,7 @@ const DashBoard = ({
   const dispatch = useAppDispatch();
 
   const { data: travelData } = travelApi.useGetTravelQuery(travelId!);
-  const { data, isLoading, error } = api.useGetScheduleQuery(travelId!);
+  const { data, isLoading, error } = travelApi.useGetScheduleQuery(travelId!);
 
   function handleOnDragEnd(result: any) {
     if (!result.destination) {
