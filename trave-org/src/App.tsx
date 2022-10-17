@@ -39,6 +39,7 @@ const NewSchedule = lazy(() => import("@pages/newSchedule"));
 const Settlement = lazy(() => import("@pages/settlement"));
 const LiveSchedule = lazy(() => import("@pages/liveSchedule"));
 const Temp = lazy(() => import("@pages/temp"));
+const MyPage = lazy(() => import("@pages/myPage"));
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -121,6 +122,14 @@ const App = () => {
           path: "/invite/accept/:id",
           element: <Invite />,
         },
+        {
+          path: "/mypage",
+          element: (
+            <PrivateRoute user={user}>
+              <MyPage />
+            </PrivateRoute>
+          ),
+        }
       ],
     },
     {
