@@ -98,13 +98,6 @@ const App = () => {
           ),
         },
         {
-          path: "newSettlement/:travelId",
-          element: (
-            <PrivateRoute user={user}>
-            </PrivateRoute>
-          ),
-        },
-        {
           path: "newSchedule",
           element: (
             <PrivateRoute user={user}>

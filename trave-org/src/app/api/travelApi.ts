@@ -2,6 +2,7 @@ import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
 import { TRAVEL_BASE_URL } from "@utils/type";
 import { ITravelResponse } from "@src/app/api/api";
 import socketClient from "socket.io-client";
+import { RootState } from "@src/app/store";
 
 const travelApi = baseApi
   .enhanceEndpoints({
@@ -29,10 +30,13 @@ const travelApi = baseApi
         ],
         onCacheEntryAdded: async function (
             travelId,
-            { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+            { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
           ) {
             const socket = socketClient("http://123.214.75.32:9999/", {
               transports: ["websocket"],
+              auth: {
+                token: (getState() as RootState).auth.token,
+              },
               query: {
                 travelId: travelId,
                 userId: 1,
