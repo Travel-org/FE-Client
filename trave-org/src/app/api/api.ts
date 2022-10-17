@@ -142,21 +142,26 @@ export const api = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-
-    getTravelsByUser: builder.query<any, void>({
-      query: () => ({
-        url: `${TRAVEL_BASE_URL}`,
-        method: 'GET',
+    updateMyInfo: builder.mutation<void, any>({
+      query: (args) => ({
+        url: USER_BASE_URL,
+        method: "PUT",
+        body: args,
+        headers: { "Content-Type": "multipart/form-data" },
       }),
     }),
-
     /**
      * Travel Apis
      */
-
     getUsers: builder.query<any, string>({
       query: (travelId) => ({
         url: `${TRAVEL_BASE_URL}/${travelId}/users`,
+        method: "GET",
+      }),
+    }),
+    getTravelsByUser: builder.query<any, void>({
+      query: () => ({
+        url: `${TRAVEL_BASE_URL}`,
         method: "GET",
       }),
     }),

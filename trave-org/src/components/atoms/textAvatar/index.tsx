@@ -21,11 +21,12 @@ const TextAvatar = ({ name }: { name: string }) => {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 16px;
+        text-align: center;
+        font-size: 1rem;
         font-weight: 600;
         color: black;
-        width: 40px;
-        height: 40px;
+        width: 2rem;
+        height: 2rem;
         border-radius: 50%;
       `}
       style={{
