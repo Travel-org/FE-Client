@@ -1,39 +1,40 @@
 import { useState } from "react";
 import DataRangeBar from "@atoms/dataRangebar";
-import Calender from "@organisms/calender";
+import Calendar from "react-calendar";
 
 interface Props {
-  selectedDate: Date[];
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date[]>>;
+  dateRange: any;
+  setDateRange: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const SelectDate = ({ selectedDate, setSelectedDate }: Props) => {
+const SelectDate = ({ dateRange, setDateRange }: Props) => {
   const [isSelected, setIsSelected] = useState(false);
-  const [date, setDate] = useState(new Date());
-
-  const handleChangeMonth = (number: number) =>
-    setDate(new Date(date.getFullYear(), date.getMonth() + number));
-
-  const handleSelectDate = (day: Date) =>
-    setSelectedDate(
-      selectedDate.length < 2
-        ? [...selectedDate, day]
-        : [...selectedDate.slice(1), day]
-    );
+  const formatDate = (date: Date) => {
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    const year = date.getFullYear();
+    if (month.length < 2) {
+      month = `0${month}`;
+    }
+    if (day.length < 2) {
+      day = `0${day}`;
+    }
+    return [year, month, day].join("-");
+  };
 
   return (
     <>
       <h2>언제 여행을 떠나시나요?</h2>
       <DataRangeBar
-        selectedDate={selectedDate}
+        selectedDate={dateRange}
         onClick={() => setIsSelected(!isSelected)}
       />
       {isSelected && (
-        <Calender
-          date={date}
-          selectedDate={selectedDate}
-          handleChangeMonth={handleChangeMonth}
-          handleSelectDate={handleSelectDate}
+        <Calendar
+          selectRange
+          returnValue={"range"}
+          value={dateRange}
+          onChange={(v) => setDateRange(v)}
         />
       )}
     </>

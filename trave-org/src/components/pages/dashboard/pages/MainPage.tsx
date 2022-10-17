@@ -3,7 +3,7 @@ import { Logo } from "@src/components/logo";
 import { Link, useNavigate } from "react-router-dom";
 import { BiHomeAlt, BiTrip, BiWorld } from "react-icons/bi";
 import { Avatar, AvatarGroup } from "@pages/liveSchedule";
-import { api } from "@src/app/api/api";
+import travelApi from "@src/app/api/travelApi";
 
 function PopularPlace({ title, address }: { title: string; address: string }) {
   return (
@@ -51,7 +51,7 @@ function PopularPlace({ title, address }: { title: string; address: string }) {
 function MainPage() {
   const navigate = useNavigate();
 
-  const { data: travelsData } = api.useGetTravelsQuery();
+  const { data: travelsData } = travelApi.useGetTravelsQuery();
   return (
     <div
       css={css`

@@ -94,10 +94,10 @@ const TravelEditPage = () => {
       const destination = selectedDateSchedules[i + 1];
       promises.push(
         getRoute(
-          origin.place.lat,
-          origin.place.lng,
-          destination.place.lat,
-          destination.place.lng
+          origin?.place.lat,
+          origin?.place.lng,
+          destination?.place.lat,
+          destination?.place.lng
         )
       );
     }
@@ -125,10 +125,11 @@ const TravelEditPage = () => {
     const latlngbounds = new kakao.maps.LatLngBounds();
 
     selectedDateSchedules.forEach((travelLocation) => {
+      travelLocation !== undefined &&
       latlngbounds.extend(
         new kakao.maps.LatLng(
-          travelLocation.place.lat,
-          travelLocation.place.lng
+          travelLocation?.place.lat,
+          travelLocation?.place.lng
         )
       );
     });
@@ -178,7 +179,7 @@ const TravelEditPage = () => {
   const [createSplitBillModalOpened, setCreateSplitBillModalOpened] =
     useState(false);
 
-  const [createSchedule, result] = api.useCreateScheduleMutation();
+  const [createSchedule, result] = travelApi.useCreateScheduleMutation();
 
   const mouseMoveOnMapEvent = useCallback(
     _.throttle((target, mouseEvent) => {
@@ -203,7 +204,7 @@ const TravelEditPage = () => {
         css={css`
           display: flex;
           flex-direction: column;
-          min-width: 28vw;
+          width: 28vw;
           background: white;
         `}
       >
@@ -342,8 +343,7 @@ const TravelEditPage = () => {
             </button>
           ))}
         </div>
-
-        {/*  */}
+        
         {type === "schedule" && (
           // <Schedule travelData={travelData} travelId={travelId} />
           <ListProto
@@ -404,11 +404,11 @@ const TravelEditPage = () => {
             <MapMarker // 마커를 생성합니다
               position={{
                 // 마커가 표시될 위치입니다
-                lat: schedule.place.lat,
-                lng: schedule.place.lng,
+                lat: schedule?.place.lat ?? 0,
+                lng: schedule?.place.lng ?? 0,
               }}
             >
-              <div>{schedule.place.placeName}</div>
+              <div>{schedule?.place.placeName}</div>
             </MapMarker>
           ))}
           {routeInfos &&

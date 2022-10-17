@@ -1,4 +1,11 @@
-import { Link, NavLink, Outlet, useMatch } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  NavLink,
+  Outlet,
+  useMatch,
+  useNavigate,
+} from "react-router-dom";
 import TravelListPage from "@pages/dashboard/pages/TravelListPage";
 import { css } from "@emotion/react";
 import { Logo } from "@src/components/logo";
@@ -26,6 +33,7 @@ import TravelEditPage from "@pages/dashboard/pages/TravelEditPage";
 import Modal from "@src/components/modal";
 import CreateTravelModal from "@pages/dashboard/CreateTravelModal";
 import travelApi from "@src/app/api/travelApi";
+import TextAvatar from "@src/components/atoms/textAvatar";
 
 const LLink = styled(Link)`
   text-decoration: none;
@@ -166,7 +174,7 @@ const TravelNameBreadCrumb = ({ match }) => {
 
 const TopBar = () => {
   const { data: myInfoData } = api.useGetMyInfoQuery();
-
+  const navigate = useNavigate();
   const breadcrumbs = useBreadcrumbs(dashboardRoute, { disableDefaults: true });
 
   return (
@@ -194,14 +202,15 @@ const TopBar = () => {
           display: flex;
           flex-direction: row;
           align-items: center;
+          cursor: pointer;
+          :hover {
+            opacity: 50%;
+          }
         `}
       >
-        <div>{myInfoData?.name}</div>
-        <Avatar
-          css={css`
-            background: red;
-          `}
-        />
+        <div onClick={() => navigate("/mypage")}>
+          <TextAvatar name={myInfoData?.name ?? "게스트"} />
+        </div>
       </div>
     </>
   );

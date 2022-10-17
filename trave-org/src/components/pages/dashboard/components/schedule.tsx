@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { api, IScheduleResponse, ITravelResponse } from "@src/app/api/api";
+import travelApi from "@src/app/api/travelApi";
 import ScheduleBoard from "@src/components/atoms/scheduleBoard";
 import { useCallback, useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -42,7 +43,7 @@ const Schedule = ({ travelData, travelId }: Props) => {
   const [createSplitBillModalOpened, setCreateSplitBillModalOpened] =
     useState(false);
 
-  const [createSchedule, result] = api.useCreateScheduleMutation();
+  const [createSchedule, result] = travelApi.useCreateScheduleMutation();
   if (!travelData) {
     return <div>Loading...</div>;
   }

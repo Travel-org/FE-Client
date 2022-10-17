@@ -44,12 +44,6 @@ const Navigation = ({ user }: Props) => {
             <Logo color="#1e52e2" />
           </Link>
           <div>
-            <Link to="/schedule">
-              <p>계획</p>
-            </Link>
-            <Link to="/settlement">
-              <p>정산</p>
-            </Link>
             <Link to="/dashboard">
               <p>대시보드</p>
             </Link>
