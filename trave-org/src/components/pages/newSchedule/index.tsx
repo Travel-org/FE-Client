@@ -14,10 +14,11 @@ import {
   Footer,
 } from "./styles";
 import { api } from "@src/app/api/api";
+import travelApi from "@src/app/api/travelApi";
 
 function NewSchedule() {
   const params = useLocation().state as any;
-  const [createTravel, { data }] = api.useCreateTravelMutation();
+  const [createTravel, { data }] = travelApi.useCreateTravelMutation();
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<Date[]>([
     new Date(),
@@ -26,11 +27,8 @@ function NewSchedule() {
   const [countChip, setCountChip] = useState(0);
   const [title, setTitle] = useState("");
   const [userEmails, setUserEmails] = useState<string[]>([]);
-
   const addUserEmail = (email) => setUserEmails((v) => [...v, email]);
-
   const handlePast = () => setCountChip(Math.max(0, countChip - 1));
-
   const handleEmptyTitle = countChip === 1 ? title !== "" : true;
   const setDateFormat = (date: Date) =>
     `${date.getFullYear()}-${date.getMonth() + 1 < 10 ? "0" : ""}${
@@ -47,18 +45,15 @@ function NewSchedule() {
       userEmails,
     });
   };
-
   useEffect(() => {
     if (!params) return;
     setSelectedDate([params?.dayStart, params?.dayEnd]);
     setCountChip(2);
     setTitle(params?.title);
   }, [params]);
-
   useEffect(() => {
     if (data !== undefined) navigate("/dashboard/travels");
   }, [data]);
-
   return (
     <Container direction="column">
       <h2>새 여행 생성</h2>
