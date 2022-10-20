@@ -1,11 +1,18 @@
 import { css } from "@emotion/react";
 import { Logo } from "@src/components/logo";
 import { Link, useNavigate } from "react-router-dom";
-import { BiHomeAlt, BiTrip, BiWorld } from "react-icons/bi";
+import { BiHomeAlt, BiPlus, BiTrip, BiWorld } from "react-icons/bi";
 import { Avatar, AvatarGroup } from "@pages/liveSchedule";
 import travelApi from "@src/app/api/travelApi";
+import ScheduleElement from "@organisms/scheduleElement";
 
-function PopularPlace({ title, address }: { title: string; address: string }) {
+const PopularPlace = ({
+  title,
+  address,
+}: {
+  title: string;
+  address: string;
+}) => {
   return (
     <div
       css={css`
@@ -47,8 +54,8 @@ function PopularPlace({ title, address }: { title: string; address: string }) {
       </div>
     </div>
   );
-}
-function MainPage() {
+};
+const MainPage = () => {
   const navigate = useNavigate();
 
   const { data: travelsData } = travelApi.useGetTravelsQuery();
@@ -56,78 +63,98 @@ function MainPage() {
     <div
       css={css`
         padding: 24px;
-        display: grid;
+        display: flex;
         gap: 24px;
-        grid-template-columns: repeat(4, 1fr);
+        flex-direction: column;
       `}
     >
       <div
         css={css`
-          background: antiquewhite;
-          border-radius: 10px;
-          height: 150px;
-        `}
-      >
-        <div>여행 A</div>
-        <div>2022-05-20 ~ 2022-05-23</div>
-      </div>
-      <div
-        css={css`
-          background: antiquewhite;
-          border-radius: 10px;
-          height: 150px;
-        `}
-      >
-        <div>여행 B</div>
-        <div>2022-05-20 ~ 2022-05-23</div>
-      </div>
-      <div
-        css={css`
-          background: antiquewhite;
-          border-radius: 10px;
-          height: 150px;
-        `}
-      >
-        <div>여행 C</div>
-        <div>2022-05-20 ~ 2022-05-23</div>
-      </div>
-      <div
-        css={css`
-          background: antiquewhite;
-          border-radius: 10px;
-          height: 150px;
-          padding: 10px;
+        display: flex;
+          flex-direction: column;
         `}
       >
         <div
           css={css`
-            font-size: 20px;
-            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
           `}
         >
-          인기 여행지
+          <div
+            css={css`
+              font-size: 24px;
+              font-weight: 700;
+            `}
+          >
+            다가오는 여행
+          </div>
+
+          <button>
+            <BiPlus />
+            여행 생성하기
+          </button>
         </div>
 
         <div
           css={css`
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 20px;
           `}
         >
-          <PopularPlace title="퍼플교" address="전남 신안군" />
-          <PopularPlace title="흰여울문화마을" address="부산 영도구" />
-          <PopularPlace title="익선동" address="서울 종로구" />
-          <PopularPlace title="남이섬" address="강원 춘천시" />
-          <PopularPlace title="청풍호반케이블카" address="충북 제천시" />
-          <PopularPlace title="익산 미륵사지" address="전북 익산시" />
-          <PopularPlace title="광명동굴" address="경기 광명시" />
-          <PopularPlace title="울주 반구대 암각화" address="울산 울주군" />
-          <PopularPlace title="부산 송도해수욕장" address="부산 서구" />
-          <PopularPlace title="창덕궁과 후원" address="서울 종로구" />
+          {travelsData?.content !== undefined &&
+            travelsData?.content.map(
+              ({ id, title, users, startDate, endDate }) => (
+                <div onClick={() => navigate(id.toString())}>
+                  <ScheduleElement
+                    title={title}
+                    users={users}
+                    startDate={startDate}
+                    endDate={endDate}
+                  />
+                </div>
+              )
+            )}
         </div>
+      </div>
+
+      <div
+        css={css`
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        `}
+      >
+        <div
+          css={css`
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+          `}
+        >
+          <div
+            css={css`
+              font-size: 24px;
+              font-weight: 700;
+            `}
+          >
+            추천 여행지
+          </div>
+        </div>
+        <PopularPlace title="퍼플교" address="전남 신안군" />
+        <PopularPlace title="흰여울문화마을" address="부산 영도구" />
+        <PopularPlace title="익선동" address="서울 종로구" />
+        <PopularPlace title="남이섬" address="강원 춘천시" />
+        <PopularPlace title="청풍호반케이블카" address="충북 제천시" />
+        <PopularPlace title="익산 미륵사지" address="전북 익산시" />
+        <PopularPlace title="광명동굴" address="경기 광명시" />
+        <PopularPlace title="울주 반구대 암각화" address="울산 울주군" />
+        <PopularPlace title="부산 송도해수욕장" address="부산 서구" />
+        <PopularPlace title="창덕궁과 후원" address="서울 종로구" />
       </div>
     </div>
   );
-}
-export default MainPage;
+};

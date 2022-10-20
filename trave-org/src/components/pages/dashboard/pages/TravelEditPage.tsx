@@ -260,131 +260,134 @@ const TravelEditPage = () => {
             </Button>
           ))}
         </BtnWarpper>
-        <div
-          css={css`
-            display: flex;
-            flex-direction: row;
-          `}
-        >
-          <button onClick={openCreateDateModal}>open date create modal</button>
-          {createDateModalOpened && (
-            <CreateTravelDateModal
-              travelId={travelId!}
-              onClose={closeCreateDateModal}
-              onSuccess={closeCreateDateModal}
-            />
-          )}
-        </div>
-        <div>{travelData.title}</div>
-        <div>{travelData.users.map((user) => user.userName)}</div>
-        <button
-          onClick={() =>
-            createSchedule({
-              travelId: travelId!,
-              date: selectedDate!,
-              place: {
-                placeUrl: "",
-                placeName: "남산타워",
-                addressName: "서울 남산타워",
-                addressRoadName: "aa",
-                lat: 37.5511694,
-                lng: 126.98822659999999,
-                kakaoMapId: 13,
-                phoneNumber: "000",
-              },
-              userIds: [13],
-              endTime: "13:30:07",
-              startTime: "13:30:07",
-            })
-          }
-        >
-          남산타워
-        </button>
-        <button
-          onClick={() =>
-            createSchedule({
-              travelId: travelId!,
-              date: selectedDate!,
-              place: {
-                placeUrl: "",
-                placeName: "강남역",
-                addressName: "address",
-                addressRoadName: "강남역",
-                lat: 37.498779319598455,
-                lng: 127.02753687427264,
-                kakaoMapId: 14,
-                phoneNumber: "000",
-              },
-              userIds: [13],
-              endTime: "13:30:07",
-              startTime: "13:30:07",
-            })
-          }
-        >
-          강남역
-        </button>
-        <button
-          onClick={() =>
-            createSchedule({
-              travelId: travelId!,
-              date: selectedDate!,
-              place: {
-                placeUrl: "",
-                placeName: "사당역",
-                addressName: "address",
-                addressRoadName: "사당역",
-                lat: 37.47715678758263,
-                lng: 126.98085975641106,
-                kakaoMapId: 15,
-                phoneNumber: "000",
-              },
-              userIds: [13],
-              endTime: "13:30:07",
-              startTime: "13:30:07",
-            })
-          }
-        >
-          사당역
-        </button>
-        <div>
-          {travelData.dates.map((dateData) => (
-            <button
-              key={dateData.date}
-              onClick={(e) => {
-                setSelectedDate(dateData.date);
-              }}
-            >
-              {dateData.date}
-            </button>
-          ))}
-        </div>
-        
+       
         {type === "schedule" && (
           // <Schedule travelData={travelData} travelId={travelId} />
-          <ListProto
-            travelId={travelId!}
-            data={selectedDateSchedules}
-            updateData={(updatedData: IScheduleResponse[]) => {
-              console.log("Outer Update Data", updatedData);
-              updateScheduleOrder({
-                travelId: travelId!,
-                date: selectedDate!,
-                scheduleOrder: updatedData.map((data) => data.scheduleId),
-              });
-              dispatch(
-                travelApi.util.updateQueryData(
-                  "getTravel",
-                  travelId!,
-                  (draft) => {
-                    draft.dates.find(
-                      (date) => date.date === selectedDate
-                    )!.schedules = updatedData;
-                  }
-                )
-              );
-            }}
-          />
-        )}
+          <>
+            <div
+              css={css`
+                display: flex;
+                flex-direction: row;
+              `}
+            >
+              <button onClick={openCreateDateModal}>
+                open date create modal
+              </button>
+              {createDateModalOpened && (
+                <CreateTravelDateModal
+                  travelId={travelId!}
+                  onClose={closeCreateDateModal}
+                  onSuccess={closeCreateDateModal}
+                />
+              )}
+            </div>
+            <div>{travelData.title}</div>
+            <div>{travelData.users.map((user) => user.userName)}</div>
+            <button
+              onClick={() =>
+                createSchedule({
+                  travelId: travelId!,
+                  date: selectedDate!,
+                  place: {
+                    placeUrl: "",
+                    placeName: "남산타워",
+                    addressName: "서울 남산타워",
+                    addressRoadName: "aa",
+                    lat: 37.5511694,
+                    lng: 126.98822659999999,
+                    kakaoMapId: 13,
+                    phoneNumber: "000",
+                  },
+                  userIds: [13],
+                  endTime: "13:30:07",
+                  startTime: "13:30:07",
+                })
+              }
+            >
+              남산타워
+            </button>
+            <button
+              onClick={() =>
+                createSchedule({
+                  travelId: travelId!,
+                  date: selectedDate!,
+                  place: {
+                    placeUrl: "",
+                    placeName: "강남역",
+                    addressName: "address",
+                    addressRoadName: "강남역",
+                    lat: 37.498779319598455,
+                    lng: 127.02753687427264,
+                    kakaoMapId: 14,
+                    phoneNumber: "000",
+                  },
+                  userIds: [13],
+                  endTime: "13:30:07",
+                  startTime: "13:30:07",
+                })
+              }
+            >
+              강남역
+            </button>
+            <button
+              onClick={() =>
+                createSchedule({
+                  travelId: travelId!,
+                  date: selectedDate!,
+                  place: {
+                    placeUrl: "",
+                    placeName: "사당역",
+                    addressName: "address",
+                    addressRoadName: "사당역",
+                    lat: 37.47715678758263,
+                    lng: 126.98085975641106,
+                    kakaoMapId: 15,
+                    phoneNumber: "000",
+                  },
+                  userIds: [13],
+                  endTime: "13:30:07",
+                  startTime: "13:30:07",
+                })
+              }
+            >
+              사당역
+            </button>
+            <div>
+              {travelData.dates.map((dateData) => (
+                <button
+                  key={dateData.date}
+                  onClick={(e) => {
+                    setSelectedDate(dateData.date);
+                  }}
+                >
+                  {dateData.date}
+                </button>
+              ))}
+            </div>
+            <ListProto
+              travelId={travelId!}
+              data={selectedDateSchedules}
+              updateData={(updatedData: IScheduleResponse[]) => {
+                console.log("Outer Update Data", updatedData);
+                updateScheduleOrder({
+                  travelId: travelId!,
+                  date: selectedDate!,
+                  scheduleOrder: updatedData.map((data) => data.scheduleId),
+                });
+                dispatch(
+                  travelApi.util.updateQueryData(
+                    "getTravel",
+                    travelId!,
+                    (draft) => {
+                      draft.dates.find(
+                        (date) => date.date === selectedDate
+                      )!.schedules = updatedData;
+                    }
+                  )
+                );
+              }}
+            />
+          </>
         {type === "settlement" && (
           <SplitBill costData={travelData.costs} travelId={travelId} />
         )}
