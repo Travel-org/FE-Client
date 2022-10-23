@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import TextAvatar from "@src/components/atoms/textAvatar";
 import {
   Image,
@@ -25,7 +26,12 @@ export const ScheduleElement = ({
       <Image src="https://blog.kakaocdn.net/dn/bvVHDV/btqYIk8ro2Z/EDCkAI9jXb3SMAlISvbWr0/img.jpg" />
       <Wrapper>
         <h3>{title}</h3>
-        <div>
+        <div
+          css={css`
+            display: flex;
+            column-gap: 2rem;
+          `}
+        >
           <AvartarContainer>
             {users.map(({ userName }) => (
               <TextAvatar name={userName} />
