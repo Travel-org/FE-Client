@@ -107,7 +107,7 @@ const MainPage = () => {
           {travelsData?.content !== undefined &&
             travelsData?.content.map(
               ({ id, title, users, startDate, endDate }) => (
-                <div onClick={() => navigate(id.toString())}>
+                <div onClick={() => navigate("travels/" + id.toString())}>
                   <ScheduleElement
                     title={title}
                     users={users}
