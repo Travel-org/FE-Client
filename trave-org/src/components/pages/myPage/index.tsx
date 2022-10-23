@@ -17,7 +17,6 @@ const MyPage = () => {
   const submitMyInfo = () => {
     updateMyInfo({
       name: nameRef.current?.value,
-      email: emailRef.current?.value,
       phoneNumber: phoneNumberRef.current?.value,
     });
   };
