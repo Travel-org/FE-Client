@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import postApi from "@src/app/api/postApi";
+import {Swiper, SwiperSlide} from "swiper/react";
 
 const FeedsContainer = styled.div`
   width: 100%;
@@ -62,7 +63,15 @@ function FeedPage() {
               {userInfo.userName}
             </UserInfo>
           </UserProfileRow>
-          <PostImage img={photoInfos[0].name} />
+          <Swiper>
+            {
+              photoInfos.map(({name})=>(
+                <SwiperSlide>
+                  <PostImage img={name}/>
+                </SwiperSlide>
+              ))
+            }
+          </Swiper>
           <p>{text}</p>
         </FeedContainer>
       ))}

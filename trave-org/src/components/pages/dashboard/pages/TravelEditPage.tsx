@@ -1,5 +1,10 @@
-import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
-import { travelLocations } from "@pages/liveSchedule/dummyData";
+import {
+  CustomOverlayMap,
+  Map,
+  MapMarker,
+  Polyline,
+} from "react-kakao-maps-sdk";
+import { BiPlus, BiCalendar, BiMapPin, BiPointer } from "react-icons/bi";
 import React, {
   useCallback,
   useEffect,
@@ -7,23 +12,24 @@ import React, {
   useRef,
   useState,
 } from "react";
-import InnerDashBoard from "@organisms/dashBoard/inner";
 import { css } from "@emotion/react";
-import LabelBtn from "@src/components/atoms/button/label";
 import { useParams } from "react-router-dom";
 import { api, IScheduleResponse } from "@src/app/api/api";
 import axios from "axios";
 import ListProto from "@pages/dashboard/components/timeline/ListProto";
 import SplitBill from "@pages/dashboard/components/timeline/SplitBill";
 import CreateTravelDateModal from "@pages/dashboard/CreateTravelDateModal";
-import { Avartar } from "@src/components/organisms/scheduleElement/styles";
 import styled from "@emotion/styled";
 import { useAppDispatch } from "@src/app/hooks";
 import travelApi from "@src/app/api/travelApi";
 import _ from "lodash";
 import TextAvatar from "@src/components/atoms/textAvatar";
 import socketClient, { Socket } from "socket.io-client";
-import { RootState } from "@src/app/store";
+import { RootState, store } from "@src/app/store";
+import { theme } from "@src/styles/theme";
+import SearchModal from "@src/components/organisms/searchModal";
+import produce from "immer";
+import ImageFeed from "../components/imageFeed";
 
 const BtnWarpper = styled.div`
   width: 100%;
@@ -40,6 +46,7 @@ const Button = styled.button<{ state: boolean }>`
     opacity: 50%;
   }
 `;
+
 const dummyCenter = {
   lat: 37.49091340540493,
   lng: 127.03337782299037,
@@ -48,17 +55,82 @@ const dummyCenter = {
 const TravelEditPage = () => {
   const { travelId } = useParams<"travelId">();
 
+  const client = useRef<Socket>();
   const dispatch = useAppDispatch();
+
+  const [sharedCursors, setSharedCursors] = useState<{
+    [ownerId: string]: { lat: number; lng: number };
+  }>({});
+
+  useEffect(() => {
+    console.log(sharedCursors);
+  }, [sharedCursors]);
+
+  useEffect(() => {
+    const socket = socketClient("http://123.214.75.32:9999/", {
+      transports: ["websocket"],
+      auth: {
+        token: store.getState().auth.token,
+      },
+      query: {
+        travelId: travelId,
+        userId: 1,
+      },
+    });
+
+    socket.on("scheduleOrderChanged", (message) => {
+      dispatch(
+        travelApi.util.updateQueryData("getTravel", travelId!, (draft) => {
+          draft.dates.find(
+            (date) => date.date === message.date
+          )!.scheduleOrders = message.scheduleOrder;
+        })
+      );
+    });
+
+    socket.on("scheduleAdded", (message) => {
+      console.log("scheduleAdded", message);
+    });
+
+    socket.on(
+      "mapCursorChanged",
+      (message: { ownerId: number; data: { lat: number; lng: number } }) => {
+        console.log("mapCursorChanged", message);
+        setSharedCursors(
+          produce((draft) => {
+            draft[message.ownerId] = message.data;
+          })
+        );
+      }
+    );
+
+    client.current = socket;
+
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   const [type, setType] = useState("schedule");
 
   const { data: travelData } = travelApi.useGetTravelQuery(travelId!);
   const [updateScheduleOrder] =
     travelApi.useChangeTravelScheduleOrderMutation();
+
   const [map, setMap] = useState<any>();
-  const [selectedDate, setSelectedDate] = useState<null | string>(null);
+
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  useEffect(() => {
+    if (travelData === undefined) return;
+
+    if (selectedDate === "") {
+      setSelectedDate(travelData.dates[0].date);
+    }
+  }, [travelData, selectedDate]);
+
   const selectedDateSchedules = useMemo(() => {
     if (!travelData || !selectedDate) return [];
+
     const selectedDateData = travelData.dates.find(
       (date) => date.date === selectedDate
     );
@@ -72,7 +144,6 @@ const TravelEditPage = () => {
         )!
     );
   }, [travelData, selectedDate]);
-
 
   /**
    * Update Route Info Data
@@ -94,7 +165,7 @@ const TravelEditPage = () => {
         }
       );
 
-      return routeResponse.data;
+      return routeResponse.data ?? undefined;
     }
 
     const promises: Promise<any>[] = [];
@@ -135,12 +206,12 @@ const TravelEditPage = () => {
 
     selectedDateSchedules.forEach((travelLocation) => {
       travelLocation !== undefined &&
-      latlngbounds.extend(
-        new kakao.maps.LatLng(
-          travelLocation?.place.lat,
-          travelLocation?.place.lng
-        )
-      );
+        latlngbounds.extend(
+          new kakao.maps.LatLng(
+            travelLocation?.place.lat,
+            travelLocation?.place.lng
+          )
+        );
     });
 
     return latlngbounds;
@@ -176,6 +247,16 @@ const TravelEditPage = () => {
   }
 
   const [createDateModalOpened, setCreateDateModalOpened] = useState(false);
+  const [createScheduleModalOpened, setCreateScheduleModalOpened] =
+    useState(false);
+
+  const openCreateScheduleModal = useCallback(() => {
+    setCreateScheduleModalOpened(true);
+  }, []);
+
+  const closeCreateScheduleModal = useCallback(() => {
+    setCreateScheduleModalOpened(false);
+  }, []);
 
   const openCreateDateModal = useCallback(() => {
     setCreateDateModalOpened(true);
@@ -185,15 +266,19 @@ const TravelEditPage = () => {
     setCreateDateModalOpened(false);
   }, []);
 
-  const [createSplitBillModalOpened, setCreateSplitBillModalOpened] =
-    useState(false);
-
   const [createSchedule, result] = travelApi.useCreateScheduleMutation();
 
   const mouseMoveOnMapEvent = useCallback(
     _.throttle((target, mouseEvent) => {
       console.log(mouseEvent.latLng);
-    }, 500),
+      client.current?.emit("mapCursorChange", {
+        travelId: travelId!,
+        data: {
+          lat: mouseEvent.latLng.getLat(),
+          lng: mouseEvent.latLng.getLng(),
+        },
+      });
+    }, 10),
     []
   );
 
@@ -215,6 +300,7 @@ const TravelEditPage = () => {
           flex-direction: column;
           width: 28vw;
           background: white;
+          position: relative;
         `}
       >
         <div
@@ -238,7 +324,7 @@ const TravelEditPage = () => {
           </div>
         </div>
         <BtnWarpper>
-        {[
+          {[
             {
               type: "schedule",
               title: "일정",
@@ -260,7 +346,7 @@ const TravelEditPage = () => {
             </Button>
           ))}
         </BtnWarpper>
-       
+
         {type === "schedule" && (
           // <Schedule travelData={travelData} travelId={travelId} />
           <>
@@ -270,9 +356,6 @@ const TravelEditPage = () => {
                 flex-direction: row;
               `}
             >
-              <button onClick={openCreateDateModal}>
-                open date create modal
-              </button>
               {createDateModalOpened && (
                 <CreateTravelDateModal
                   travelId={travelId!}
@@ -280,87 +363,56 @@ const TravelEditPage = () => {
                   onSuccess={closeCreateDateModal}
                 />
               )}
+              {createScheduleModalOpened && (
+                <SearchModal
+                  selectedDate={selectedDate}
+                  travelId={travelId!}
+                  onClose={closeCreateScheduleModal}
+                  onSuccess={closeCreateScheduleModal}
+                />
+              )}
             </div>
-            <div>{travelData.title}</div>
-            <div>{travelData.users.map((user) => user.userName)}</div>
-            <button
-              onClick={() =>
-                createSchedule({
-                  travelId: travelId!,
-                  date: selectedDate!,
-                  place: {
-                    placeUrl: "",
-                    placeName: "남산타워",
-                    addressName: "서울 남산타워",
-                    addressRoadName: "aa",
-                    lat: 37.5511694,
-                    lng: 126.98822659999999,
-                    kakaoMapId: 13,
-                    phoneNumber: "000",
-                  },
-                  userIds: [13],
-                  endTime: "13:30:07",
-                  startTime: "13:30:07",
-                })
-              }
+            <div
+              css={css`
+                width: 30vw;
+                white-space: nowrap;
+                overflow: auto;
+              `}
             >
-              남산타워
-            </button>
-            <button
-              onClick={() =>
-                createSchedule({
-                  travelId: travelId!,
-                  date: selectedDate!,
-                  place: {
-                    placeUrl: "",
-                    placeName: "강남역",
-                    addressName: "address",
-                    addressRoadName: "강남역",
-                    lat: 37.498779319598455,
-                    lng: 127.02753687427264,
-                    kakaoMapId: 14,
-                    phoneNumber: "000",
-                  },
-                  userIds: [13],
-                  endTime: "13:30:07",
-                  startTime: "13:30:07",
-                })
-              }
-            >
-              강남역
-            </button>
-            <button
-              onClick={() =>
-                createSchedule({
-                  travelId: travelId!,
-                  date: selectedDate!,
-                  place: {
-                    placeUrl: "",
-                    placeName: "사당역",
-                    addressName: "address",
-                    addressRoadName: "사당역",
-                    lat: 37.47715678758263,
-                    lng: 126.98085975641106,
-                    kakaoMapId: 15,
-                    phoneNumber: "000",
-                  },
-                  userIds: [13],
-                  endTime: "13:30:07",
-                  startTime: "13:30:07",
-                })
-              }
-            >
-              사당역
-            </button>
-            <div>
-              {travelData.dates.map((dateData) => (
+              {travelData.dates.map((dateData, i) => (
                 <button
+                  css={css`
+                    background: white;
+                    border: none;
+                    margin: 1rem;
+                    font-weight: 600;
+                    border-bottom: ${dateData.date === selectedDate
+                      ? `3px solid #5fe1eb`
+                      : `none`};
+                    p:nth-child(1) {
+                      display: block;
+                    }
+                    p:nth-child(2) {
+                      display: none;
+                    }
+                    cursor: pointer;
+                    :hover {
+                      opacity: 50%;
+                      p:nth-child(1) {
+                        display: none;
+                      }
+                      p:nth-child(2) {
+                        display: block;
+                      }
+                    }
+                  `}
                   key={dateData.date}
                   onClick={(e) => {
                     setSelectedDate(dateData.date);
                   }}
                 >
-                  {dateData.date}
+                  <p>Day {i + 1}</p>
+                  <p>{dateData.date}</p>
                 </button>
               ))}
             </div>
@@ -368,11 +420,14 @@ const TravelEditPage = () => {
               travelId={travelId!}
               data={selectedDateSchedules}
               updateData={(updatedData: IScheduleResponse[]) => {
-                console.log("Outer Update Data", updatedData);
+                const updatedScheduleOrder = updatedData.map(
+                  (data) => data.scheduleId
+                );
+
                 updateScheduleOrder({
                   travelId: travelId!,
                   date: selectedDate!,
-                  scheduleOrder: updatedData.map((data) => data.scheduleId),
+                  scheduleOrder: updatedScheduleOrder,
                 });
                 dispatch(
                   travelApi.util.updateQueryData(
@@ -381,13 +436,70 @@ const TravelEditPage = () => {
                     (draft) => {
                       draft.dates.find(
                         (date) => date.date === selectedDate
-                      )!.schedules = updatedData;
+                      )!.scheduleOrders = updatedScheduleOrder;
                     }
                   )
                 );
+                client.current!.emit("scheduleOrderChange", {
+                  travelId: travelId!,
+                  data: {
+                    date: selectedDate!,
+                    scheduleOrder: updatedScheduleOrder,
+                  },
+                });
               }}
             />
+            <div
+              css={css`
+                position: absolute;
+                bottom: 1rem;
+                right: 1rem;
+                cursor: pointer;
+                border-radius: 100vw;
+                display: flex;
+                background: white;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                box-shadow: 0px 0px 3px ${theme.colors.shadow};
+                :hover {
+                  div:nth-child(1) {
+                    visibility: visible;
+                    display: flex;
+                  }
+                }
+              `}
+            >
+              <div
+                css={css`
+                  visibility: hidden;
+                  display: none;
+                  row-gap: 1rem;
+                  justify-content: center;
+                  flex-direction: column;
+                  padding: 1rem 0px;
+                `}
+              >
+                <BiMapPin onClick={openCreateScheduleModal} />
+                <BiCalendar onClick={openCreateDateModal} />
+              </div>
+              <div
+                css={css`
+                  border-radius: 100vw;
+                  display: flex;
+                  justify-content: center;
+                  box-shadow: 0px 0px 3px ${theme.colors.shadow};
+                  padding: 1rem;
+                `}
+              >
+                <BiPlus />
+              </div>
+            </div>
           </>
+        )}
+        {type === "image" && (
+          <ImageFeed travelId={travelId} travelData={travelData} />
+        )}
         {type === "settlement" && (
           <SplitBill costData={travelData.costs} travelId={travelId} />
         )}
@@ -411,6 +523,14 @@ const TravelEditPage = () => {
           onMouseMove={mouseMoveOnMapEvent}
           style={{ width: "100%", height: "100%" }}
         >
+          {Object.entries(sharedCursors).map(([k, v]) => (
+            <CustomOverlayMap position={v}>
+              <div>
+                <BiPointer color="purple" size={24} />
+                {k}
+              </div>
+            </CustomOverlayMap>
+          ))}
           {seletedPosition && (
             <MapMarker // 마커를 생성합니다
               position={seletedPosition}

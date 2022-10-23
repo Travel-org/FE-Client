@@ -48,51 +48,18 @@ const travelApi = baseApi
         providesTags: (result, error, travelId) => [
           { type: "Travel", id: travelId },
         ],
-        onCacheEntryAdded: async function (
-            travelId,
-            { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
-          ) {
-            socket = socketClient("http://123.214.75.32:9999/", {
-              transports: ["websocket"],
-              auth: {
-                token: (getState() as RootState).auth.token,
-              },
-              query: {
-                travelId: travelId,
-                userId: 1,
-              },
-            });
-
-            socket.on("scheduleOrderChanged", (message) => {
-              console.log("scheduleOrderChanged", message);
-              updateCachedData((draft) => {
-                draft.dates.find(
-                  (date) => date.date === message.date
-                )!.scheduleOrders = message.scheduleOrder;
-              });
-            });
-
-            socket.on("scheduleAdded", (message) => {
-              console.log("scheduleAdded", message);
-            });
-  
-            await cacheEntryRemoved;
-  
-            socket.close();
-          },
       }),
 
       getSchedule: builder.query<
-      IScheduleResponse,
-      { travelId: string; scheduleId: string }
-    >({
-      query: (args) => ({
-        url: `${TRAVEL_BASE_URL}/${args.travelId}/schedules/${args.scheduleId}`,
-        method: "GET",
+        IScheduleResponse,
+        { travelId: string; scheduleId: string }
+      >({
+        query: (args) => ({
+          url: `${TRAVEL_BASE_URL}/${args.travelId}/schedules/${args.scheduleId}`,
+          method: "GET",
+        }),
+        // providesTags: ["schedule"],
       }),
-      // providesTags: ["schedule"],
-    }),
-
       createTravel: builder.mutation<
         any,
         {
@@ -132,38 +99,8 @@ const travelApi = baseApi
             date: date,
           },
         }),
-        onQueryStarted: async (
-          args,
-          {
-            dispatch,
-            getState,
-            extra,
-            requestId,
-            queryFulfilled,
-            getCacheEntry,
-          }
-        ) => {
-          const response = await queryFulfilled;
-          socket.emit("scheduleOrderChange", {
-            travelId: args.travelId,
-            data: {
-              date: args.date,
-              scheduleOrder: args.scheduleOrder,
-            },
-          });
-          dispatch(
-            travelApi.util.updateQueryData(
-              "getTravel",
-              args.travelId,
-              (draft) => {
-                draft.dates.find(
-                  (date) => date.date === args.date
-                )!.scheduleOrders = response.data;
-              }
-            )
-          );
-        }
       }),
+
       createTravelDate: builder.mutation<
         any,
         { travelId: string; date: string; title: string }
@@ -176,6 +113,20 @@ const travelApi = baseApi
             title: title,
           },
         }),
+      }),
+      updateTravelDate: builder.mutation<
+        any,
+        { startDate: string; endDate: string; travelId: string }
+      >({
+        query: (args) => ({
+          url: `${TRAVEL_BASE_URL}/${args.travelId}/dates`,
+          method: "PUT",
+          body: {
+            startDate: args.startDate,
+            endDate: args.endDate,
+          },
+        }),
+        invalidatesTags: (args) => [{ type: "Travel", id: args.travelId }],
       }),
       createSchedule: builder.mutation<
         any,
@@ -191,8 +142,8 @@ const travelApi = baseApi
             phoneNumber: string;
             placeName: string;
             placeUrl: string;
-            lat: number;
-            lng: number;
+            lat: string;
+            lng: string;
           };
           userIds: number[];
         }
@@ -210,6 +161,7 @@ const travelApi = baseApi
             userIds: arg.userIds,
           },
         }),
+
         onQueryStarted: async (
           args,
           {
@@ -227,6 +179,35 @@ const travelApi = baseApi
             travelId: args.travelId,
             data: response,
           });
+        },
+        invalidatesTags: (args) => [{ type: "Travel", id: args.travelId }],
+      }),
+      uploadSchedulePhotos: builder.mutation<
+        string[],
+        {
+          travelId: string;
+          scheduleId: string;
+          photos: any;
+        }
+      >({
+        query: (args) => ({
+          url: `${TRAVEL_BASE_URL}/${args.travelId}/schedules/${args.scheduleId}/photos`,
+          method: "POST",
+          body: args.photos,
+        }),
+        onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
+          const updateResponse = await queryFulfilled;
+          dispatch(
+            travelApi.util.updateQueryData(
+              "getTravel",
+              args.travelId,
+              (draft) => {
+                draft.dates.schedules
+                  .filter(({ scheduleId }) => scheduleId === args.scheduleId)[0]
+                  .photos.push(updateResponse.data);
+              }
+            )
+          );
         },
       }),
     }),
