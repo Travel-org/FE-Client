@@ -3,13 +3,11 @@ import { TRAVEL_BASE_URL } from "@utils/type";
 import { IScheduleResponse, IUserResponse } from "@src/app/api/api";
 import socketClient, { Socket } from "socket.io-client";
 import { RootState } from "@src/app/store";
-
 interface IDateData {
   date: string;
   scheduleOrders: number[];
   schedules: IScheduleResponse[];
 }
-
 export interface ITravelResponse {
   id: number;
   title: string;
@@ -21,9 +19,7 @@ export interface ITravelResponse {
   users: IUserResponse[];
   dates: IDateData[];
 }
-
 let socket: Socket;
-
 const travelApi = baseApi
   .enhanceEndpoints({
     addTagTypes: ["Travel"],
@@ -39,7 +35,6 @@ const travelApi = baseApi
           { type: "Travel", id: "LIST" },
         ],
       }),
-
       getTravel: builder.query<ITravelResponse, string>({
         query: (travelId) => ({
           url: `${TRAVEL_BASE_URL}/${travelId}`,
@@ -80,7 +75,6 @@ const travelApi = baseApi
           { type: "Travel", id: "LIST" },
         ],
       }),
-
       changeTravelScheduleOrder: builder.mutation<
         number[],
         {
@@ -161,7 +155,6 @@ const travelApi = baseApi
             userIds: arg.userIds,
           },
         }),
-
         onQueryStarted: async (
           args,
           {
@@ -174,7 +167,6 @@ const travelApi = baseApi
           }
         ) => {
           const response = await queryFulfilled;
-
           socket.emit("scheduleAdd", {
             travelId: args.travelId,
             data: response,
@@ -212,5 +204,4 @@ const travelApi = baseApi
       }),
     }),
   });
-
 export default travelApi;
