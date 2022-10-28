@@ -3,6 +3,7 @@ import { RootState } from "@src/app/store";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { TRAVEL_BASE_URL, USER_BASE_URL } from "@utils/type";
 import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
+import travelApi from "./travelApi";
 
 export interface IUserResponse {
   userId: number;
@@ -42,11 +43,17 @@ export interface IPostResponse {
   userInfo: IUserResponse;
   title: string;
   text: string;
+  createdAt: number;
   comments: ICommentResponse[];
   photoInfos: IPhotoResponse[];
 }
 
-interface ICommentResponse{
+export interface IPageRequest {
+  pageSize: number;
+  pageNumber: number;
+}
+
+interface ICommentResponse {
   commentId: number;
   userInfo: IUserResponse;
   content: string;
@@ -137,12 +144,14 @@ export const api = baseApi.injectEndpoints({
     /**
      * Travel Apis
      */
+
     getUsers: builder.query<any, string>({
       query: (travelId) => ({
         url: `${TRAVEL_BASE_URL}/${travelId}/users`,
         method: "GET",
       }),
     }),
+
     getTravelsByUser: builder.query<any, void>({
       query: () => ({
         url: `${TRAVEL_BASE_URL}`,
@@ -214,6 +223,14 @@ export const api = baseApi.injectEndpoints({
           totalAmount: arg.totalAmount,
         },
       }),
+      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+        const updateResponse = await queryFulfilled;
+        dispatch(
+          travelApi.util.updateQueryData("getTravel", arg.travelId, (draft) => {
+            draft.costs.push(updateResponse.data);
+          })
+        );
+      },
     }),
     /**
      * Invite Apis
@@ -260,6 +277,11 @@ export const authSlice = createSlice({
 });
 
 export const isLoginSelector = createSelector(
+  (state: RootState) => state.auth.token,
+  (token) => token !== null
+);
+
+export const isAdminLoginSelector = createSelector(
   (state: RootState) => state.auth.token,
   (token) => token !== null
 );
