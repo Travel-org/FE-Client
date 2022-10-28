@@ -172,15 +172,15 @@ function FriendsPage() {
                 `}
               >
                 <input
+                  placeholder="친구를 검색해보세요!"
                   css={css`
                     width: 100%;
                   `}
                   onChange={e => {
                     setSearchField(e.target.value);
-                    console.log(searchField);
                   }}
                 />
-                <button>검색</button>
+                {/* <button>검색</button> */}
               </div>
               {searchField===''? friendsData.content?.map(
                   ({ profilePath, userId, userName }) => (
