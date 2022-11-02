@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { api } from "@src/app/api/api";
+import { api, IPageRequest, IUserResponse } from "@src/app/api/api";
 import { theme } from "@src/styles/theme";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import friendApi from "@src/app/api/friendApi";
 import travelApi from "@src/app/api/travelApi";
 import TextAvatar from "@src/components/atoms/textAvatar";
@@ -83,8 +83,23 @@ const Check = ({ onClick }: { onClick: () => void }) => (
 );
 
 function FriendsPage() {
-  const { data: travelsData } = travelApi.useGetTravelsQuery();
-  const { data: friendsData } = friendApi.useGetFriendsQuery();
+  // const { data: travelsData } = travelApi.useGetTravelsQuery();
+
+  // const { data: friends } = friendApi.useGetFriendsQuery();
+
+  const { data: friendsData ,isSuccess,isLoading} = friendApi.useGetFriendsQuery();
+
+  const [friends, setFriends] = useState<IUserResponse[]>([]);
+
+  const [searchField, setSearchField] = useState<string>("");
+
+// useEffect(()=>{
+//  setFriends(friendsData);
+// },[isSuccess])
+
+  useEffect(() => {
+    setFriends(friendsData?.content.filter(f => f.userName.replace(/ /g, "").includes(searchField.replace(/ /g, ""))))
+}, [searchField])
   const { data: givenRequestData } = friendApi.useGetGivenRequestsQuery();
   const { data: givingRequestData } = friendApi.useGetGivingRequestsQuery();
   const [sendEmail] = friendApi.useSendEmailMutation();
@@ -102,6 +117,8 @@ function FriendsPage() {
       return;
     sendEmail(addEmailRef.current?.value);
   };
+  if(isLoading) return <p>loading...</p>
+  if(isSuccess)
 
   return (
     <div
@@ -139,11 +156,24 @@ function FriendsPage() {
                   css={css`
                     width: 100%;
                   `}
+                  onChange={e => {
+                    setSearchField(e.target.value);
+                    console.log(searchField);
+                  }}
                 />
                 <button>검색</button>
               </div>
-              {friendsData !== undefined &&
-                friendsData?.content.map(
+              {searchField===''? friendsData.content?.map(
+                  ({ profilePath, userId, userName }) => (
+                    <UserContainer key={1}>
+                      <img src={profilePath} />
+                      <p>{userName}</p>
+                      <p onClick={() => deleteFriends(userId)}>
+                        <img src="/cancel.svg" />
+                      </p>
+                    </UserContainer>
+                  )
+                ):friends?.map(
                   ({ profilePath, userId, userName }) => (
                     <UserContainer key={1}>
                       <div
@@ -376,6 +406,7 @@ function FriendsPage() {
       </Container>
     </div>
   );
+  else return <p>error</p>
 }
 
 export default FriendsPage;
