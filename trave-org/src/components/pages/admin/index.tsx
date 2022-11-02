@@ -33,6 +33,7 @@ import User from "./pages/User";
 import Notice from "./pages/Notice";
 import Event from "./pages/Event";
 import Cost from "./pages/Cost";
+
 const LLink = styled(Link)`
   text-decoration: none;
   &:focus,

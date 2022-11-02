@@ -48,38 +48,6 @@ const travelApi = baseApi
         providesTags: (result, error, travelId) => [
           { type: "Travel", id: travelId },
         ],
-        onCacheEntryAdded: async function (
-          travelId,
-          { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
-        ) {
-          socket = socketClient("http://123.214.75.32:9999/", {
-            transports: ["websocket"],
-            auth: {
-              token: (getState() as RootState).auth.token,
-            },
-            query: {
-              travelId: travelId,
-              userId: 1,
-            },
-          });
-
-          socket.on("scheduleOrderChanged", (message) => {
-            console.log("scheduleOrderChanged", message);
-            updateCachedData((draft) => {
-              draft.dates.find(
-                (date) => date.date === message.date
-              )!.scheduleOrders = message.scheduleOrder;
-            });
-          });
-
-          socket.on("scheduleAdded", (message) => {
-            console.log("scheduleAdded", message);
-          });
-
-          await cacheEntryRemoved;
-
-          socket.close();
-        },
       }),
 
       getSchedule: builder.query<
@@ -131,42 +99,6 @@ const travelApi = baseApi
             date: date,
           },
         }),
-        onQueryStarted: async (
-          args,
-          {
-            dispatch,
-            getState,
-            extra,
-            requestId,
-            queryFulfilled,
-            getCacheEntry,
-          }
-        ) => {
-          const patchResult = dispatch(
-            travelApi.util.updateQueryData(
-              "getTravel",
-              args.travelId,
-              (draft) => {
-                draft.dates.find(
-                  (date) => date.date === args.date
-                )!.scheduleOrders = args.scheduleOrder;
-              }
-            )
-          );
-
-          try {
-            const response = await queryFulfilled;
-            socket.emit("scheduleOrderChange", {
-              travelId: args.travelId,
-              data: {
-                date: args.date,
-                scheduleOrder: args.scheduleOrder,
-              },
-            });
-          } catch (e) {
-            patchResult.undo();
-          }
-        },
       }),
 
       createTravelDate: builder.mutation<
