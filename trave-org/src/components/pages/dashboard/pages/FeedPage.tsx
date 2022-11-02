@@ -57,11 +57,13 @@ const UserInfo = styled.div`
   align-content: center;
 `;
 
-const PostImage = styled.img`
+
+const PostImage = styled.div<{ img: string }>`
   width: 100%;
-  height: 30rem;
+  background-image: url(${({ img }) => img});
   background-position: center;
   background-size: cover;
+  margin: 3px;
 `;
 
 function FeedPage() {
@@ -72,6 +74,10 @@ function FeedPage() {
     isLoading,
     isSuccess,
   } = postApi.useGetPostsOfFriendsQuery({ pageSize, pageNumber });
+
+  useEffect(() => {
+    console.log(postsData?.content);
+  }, [postsData]);
 
   const fetchMoreData = () => {
     setTimeout(() => {
@@ -84,18 +90,11 @@ function FeedPage() {
         <p>loading..</p>
       </div>
     );
-  else if (isSuccess) {
-    console.log(postsData);
+  else if (isSuccess)
     return (
       <FeedsContainer>
         <InfiniteScroll
-          css={css`
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-            row-gap: 1rem;
-          `}
-          dataLength={postsData.size ?? 1 * postsData.content.length}
+          dataLength={pageSize * pageNumber}
           next={fetchMoreData}
           hasMore={true}
           loader={<h4>Loading...</h4>}
@@ -113,80 +112,30 @@ function FeedPage() {
               }) => (
                 <FeedContainer>
                   <UserProfileRow>
-                    {userInfo.profilePath === null ? (
-                      <TextAvatar
-                        name={userInfo.userName}
-                        // width="3rem"
-                        // height="3rem"
-                        // size={1.6}
-                      />
-                    ) : (
-                      <img
-                        css={css`
-                          width: 3rem;
-                          height: 3rem;
-                        `}
-                        src={userInfo.profilePath}
-                      />
-                    )}
+                    <UserProfileImage img={userInfo.profilePath} />
                     <UserInfo>{userInfo.userName}</UserInfo>
-                    <BiExpand
-                      css={css`
-                        position: absolute;
-                        width: 1.2rem;
-                        height: 1.2rem;
-                        right: 1rem;
-                        top: 1.65rem;
-                      `}
-                    />
                   </UserProfileRow>
-                  <div
-                    css={css`
-                      width: 100%;
-                      padding: 0.1rem;
-                      box-sizing: border-box;
-                      display: flex;
-                      column-gap: 1rem;
-                      overflow: auto;
-                    `}
+                  <Swiper
+                    spaceBetween={10}
+                    slidesPerView={1}
+                    scrollbar={{ draggable: true }}
+                    navigation
+                    pagination={{ clickable: true }}
                   >
                     {photoInfos.map(({ name }) => (
-                      <PostImage src={name} />
+                      <SwiperSlide>
+                        <PostImage img={name} />
+                      </SwiperSlide>
                     ))}
-                  </div>
-                  <div
-                    css={css`
-                      padding: 0.2rem;
-                    `}
-                  >
-                    <p>{text}</p>
-                  </div>
-
-                  <div
-                    css={css`
-                      display: flex;
-                      bottom: 1rem;
-                      right: 1rem;
-                      column-gap: 0.2rem;
-                      position: absolute;
-                      p {
-                        cursor: pointer;
-                        :hover {
-                          opacity: 50%;
-                        }
-                      }
-                    `}
-                  >
-                    <p>❤️</p>
-                    <p>👏</p>
-                  </div>
+                  </Swiper>
+                  <p>{text}</p>
                 </FeedContainer>
               )
             )}
         </InfiniteScroll>
       </FeedsContainer>
     );
-  } else return <p>에러</p>;
+  else return <p>에러</p>;
 }
 
 export default FeedPage;
