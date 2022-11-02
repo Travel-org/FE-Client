@@ -91,6 +91,7 @@ const SearchModal = ({
           height: 40vh;
           display: flex;
           flex-direction: column;
+
           padding: 1rem;
         `}
       >

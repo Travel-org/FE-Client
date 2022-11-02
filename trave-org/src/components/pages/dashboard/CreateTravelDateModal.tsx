@@ -83,7 +83,15 @@ const CreateTravelDateModal: React.FC<ICreateTravelDateModalProps> = ({
         <div
           css={css`
             height: 80px;
-            background: deepskyblue;
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            button {
+              background: white;
+              border: none;
+              padding: 1rem;
+              box-sizing: border-box;
+            }
           `}
         >
           <button type="button" onClick={onClose}>
