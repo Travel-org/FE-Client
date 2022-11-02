@@ -436,17 +436,17 @@ const TravelEditPage = () => {
                     (draft) => {
                       draft.dates.find(
                         (date) => date.date === selectedDate
-                        )!.scheduleOrders = updatedData.map((data) => data.scheduleId);
+                        )!.scheduleOrders = updatedScheduleOrder;
                       }
-                      )
-                    );
-                    client.current!.emit("scheduleOrderChange", {
-                      travelId: travelId!,
-                      data: {
-                        date: selectedDate!,
-                        scheduleOrder: updatedData.map((data) => data.scheduleId),
-                      },
-                    });
+                    )
+                  );
+                  client.current!.emit("scheduleOrderChange", {
+                    travelId: travelId!,
+                    data: {
+                      date: selectedDate!,
+                      scheduleOrder: updatedScheduleOrder,
+                    },
+                  });
               }}
             />
             <div

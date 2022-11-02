@@ -119,7 +119,7 @@ const travelApi = baseApi
         { startDate: string; endDate: string; travelId: string }
       >({
         query: (args) => ({
-          url: TRAVEL_BASE_URL + `/${args.travelId}/dates`,
+          url: `${TRAVEL_BASE_URL}/${args.travelId}/dates`,
           method: "PUT",
           body: {
             startDate: args.startDate,
@@ -191,9 +191,7 @@ const travelApi = baseApi
         }
       >({
         query: (args) => ({
-          url:
-            TRAVEL_BASE_URL +
-            `/${args.travelId}/schedules/${args.scheduleId}/photos`,
+          url: `${TRAVEL_BASE_URL}/${args.travelId}/schedules/${args.scheduleId}/photos`,
           method: "POST",
           body: args.photos,
         }),
@@ -204,7 +202,7 @@ const travelApi = baseApi
               "getTravel",
               args.travelId,
               (draft) => {
-                draft.dates["schedules"]
+                draft.dates.schedules
                   .filter(({ scheduleId }) => scheduleId === args.scheduleId)[0]
                   .photos.push(updateResponse.data);
               }
