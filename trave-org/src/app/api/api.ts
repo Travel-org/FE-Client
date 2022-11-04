@@ -125,6 +125,15 @@ export const api = baseApi.injectEndpoints({
         phoneNumber: string;
         userId: string;
         userType: string;
+        posts: [
+          {
+            postId: number;
+            scheduleId: number;
+            title: string;
+            text: string;
+            createdAt: number;
+          }
+        ]
       },
       void
     >({
@@ -138,7 +147,6 @@ export const api = baseApi.injectEndpoints({
         url: USER_BASE_URL,
         method: "PUT",
         body: args,
-        headers: { "Content-Type": "multipart/form-data" },
       }),
     }),
     /**

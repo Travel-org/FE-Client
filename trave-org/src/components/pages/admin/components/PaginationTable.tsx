@@ -183,7 +183,7 @@ const PaginationTable = ({ url, kps }) => {
         </Table>
       </TableContainer>
       <div style={{ margin: "10px 0px", width: "90%", display: "flex", justifyContent:"end" }}>
-        <Button variant="contained">생성하기</Button>
+      <Button variant="contained" toPath="/admin/notice/new">생성하기</Button>
       </div>
     </div>
   );
