@@ -170,7 +170,9 @@ const PaginationTable = ({ url, kps }) => {
               <TableRow key={idx}>
                 {kps.map((kp, idx2) => (
                   <React.Fragment key={idx + idx2}>
-                    {kp.gen(row)}
+                    <a href= {"/" + (idx + idx2)}>
+                      {kp.gen(row)}
+                    </a>
                   </React.Fragment>
                 ))}
               </TableRow>
