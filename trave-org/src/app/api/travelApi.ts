@@ -203,7 +203,7 @@ const travelApi = baseApi
               args.travelId,
               (draft) => {
                 draft.dates.schedules
-                  .filter(({ scheduleId }) => scheduleId === args.scheduleId)[0]
+                .filter(({ scheduleId }) => scheduleId === args.scheduleId)[0]
                   .photos.push(updateResponse.data);
               }
             )

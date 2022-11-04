@@ -5,14 +5,11 @@ import { theme } from "@src/styles/theme";
 import { useEffect, useRef, useState } from "react";
 import friendApi from "@src/app/api/friendApi";
 import travelApi from "@src/app/api/travelApi";
-import TextAvatar from "@src/components/atoms/textAvatar";
-
 const BtnWarpper = styled.div`
   display: grid;
   width: 20vw;
   grid-template-columns: repeat(3, 1fr);
 `;
-
 const Button = styled.button<{ state: boolean }>`
   padding: 1rem;
   border: none;
@@ -23,23 +20,41 @@ const Button = styled.button<{ state: boolean }>`
     opacity: 50%;
   }
 `;
-
 const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
 `;
-
 const UserContainer = styled.div`
   height: 4rem;
   display: flex;
   padding: 1rem;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
-  /* border-bottom: 1px solid black; */
+  border-bottom: 1px solid black;
+  :hover {
+    p:nth-child(3) {
+      visibility: visible;
+    }
+  }
+  img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100vw;
+  }
+  p:nth-child(3) {
+    visibility: hidden;
+    img {
+      width: 1rem;
+      height: 1rem;
+      cursor: pointer;
+      :hover {
+        opacity: 50%;
+      }
+    }
+  }
 `;
-
 const FriendsListContainer = styled.div`
   width: 20vw;
   height: 100%;
@@ -47,9 +62,7 @@ const FriendsListContainer = styled.div`
   box-sizing: border-box;
   padding: 1rem;
 `;
-
 const FriendsDetailContainer = styled.div``;
-
 const Cancel = ({ onClick }: { onClick: () => void }) => (
   <svg
     width="10"
@@ -65,7 +78,6 @@ const Cancel = ({ onClick }: { onClick: () => void }) => (
     />
   </svg>
 );
-
 const Check = ({ onClick }: { onClick: () => void }) => (
   <svg
     width="9"
@@ -81,25 +93,19 @@ const Check = ({ onClick }: { onClick: () => void }) => (
     />
   </svg>
 );
-
 function FriendsPage() {
   // const { data: travelsData } = travelApi.useGetTravelsQuery();
-
   // const { data: friends } = friendApi.useGetFriendsQuery();
-
   const { data: friendsData ,isSuccess,isLoading} = friendApi.useGetFriendsQuery();
-
   const [friends, setFriends] = useState<IUserResponse[]>([]);
-
   const [searchField, setSearchField] = useState<string>("");
-
 // useEffect(()=>{
 //  setFriends(friendsData);
 // },[isSuccess])
-
   useEffect(() => {
     setFriends(friendsData?.content.filter(f => f.userName.replace(/ /g, "").includes(searchField.replace(/ /g, ""))))
 }, [searchField])
+  
   const { data: givenRequestData } = friendApi.useGetGivenRequestsQuery();
   const { data: givingRequestData } = friendApi.useGetGivingRequestsQuery();
   const [sendEmail] = friendApi.useSendEmailMutation();
@@ -118,8 +124,7 @@ function FriendsPage() {
     sendEmail(addEmailRef.current?.value);
   };
   if(isLoading) return <p>loading...</p>
-  if(isSuccess)
-
+if(isSuccess)
   return (
     <div
       css={css`
@@ -153,15 +158,15 @@ function FriendsPage() {
                 `}
               >
                 <input
+                  placeholder="친구를 검색해보세요!"
                   css={css`
                     width: 100%;
                   `}
                   onChange={e => {
                     setSearchField(e.target.value);
-                    console.log(searchField);
                   }}
                 />
-                <button>검색</button>
+                {/* <button>검색</button> */}
               </div>
               {searchField===''? friendsData.content?.map(
                   ({ profilePath, userId, userName }) => (
@@ -176,69 +181,16 @@ function FriendsPage() {
                 ):friends?.map(
                   ({ profilePath, userId, userName }) => (
                     <UserContainer key={1}>
-                      <div
-                        css={css`
-                          display: flex;
-                          align-items: center;
-                          column-gap: 1rem;
-                          img {
-                            width: 2rem;
-                            height: 2rem;
-                            border-radius: 100vw;
-                          }
-                        `}
-                      >
-                        {profilePath === null ? (
-                          <TextAvatar
-                            name={userName}
-                            width="3rem"
-                            height="3rem"
-                            size={1.6}
-                          />
-                        ) : (
-                          <img
-                            css={css`
-                              width: 3rem;
-                              height: 3rem;
-                            `}
-                            src={profilePath}
-                          />
-                        )}
-                        <div
-                          css={css`
-                            * {
-                              margin: 0px;
-                            }
-                            p:nth-child(2) {
-                              font-size: smaller;
-                              color: grey;
-                            }
-                          `}
-                        >
-                          <p>{userName}</p>
-                          <p>{userId}</p>
-                        </div>
-                      </div>
-                      <p
-                        css={css`
-                          border-radius: 5px;
-                          padding: 0.1rem;
-                          border: 0.1rem solid grey;
-                          cursor: pointer;
-                          :hover {
-                            opacity: 50%;
-                          }
-                        `}
-                        onClick={() => deleteFriends(userId)}
-                      >
-                        삭제
+                      <img src={profilePath} />
+                      <p>{userName}</p>
+                      <p onClick={() => deleteFriends(userId)}>
+                        <img src="/cancel.svg" />
                       </p>
                     </UserContainer>
                   )
                 )}
             </>
           )}
-
           {type === "given" && (
             <>
               {givenRequestData !== undefined &&
@@ -254,45 +206,12 @@ function FriendsPage() {
                       <div
                         css={css`
                           display: flex;
-                          align-items: center;
-                          column-gap: 1rem;
-                          img {
-                            width: 2rem;
-                            height: 2rem;
-                            border-radius: 100vw;
-                          }
+                          width: 100%;
+                          justify-content: space-evenly;
                         `}
                       >
-                        {profilePath === null ? (
-                          <TextAvatar
-                            name={userName}
-                            width="3rem"
-                            height="3rem"
-                            size={1.6}
-                          />
-                        ) : (
-                          <img
-                            css={css`
-                              width: 3rem;
-                              height: 3rem;
-                            `}
-                            src={profilePath}
-                          />
-                        )}
-                        <div
-                          css={css`
-                            * {
-                              margin: 0px;
-                            }
-                            p:nth-child(2) {
-                              font-size: smaller;
-                              color: grey;
-                            }
-                          `}
-                        >
-                          <p>{userName}</p>
-                          <p>{userId}</p>
-                        </div>
+                        <img src={profilePath} />
+                        <p>{userName}</p>
                       </div>
                       <div
                         css={css`
@@ -339,62 +258,10 @@ function FriendsPage() {
                 givingRequestData?.content.map(
                   ({ profilePath, userId, userName }) => (
                     <UserContainer key={1}>
-                      <div
-                        css={css`
-                          display: flex;
-                          align-items: center;
-                          column-gap: 1rem;
-                          img {
-                            width: 2rem;
-                            height: 2rem;
-                            border-radius: 100vw;
-                          }
-                        `}
-                      >
-                        {profilePath === null ? (
-                          <TextAvatar
-                            name={userName}
-                            width="3rem"
-                            height="3rem"
-                            size={1.6}
-                          />
-                        ) : (
-                          <img
-                            css={css`
-                              width: 3rem;
-                              height: 3rem;
-                            `}
-                            src={profilePath}
-                          />
-                        )}
-                        <div
-                          css={css`
-                            * {
-                              margin: 0px;
-                            }
-                            p:nth-child(2) {
-                              font-size: smaller;
-                              color: grey;
-                            }
-                          `}
-                        >
-                          <p>{userName}</p>
-                          <p>{userId}</p>
-                        </div>
-                      </div>
-                      <p
-                        css={css`
-                          border-radius: 5px;
-                          padding: 0.1rem;
-                          border: 0.1rem solid grey;
-                          cursor: pointer;
-                          :hover {
-                            opacity: 50%;
-                          }
-                        `}
-                        onClick={() => cancelRequest(userId)}
-                      >
-                        삭제
+                      <img src={profilePath} />
+                      <p>{userName}</p>
+                      <p onClick={() => cancelRequest(userId)}>
+                        <img src="/cancel.svg" />
                       </p>
                     </UserContainer>
                   )
@@ -408,5 +275,4 @@ function FriendsPage() {
   );
   else return <p>error</p>
 }
-
 export default FriendsPage;
