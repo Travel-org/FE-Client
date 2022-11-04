@@ -149,6 +149,13 @@ export const api = baseApi.injectEndpoints({
         body: args,
       }),
     }),
+    updateMyAvatar: builder.mutation<FormData, any>({
+      query: (args) => ({
+        url: `${USER_BASE_URL}/photo`,
+        method: "PUT",
+        body: args,
+      }),
+    }),
     /**
      * Travel Apis
      */
