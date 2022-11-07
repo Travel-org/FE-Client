@@ -3,7 +3,7 @@ import travelApi from "@src/app/api/travelApi";
 import { theme } from "@src/styles/theme";
 import { useEffect, useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import Modal from "../modal";
+import Modal from "@src/components/modal";
 
 interface IUploadImageModalProps {
   travelId: string;

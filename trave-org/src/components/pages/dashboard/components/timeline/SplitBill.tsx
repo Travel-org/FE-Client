@@ -1,9 +1,8 @@
 import { css } from "@emotion/react";
 import React, { useState } from "react";
-import { BiChevronDown, BiChevronUp, BiX } from "react-icons/bi";
 import { api } from "@src/app/api/api";
 import CostElement from "@src/components/organisms/costElement";
-import Modal from "@src/components/organisms/modal";
+import Modal from "@src/components/modal";
 import AddCostModal from "@src/components/organisms/addCostModal";
 import { theme } from "@src/styles/theme";
 

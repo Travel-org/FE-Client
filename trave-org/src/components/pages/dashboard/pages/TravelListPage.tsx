@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import { useCallback, useState } from "react";
 import travelApi from "@src/app/api/travelApi";
 import { theme } from "@src/styles/theme";
-import Modal from "@src/components/organisms/modal";
+import Modal from "@src/components/modal";
 import CreateTravelModal from "@src/components/organisms/createTravelModal";
 
 const TravelListPage = () => {

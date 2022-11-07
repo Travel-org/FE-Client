@@ -5,11 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 interface IModalProp {
   children: ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-const Modal: React.FC<IModalProp> = ({ children }) => {
-  const navigate = useNavigate();
-
+const Modal: React.FC<IModalProp> = ({ children, onClick }) => {
   return createPortal(
     <div
       css={css`
@@ -24,8 +23,15 @@ const Modal: React.FC<IModalProp> = ({ children }) => {
         justify-content: center;
         z-index: 9999;
       `}
+      onClick={onClick}
     >
-      {children}
+       <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {children}
+      </div>
     </div>,
     document.getElementById("modal_root")!
   );

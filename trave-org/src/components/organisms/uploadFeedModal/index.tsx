@@ -1,10 +1,9 @@
 import { css } from "@emotion/react";
-import { width } from "@mui/system";
 import postApi from "@src/app/api/postApi";
 import { theme } from "@src/styles/theme";
 import { useEffect, useRef, useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import Modal from "../modal";
+import Modal from "@src/components/modal";
 
 interface IUploadFeedModalProps {
   travelId: string;

@@ -1,8 +1,7 @@
 import { Container, ElementWrapper, ModalContainer, Input } from "./styles";
 import PartyElement from "@atoms/partyElement";
 import Button from "@atoms/button";
-import Portal from "@src/portal";
-import Modal from "@organisms/modal";
+import Modal from "@src/components/modal";
 import { useRef, useState } from "react";
 
 const data = { email: "pkb8839@naver.com" };
