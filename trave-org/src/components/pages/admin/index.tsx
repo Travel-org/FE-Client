@@ -33,8 +33,9 @@ import User from "./pages/User";
 import Notice from "./pages/Notice";
 import Event from "./pages/Event";
 import Cost from "./pages/Cost";
+import TravelDetail from "./pages/TravelDetail";
 
-const LLink = styled(Link)`
+export const LLink = styled(Link)`
   text-decoration: none;
   &:focus,
   &:hover,
@@ -263,6 +264,10 @@ const adminRouter: BreadcrumbsRoute<string>[] = [
       {
         path: "/admin/travels",
         element: <Travel />,
+      },
+      {
+        path: "/admin/travels/:travelId",
+        element: <TravelDetail />,
       },
       {
         path: "/admin/posts",
