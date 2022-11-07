@@ -137,7 +137,14 @@ const PaginationTable = ({ url, kps }) => {
     setPage(newPage);
   };
   return (
-    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+    <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
       <TableContainer
         component={Paper}
         style={{ width: "90%", marginTop: "20px" }}
@@ -182,8 +189,14 @@ const PaginationTable = ({ url, kps }) => {
           </TableFooter>
         </Table>
       </TableContainer>
-      <div style={{ margin: "10px 0px", width: "90%", display: "flex", justifyContent:"end" }}>
-        <Button variant="contained" toPath="/admin/notice/new">생성하기</Button>
+      <div style={{ display: "flex", justifyContent: "right", width: "90%" }}>
+        <Button
+          variant="contained" 
+          color="primary"
+          style={{ marginTop: "10px" }}
+        >
+          생성하기
+        </Button>
       </div>
     </div>
   );
