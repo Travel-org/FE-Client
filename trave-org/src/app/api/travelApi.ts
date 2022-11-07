@@ -80,7 +80,6 @@ const travelApi = baseApi
           { type: "Travel", id: "LIST" },
         ],
       }),
-
       changeTravelScheduleOrder: builder.mutation<
         number[],
         {
@@ -161,7 +160,6 @@ const travelApi = baseApi
             userIds: arg.userIds,
           },
         }),
-
         onQueryStarted: async (
           args,
           {
@@ -174,7 +172,6 @@ const travelApi = baseApi
           }
         ) => {
           const response = await queryFulfilled;
-
           socket.emit("scheduleAdd", {
             travelId: args.travelId,
             data: response,
@@ -202,7 +199,7 @@ const travelApi = baseApi
               "getTravel",
               args.travelId,
               (draft) => {
-                  draft.dates.schedules
+                draft.dates.schedules
                   .filter(({ scheduleId }) => scheduleId === args.scheduleId)[0]
                   .photos.push(updateResponse.data);
               }
@@ -212,5 +209,4 @@ const travelApi = baseApi
       }),
     }),
   });
-
 export default travelApi;
