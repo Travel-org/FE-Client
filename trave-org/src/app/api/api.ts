@@ -132,6 +132,12 @@ export const api = baseApi.injectEndpoints({
             title: string;
             text: string;
             createdAt: number;
+            photoInfos: [
+              {
+                photoId: number;
+                name: string;
+              }
+            ]
           }
         ]
       },

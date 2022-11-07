@@ -5,6 +5,16 @@ import { BiPencil } from "react-icons/bi";
 import { theme } from "@src/styles/theme";
 import { Container } from "./styles";
 import { useEffect, useRef, useState } from "react";
+import Grid from "@mui/material/Grid/Grid";
+import styled from "@emotion/styled";
+
+const Img = styled.div<{ img: string }>`
+  width: 30px;
+  height: 30px;
+  background-image: url(${({ img }) => img});
+  background-position: center;
+  background-size: cover;
+`;
 
 const MyPage = () => {
   const { data: myData } = api.useGetMyInfoQuery();
@@ -145,6 +155,15 @@ const MyPage = () => {
           )}
         </div>
       )}
+      {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        {myData !== undefined &&
+        myData.posts !== undefined &&
+        myData.posts.map(post => 
+          <Grid item xs={6}>
+            <Img img={post?.photoInfos[0].name} />
+          </Grid>)
+        }
+      </Grid> */}
     </Container>
   );
 };
