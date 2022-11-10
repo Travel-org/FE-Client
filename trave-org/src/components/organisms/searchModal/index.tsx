@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { api } from "@src/app/api/api";
 import travelApi from "@src/app/api/travelApi";
 import Modal from "@src/components/modal";
 import { theme } from "@src/styles/theme";
@@ -33,13 +34,14 @@ const SearchModal = ({
   onSuccess,
 }: ICreateTravelScheduleModalProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const { data: myInfoData } = api.useGetMyInfoQuery();
   const [targetAddress, setTargetAddress] = useState<ScheduleProps>();
   const [searchResult, setSearchResult] =
     useState<kakao.maps.services.PlacesSearchResult>();
   const [createSchedule, { error, isSuccess, isLoading }] =
     travelApi.useCreateScheduleMutation();
 
-  const handleCreateSchedule = () => {
+    const handleCreateSchedule = (id: number) => {
     if (targetAddress === undefined) return;
     console.log(targetAddress);
     createSchedule({
@@ -55,7 +57,7 @@ const SearchModal = ({
         kakaoMapId: Number(targetAddress.id),
         phoneNumber: targetAddress.phone,
       },
-      userIds: [13],
+      userIds: [id],
       endTime: "13:30:07",
       startTime: "13:30:07",
     });
@@ -149,7 +151,14 @@ const SearchModal = ({
           <button type="button" onClick={onClose}>
             취소
           </button>
-          <button type="button" onClick={handleCreateSchedule}>
+          <button
+            type="button"
+            onClick={() =>
+              handleCreateSchedule(
+                myInfoData !== undefined ? Number(myInfoData?.userId) : 10
+              )
+            }
+          >
             추가
           </button>
         </div>
