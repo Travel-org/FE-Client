@@ -9,6 +9,7 @@ export interface IUserResponse {
   userId: number;
   userName: string;
   profilePath: string;
+  email: string;
 }
 
 export interface IScheduleResponse {
@@ -137,9 +138,9 @@ export const api = baseApi.injectEndpoints({
                 photoId: number;
                 name: string;
               }
-            ]
+            ];
           }
-        ]
+        ];
       },
       void
     >({

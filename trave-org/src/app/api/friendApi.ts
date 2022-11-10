@@ -15,6 +15,12 @@ const friendApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    showFriendsProfile: builder.query<any, string>({
+      query: (targetId) => ({
+        url: USER_BASE_URL + `/friend/${targetId}`,
+        method: "GET",
+      }),
+    }),
     getGivenRequests: builder.query<any, void>({
       query: () => ({
         url: `${USER_BASE_URL}/friends/given-requests`,
