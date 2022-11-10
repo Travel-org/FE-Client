@@ -54,8 +54,10 @@ const Navigation = ({ user }: Props) => {
               flex-direction: row;
             `}
           >
-            <p onClick={() => navigate("/signIn")}>로그인</p>
-            <p onClick={() => navigate("/signUp")}>회원가입</p>
+            {!currentUser && <p onClick={() => navigate("/signIn")}>로그인</p>}
+            {!currentUser && (
+              <p onClick={() => navigate("/signUp")}>회원가입</p>
+            )}
             {currentUser && <p onClick={() => logout()}>로그아웃</p>}
           </div>
         </Wrapper>
