@@ -187,7 +187,7 @@ const TravelEditPage = () => {
         result.map((r) => ({
           type: "driving",
           distance: r.features[0].properties.summary.distance,
-          duration: r.features[0].properties.summary.distance,
+          duration: r.features[0].properties.summary.duration,
           path: r.features[0].geometry.coordinates,
         }))
       );
@@ -419,6 +419,7 @@ const TravelEditPage = () => {
             <ListProto
               travelId={travelId!}
               data={selectedDateSchedules}
+              routeData={routeInfos}
               updateData={(updatedData: IScheduleResponse[]) => {
                 const updatedScheduleOrder = updatedData.map(
                   (data) => data.scheduleId
