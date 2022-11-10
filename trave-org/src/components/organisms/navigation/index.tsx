@@ -43,11 +43,11 @@ const Navigation = ({ user }: Props) => {
           <Link to="/" style={{ textDecoration: "none" }}>
             <Logo color="#1e52e2" />
           </Link>
-          <div>
+          {/* <div>
             <Link to="/dashboard">
               <p>대시보드</p>
             </Link>
-          </div>
+          </div> */}
           <div
             css={css`
               display: flex;
