@@ -254,6 +254,63 @@ export const api = baseApi.injectEndpoints({
         );
       },
     }),
+    deleteCost: builder.mutation<string, { travelId: string; costId: string }>({
+      query: (args) => ({
+        url: `/v1/travels/${args.travelId}/costs/${args.costId}`,
+        method: "DELETE",
+      }),
+      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+        const updateResponse = await queryFulfilled;
+        dispatch(
+          travelApi.util.updateQueryData("getTravel", arg.travelId, (draft) => {
+            draft.costs = draft.costs.filter(
+              ({ costId }) => updateResponse.data !== costId
+            );
+          })
+        );
+      },
+    }),
+    updateCost: builder.mutation<
+      any,
+      {
+        amountsPerUser: AmountPerUserProps[];
+        content: string;
+        payerId: number;
+        title: string;
+        totalAmount: number;
+        travelId: string;
+        costId: string;
+      }
+    >({
+      query: (args) => ({
+        url: `/v1/travels/${args.travelId}/costs/${args.costId}`,
+        method: "PUT",
+        body: {
+          amountsPerUser: args.amountsPerUser,
+          content: args.content,
+          payerId: args.payerId,
+          title: args.title,
+          totalAmount: args.totalAmount,
+        },
+        onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+          const updateResponse = await queryFulfilled;
+          dispatch(
+            travelApi.util.updateQueryData(
+              "getTravel",
+              arg.travelId,
+              (draft) => {
+                draft.costs = [
+                  ...draft.costs.filter(
+                    ({ costId }) => updateResponse.data.costId !== costId
+                  ),
+                  updateResponse.data,
+                ];
+              }
+            )
+          );
+        },
+      }),
+    }),
     /**
      * Invite Apis
      */
