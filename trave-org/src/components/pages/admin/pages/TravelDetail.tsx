@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styled from "@emotion/styled";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -28,6 +29,16 @@ interface TabPanelProps {
   value: any;
 }
 
+const Img = styled.div<{ img: string }>`
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  margin-left: 10px;
+  background-image: url(${({ img }) => img});
+  background-position: center;
+  background-size: cover;
+`;
+
 const userkps: { title: string; gen: (rowData: any) => React.ReactNode }[] = [
   {
     title: "ID",
@@ -46,9 +57,16 @@ const userkps: { title: string; gen: (rowData: any) => React.ReactNode }[] = [
             justifyContent: "center",
           }}
         >
-          {rowData.name}
+          {rowData.userName}
+          <Img img={rowData.profilePath} />
         </div>
       </TableCell>
+    ),
+  },
+  {
+    title: "이메일",
+    gen: (rowData: any) => (
+      <TableCell align="center">{rowData.email}</TableCell>
     ),
   },
 ];
@@ -110,42 +128,42 @@ export default function ScrollableTabsButtonAuto() {
   };
 
   if (!value || isLoading) return <div>api fetch fail</div>;
+  console.log(value);
   return (
-    <div>
-      <Card style={{ margin: "20px" }}>
-        <TableContainer
-          component={Paper}
-          style={{ width: "90%", marginTop: "20px" }}
-        >
-          <Table size="small" aria-label="a dense table">
-            {/* <TableHead>
-              <TableRow>
-                {kps.map((kp, idx) => (
-                  <TableCell key={idx} align="center">
-                    {kp.title}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, idx) => (
-                <TableRow key={idx}>
-                  {kps.map((kp, idx2) => (
-                    <React.Fragment key={idx + idx2}>
-                      {kp.gen(row)}
-                    </React.Fragment>
+    <div style={{ width: "calc(100vw - 250px)" }}>
+      {value.users && (
+        <Card style={{ margin: "20px" }}>
+          <TableContainer component={Paper} style={{ width: "100%" }}>
+            <Table size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  {userkps.map((kp, idx) => (
+                    <TableCell key={idx} align="center">
+                      {kp.title}
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableBody> */}
-          </Table>
-        </TableContainer>
-      </Card>
+              </TableHead>
+              <TableBody>
+                {value.users.map((row, idx) => (
+                  <TableRow key={idx}>
+                    {userkps.map((kp, idx2) => (
+                      <React.Fragment key={idx + idx2}>
+                        {kp.gen(row)}
+                      </React.Fragment>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+      )}
       <Card style={{ margin: "20px" }}>
         <AppBar
           position="static"
           color="default"
-          style={{ width: "calc(100vw - 290px)" }}
+          // style={{ width: "calc(100vw - 290px)" }}
         >
           <Tabs
             value={day}
@@ -198,13 +216,11 @@ const useRowStyles = makeStyles({
 
 function Row({ row }) {
   const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
-  console.log(row);
 
   return (
     <>
       <TableRow>
-        <TableCell align="center">{row.scheduleId}</TableCell>
+        <TableCell>{row.scheduleId}</TableCell>
         <TableCell component="th" scope="row">
           {row.users.map((user) => user.userName).join(", ")}
         </TableCell>
