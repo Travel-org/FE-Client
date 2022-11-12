@@ -1,4 +1,4 @@
-import { TableCell } from "@material-ui/core";
+import { TableCell, IconButton } from "@material-ui/core";
 import styled from "@emotion/styled";
 import PaginationTable from "../components/PaginationTable";
 
@@ -9,17 +9,13 @@ const Event = () => {
     {
       title: "ID",
       gen: (rowData: any) => (
-        <TableCell align="center">
-          {rowData.eventId}
-        </TableCell>
+        <TableCell align="center">{rowData.eventId}</TableCell>
       ),
     },
     {
       title: "제목",
       gen: (rowData: any) => (
-        <TableCell align="center">
-          {rowData.title}
-        </TableCell>
+        <TableCell align="center">{rowData.title}</TableCell>
       ),
     },
     {

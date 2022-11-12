@@ -1,8 +1,18 @@
-import { TableCell } from "@material-ui/core";
+import { TableCell, IconButton } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Delete, Edit } from "@material-ui/icons";
 import PaginationTable from "../components/PaginationTable";
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    extendedIcon: {
+      marginRight: theme.spacing(1),
+    },
+  })
+);
 const Travel = () => {
   const url = "https://api.dev.travely.guide/v1/admin/travels";
+  const classes = useStyles();
   const kps: { title: string; gen: (rowData: any) => React.ReactNode }[] = [
     {
       title: "ID",

@@ -25,6 +25,8 @@ import LastPageIcon from "@material-ui/icons/LastPage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { first, identity } from "lodash";
+import { Delete, Edit } from "@material-ui/icons";
+
 const Img = styled.div<{ img: string }>`
   width: 30px;
   height: 30px;
@@ -157,6 +159,7 @@ const PaginationTable = ({ url, kps }) => {
                   {kp.title}
                 </TableCell>
               ))}
+              <TableCell align="center">관리</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -167,6 +170,14 @@ const PaginationTable = ({ url, kps }) => {
                     {kp.gen(row)}
                   </React.Fragment>
                 ))}
+                <TableCell align="center">
+                  <IconButton aria-label="update" color="primary">
+                    <Edit fontSize="small" />
+                  </IconButton>
+                  <IconButton aria-label="delete" color="secondary">
+                    <Delete fontSize="small" />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

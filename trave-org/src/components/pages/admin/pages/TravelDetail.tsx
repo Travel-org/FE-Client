@@ -180,25 +180,27 @@ export default function ScrollableTabsButtonAuto() {
         </AppBar>
         {value.dates.map((date, idx) => (
           <TabPanel key={idx} value={day} index={idx}>
-            <TableContainer component={Paper}>
-              <Table aria-label="collapsible table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>schedule ID</TableCell>
-                    <TableCell>참여자</TableCell>
-                    <TableCell align="right">장소</TableCell>
-                    <TableCell />
-                    <TableCell align="center">시작시간</TableCell>
-                    <TableCell align="center">종료시간</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {date.schedules.map((row) => (
-                    <Row key={row.scheduleId} row={row} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            {date.schedules && (
+              <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">schedule ID</TableCell>
+                      <TableCell>참여자</TableCell>
+                      <TableCell align="right">장소</TableCell>
+                      <TableCell />
+                      <TableCell align="center">시작시간</TableCell>
+                      <TableCell align="center">종료시간</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {date.schedules.map((row) => (
+                      <Row key={row.scheduleId} row={row} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
           </TabPanel>
         ))}
       </Card>
@@ -220,7 +222,7 @@ function Row({ row }) {
   return (
     <>
       <TableRow>
-        <TableCell>{row.scheduleId}</TableCell>
+        <TableCell align="center">{row.scheduleId}</TableCell>
         <TableCell component="th" scope="row">
           {row.users.map((user) => user.userName).join(", ")}
         </TableCell>
