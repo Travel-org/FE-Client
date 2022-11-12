@@ -257,16 +257,16 @@ export const api = baseApi.injectEndpoints({
     /**
      * Invite Apis
      */
-    acceptInvite: builder.query<string, string>({
+     acceptInvite: builder.mutation<string, string>({
       query: (code) => ({
         url: `${TRAVEL_BASE_URL}/accept/${code}`,
-        method: "GET",
+        method: "POST",
       }),
     }),
-    rejectInvite: builder.query<string, string>({
+    rejectInvite: builder.mutation<string, string>({
       query: (code) => ({
         url: `${TRAVEL_BASE_URL}/reject/${code}`,
-        method: "GET",
+        method: "DELETE",
       }),
     }),
   }),

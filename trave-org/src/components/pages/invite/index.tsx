@@ -5,12 +5,14 @@ import { Container } from "./styles";
 const Invite = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [acceptInvite] = api.useAcceptInviteMutation();
+  const [rejectInvite] = api.useRejectInviteMutation();
   const handleRejectCode = () => {
-    const { data: rejectStatus } = api.useRejectInviteQuery(id!);
+    const data = rejectInvite(id!);
     navigate("/dashboard");
   };
   const handleAcceptCode = () => {
-    const { data: acceptStatus } = api.useAcceptInviteQuery(id!);
+    const data = acceptInvite(id!);
     navigate("/dashboard/travels");
   };
   return (

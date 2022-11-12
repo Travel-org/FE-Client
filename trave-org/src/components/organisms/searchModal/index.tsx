@@ -89,8 +89,8 @@ const SearchModal = ({
           position: relative;
           background: white;
           border-radius: 10px;
-          width: 20vw;
-          height: 40vh;
+          width: 30vw;
+          height: 80vh;
           display: flex;
           flex-direction: column;
 
@@ -128,10 +128,14 @@ const SearchModal = ({
                       ? "black"
                       : "grey"};
                     cursor: pointer;
+                    * {
+                    margin: 0px;
+                  }
                   `}
                   onClick={() => setTargetAddress(result)}
                 >
-                  {result.place_name}
+                  <p>{result.place_name}</p>
+                  <p>{result.address_name}</p>
                 </div>
               );
             })}
