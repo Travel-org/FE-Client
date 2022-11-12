@@ -132,8 +132,8 @@ const travelApi = baseApi
         {
           travelId: string;
           date: string;
-          endTime: "13:30:07";
-          startTime: "13:30:07";
+          endTime: "00:00:00";
+          startTime: "00:00:00";
           place: {
             addressName: string;
             addressRoadName: string;
@@ -160,23 +160,6 @@ const travelApi = baseApi
             userIds: arg.userIds,
           },
         }),
-        onQueryStarted: async (
-          args,
-          {
-            dispatch,
-            getState,
-            extra,
-            requestId,
-            queryFulfilled,
-            getCacheEntry,
-          }
-        ) => {
-          const response = await queryFulfilled;
-          socket.emit("scheduleAdd", {
-            travelId: args.travelId,
-            data: response,
-          });
-        },
         invalidatesTags: (args) => [{ type: "Travel", id: args.travelId }],
       }),
       uploadSchedulePhotos: builder.mutation<

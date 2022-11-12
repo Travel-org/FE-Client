@@ -1,6 +1,8 @@
 import { api, ITravelResponse } from "@src/app/api/api";
+import travelApi from "@src/app/api/travelApi";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Socket } from "socket.io-client";
 import { Wrapper, SearchContainer, SearchItem } from "./styles";
 
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
   map: any;
   setMarkers: React.Dispatch<React.SetStateAction<any[]>>;
   deleteMarker: Function;
+  socket: Socket;
 }
 
 const SearchBoard: React.FC<Props> = ({
@@ -15,11 +18,12 @@ const SearchBoard: React.FC<Props> = ({
   travelData,
   deleteMarker,
   setMarkers,
+  socket,
 }) => {
   const InputRef = useRef<HTMLInputElement>();
   const [searchResult, setSearchResult] = useState<any[]>([]);
   const [selectItem, setSelectItem] = useState<any>({});
-  const [createSchedule] = api.useCreateScheduleMutation();
+  const [createSchedule, { data }] = travelApi.useCreateScheduleMutation();
   const [ps, setPs] = useState<any>();
 
   useEffect(() => {

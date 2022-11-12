@@ -62,6 +62,10 @@ const TravelEditPage = () => {
     [ownerId: string]: { lat: number; lng: number };
   }>({});
 
+  const [type, setType] = useState("schedule");
+
+  const { data: travelData, refetch } = travelApi.useGetTravelQuery(travelId!);
+
   useEffect(() => {
     console.log(sharedCursors);
   }, [sharedCursors]);
@@ -90,6 +94,7 @@ const TravelEditPage = () => {
 
     socket.on("scheduleAdded", (message) => {
       console.log("scheduleAdded", message);
+      refetch();
     });
 
     socket.on(
@@ -111,9 +116,6 @@ const TravelEditPage = () => {
     };
   }, []);
 
-  const [type, setType] = useState("schedule");
-
-  const { data: travelData } = travelApi.useGetTravelQuery(travelId!);
   const [updateScheduleOrder] =
     travelApi.useChangeTravelScheduleOrderMutation();
 
@@ -365,6 +367,7 @@ const TravelEditPage = () => {
               )}
               {createScheduleModalOpened && (
                 <SearchModal
+                  socket={client.current!}
                   selectedDate={selectedDate}
                   travelId={travelId!}
                   onClose={closeCreateScheduleModal}

@@ -4,12 +4,14 @@ import travelApi from "@src/app/api/travelApi";
 import Modal from "@src/components/modal";
 import { theme } from "@src/styles/theme";
 import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 
 interface ICreateTravelScheduleModalProps {
   travelId: string;
   selectedDate: string;
   onClose: () => void;
   onSuccess: () => void;
+  socket: Socket;
 }
 
 interface ScheduleProps {
@@ -29,6 +31,7 @@ interface ScheduleProps {
 
 const SearchModal = ({
   travelId,
+  socket,
   selectedDate,
   onClose,
   onSuccess,
@@ -38,7 +41,7 @@ const SearchModal = ({
   const [targetAddress, setTargetAddress] = useState<ScheduleProps>();
   const [searchResult, setSearchResult] =
     useState<kakao.maps.services.PlacesSearchResult>();
-  const [createSchedule, { error, isSuccess, isLoading }] =
+  const [createSchedule, { data, error, isSuccess, isLoading }] =
     travelApi.useCreateScheduleMutation();
 
     const handleCreateSchedule = (id: number) => {
@@ -58,8 +61,8 @@ const SearchModal = ({
         phoneNumber: targetAddress.phone,
       },
       userIds: [id],
-      endTime: "13:30:07",
-      startTime: "13:30:07",
+      endTime: "00:00:00",
+      startTime: "00:00:00",
     });
   };
 
@@ -75,6 +78,15 @@ const SearchModal = ({
       }
     });
   }, [searchKeyword]);
+
+  useEffect(() => {
+    if (data) {
+      socket.emit("scheduleAdd", {
+        travelId: travelId!,
+        data: data,
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     if (isSuccess) {
