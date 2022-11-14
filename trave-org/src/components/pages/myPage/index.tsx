@@ -27,7 +27,6 @@ const UserProfileRow = styled.div`
   align-items: center;
   justify-content: start;
   padding: 5px 0px 5px 5px;
-  cursor: pointer;
 `;
 
 const UserProfileImage = styled.div<{ img: string }>`
@@ -69,7 +68,9 @@ const Img = styled.div<{ img: string }>`
 
 const MyPage = () => {
   const { data: myData } = api.useGetMyInfoQuery();
+  const [image, setImage] = useState<{ preview: string; raw: any }>();
   const [updateMyInfo] = api.useUpdateMyInfoMutation();
+  const [updateImg] = api.useUpdateMyAvatarMutation();
   const [openModal, setOpenModal] = useState(false);
   const [post, setPost] = useState<IPostResponse>();
   const [isEdit, setIsEdit] = useState(false);
@@ -92,6 +93,25 @@ const MyPage = () => {
     setOpenModal(false);
     setPost(undefined);
   };
+  const handleChange = (e: any) => {
+    if (!isEdit) return;
+    if (e.target.files.length) {
+      const file = e.target.files[0];
+      setImage({
+        preview: URL.createObjectURL(file),
+        raw: file,
+      });
+      e.target.value = "";
+    }
+  };
+  const handleUploadImg = (e) => {
+    e.stopPropagation();
+    if (!isEdit) return;
+    const formData = new FormData();
+    formData.append("photo", image?.raw);
+    updateImg(formData);
+    setIsEdit(false);
+  };
   useEffect(() => {
     if (
       nameRef.current === null ||
@@ -111,12 +131,7 @@ const MyPage = () => {
           <FeedContainer>
             <UserProfileRow>
               {post !== undefined && post?.userInfo?.profilePath === null ? (
-                <TextAvatar
-                  name={post?.userInfo?.userName}
-                  // width="3rem"
-                  // height="3rem"
-                  // size={1.6}
-                />
+              <TextAvatar name={post?.userInfo?.userName} />
               ) : (
                 <img
                   css={css`
@@ -149,8 +164,20 @@ const MyPage = () => {
               padding: 0.2rem;
             `}
           >
-            <p css={css`width: 80%;word-wrap: break-word;`}>{post?.text}</p>
-            <div css={css`width: 20%;display:flex;justify-content:end;`}>
+              <p
+                css={css`
+                  width: 80%;
+                `}
+              >
+                {post?.text}
+              </p>
+              <div
+                css={css`
+                  width: 20%;
+                  display: flex;
+                  justify-content: end;
+                `}
+              >
               <p>❤️</p>
               <p>👏</p>
             </div>
@@ -189,12 +216,65 @@ const MyPage = () => {
                 }
               `}
             >
-              <TextAvatar
-                name={myData.name}
-                width={"6rem"}
-                height={"6rem"}
-                size={3}
-              />
+              <div
+                css={css`
+                  cursor: ${isEdit ? "pointer" : "default"};
+                  :hover {
+                    opacity: ${isEdit ? "50%" : "100%"};
+                  }
+                `}
+              >
+                <input type="file" id="upload" onChange={handleChange} hidden />
+                {isEdit ? (
+                  <label
+                    htmlFor="upload"
+                    css={css`
+                      width: 10vmin;
+                      height: 10vmin;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      box-shadow: 0px 0px 3px ${theme.colors.shadow};
+                    `}
+                  >
+                    {post !== undefined &&
+                    post?.userInfo?.profilePath === null ? (
+                      <TextAvatar
+                        name={myData.name}
+                        width={"6rem"}
+                        height={"6rem"}
+                        size={3}
+                      />
+                    ) : (
+                      <img
+                        css={css`
+                          width: 6rem;
+                          height: 6rem;
+                        `}
+                        src={myData.profilePath}
+                      />
+                    )}
+                  </label>
+                ) : post !== undefined &&
+                  post?.userInfo?.profilePath === null ? (
+                  <TextAvatar
+                    name={myData.name}
+                    width={"6rem"}
+                    height={"6rem"}
+                    size={3}
+                  />
+                ) : (
+                  <img
+                    css={css`
+                      width: 6rem;
+                      height: 6rem;
+                    `}
+                    src={myData.profilePath}
+                  />
+                )}
+
+                {isEdit && <BiPencil onClick={handleUploadImg} />}
+              </div>
               {!isEdit && (
                 <div
                   css={css`
