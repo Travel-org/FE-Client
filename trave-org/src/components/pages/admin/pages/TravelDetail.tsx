@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function ScrollableTabsButtonAuto() {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<any>();
   const [day, setDay] = useState(0);
   const { travelId } = useParams<"travelId">();
 

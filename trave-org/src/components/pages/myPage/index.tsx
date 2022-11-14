@@ -167,6 +167,7 @@ const MyPage = () => {
               <p
                 css={css`
                   width: 80%;
+                  word-wrap: break-word;
                 `}
               >
                 {post?.text}

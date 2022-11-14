@@ -1,7 +1,6 @@
-import { IconButton, TableCell } from "@material-ui/core";
+import { TableCell } from "@material-ui/core";
 import styled from "@emotion/styled";
 import PaginationTable from "../components/PaginationTable";
-import { Delete, Edit } from "@material-ui/icons";
 
 const Img = styled.div<{ img: string }>`
   width: 30px;
