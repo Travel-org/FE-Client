@@ -44,10 +44,11 @@ const CreateNoticeModal = (props) => {
         <section
           css={css`
             width: 400px;
-            height: 400px;
             background-color: white;
             border: solid 1px black;
             margin-left: 30%;
+            margin-bottom: 30px;
+            padding: 10px;
           `}
         >
           <header>
@@ -70,6 +71,7 @@ const CreateNoticeModal = (props) => {
                 width: 100%;
                 overflow: auto;
                 resize: none;
+                border: none;
               `}
             />
             <textarea
@@ -82,25 +84,25 @@ const CreateNoticeModal = (props) => {
                 width: 100%;
                 overflow: auto;
                 resize: none;
+                border:none;
               `}
             ></textarea>
             <input ref={imageRef} type="file" onClick={handleChange} />
             <button
               css={css`
-                margin-top: 41%;
+                margin-top: 10%;
                 width: 100px;
                 height: 30px;
+                border-radius: 10px;
+                background-color: navy;
+                color: white;
+                padding: 5px;
               `}
               onClick={handleSubmit}
             >
               작성
             </button>
           </main>
-          <footer>
-            <button className="close" onClick={close}>
-              닫기
-            </button>
-          </footer>
         </section>
       ) : null}
     </div>
