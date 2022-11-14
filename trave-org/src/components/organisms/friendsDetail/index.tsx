@@ -153,7 +153,7 @@ const FriendsDetail = ({ targetId }: Props) => {
                         padding: 0.2rem;
                       `}
                     >
-                      <p css={css`width: 80%;`}>{text}</p>
+                      <p css={css`width: 80%;word-wrap: break-word;`}>{text}</p>
                       <div css={css`width: 20%;display:flex;justify-content:end;`}>
                         <p>❤️</p>
                         <p>👏</p>

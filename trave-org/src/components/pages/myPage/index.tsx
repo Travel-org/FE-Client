@@ -149,7 +149,7 @@ const MyPage = () => {
               padding: 0.2rem;
             `}
           >
-            <p css={css`width: 80%;`}>{post?.text}</p>
+            <p css={css`width: 80%;word-wrap: break-word;`}>{post?.text}</p>
             <div css={css`width: 20%;display:flex;justify-content:end;`}>
               <p>❤️</p>
               <p>👏</p>
