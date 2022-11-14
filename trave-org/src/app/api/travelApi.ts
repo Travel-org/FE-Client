@@ -182,9 +182,14 @@ const travelApi = baseApi
               "getTravel",
               args.travelId,
               (draft) => {
-                draft.dates["schedules"]
-                  .filter(({ scheduleId }) => scheduleId === args.scheduleId)[0]
-                  .photos.push(updateResponse.data);
+                draft.dates = draft.dates.map((v) => {
+                  v.schedules.map((s) => {
+                    if (s.scheduleId === Number(args.scheduleId))
+                      s.photos = [...s.photos, ...updateResponse.data];
+                    return s;
+                  });
+                  return v;
+                });
               }
             )
           );

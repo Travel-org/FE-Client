@@ -13,6 +13,7 @@ export interface IUserResponse {
 }
 
 export interface IScheduleResponse {
+  photos: any[];
   scheduleId: number;
   startTime: number;
   endTime: number;
