@@ -6,27 +6,15 @@ import { theme } from "@src/styles/theme";
 import { Container } from "./styles";
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-
 import Modal from "@src/components/modal";
-
-const FeedsContainer = styled.div`
-  width: 100%;
-  height: 92vh;
-  overflow: auto;
-  padding: 1rem;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  /* flex-direction: column; */
-`;
 
 const FeedContainer = styled.div`
   position: relative;
   background: white;
-  width: 20vw;
+  width: 30vw;
   border: none;
   box-shadow: 0px 0px 6px ${theme.colors.shadow};
-  padding: 1rem 0px;
+  padding: 5px 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -56,6 +44,12 @@ const UserInfo = styled.div`
   height: 100%;
   display: flex;
   align-content: center;
+`;
+
+const PlcaeLink = styled.a`
+  text-decoration: none;
+  color: gray;
+  text-weight: 600;
 `;
 
 const PostImage = styled.img`
@@ -150,30 +144,18 @@ const MyPage = () => {
             </div>
             <div
               css={css`
-                padding: 0.2rem;
-              `}
-            >
-              <p>{post?.text}</p>
-            </div>
-
-            <div
-              css={css`
-                display: flex;
-                bottom: 1rem;
-                right: 1rem;
-                column-gap: 0.2rem;
-                position: absolute;
-                p {
-                  cursor: pointer;
-                  :hover {
-                    opacity: 50%;
-                  }
-                }
-              `}
-            >
+              width: 100%;
+              display: flex;
+              padding: 0.2rem;
+            `}
+          >
+            <p css={css`width: 80%;`}>{post?.text}</p>
+            <div css={css`width: 20%;display:flex;justify-content:end;`}>
               <p>❤️</p>
               <p>👏</p>
             </div>
+          </div>
+            <PlcaeLink href={post?.placeUrl}>#{post?.placeName}</PlcaeLink>
           </FeedContainer>
         </Modal>
       )}
@@ -321,8 +303,8 @@ const MyPage = () => {
             myData.posts.map((v) => (
               <img
                 css={css`
-                  width: 4rem;
-                  height: 4rem;
+                  width: 5rem;
+                  height: 5rem;
                 `}
                 src={v.photoInfos[0].name}
                 onClick={() => handleOpenModal(v)}

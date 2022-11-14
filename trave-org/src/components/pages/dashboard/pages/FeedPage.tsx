@@ -22,10 +22,10 @@ const FeedsContainer = styled.div`
 
 const FeedContainer = styled.div`
   position: relative;
-  width: 30vw;
+  width: 40vw;
   border: none;
   box-shadow: 0px 0px 6px ${theme.colors.shadow};
-  padding: 1rem 0px;
+  padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -41,22 +41,17 @@ const UserProfileRow = styled.div`
   cursor: pointer;
 `;
 
-const UserProfileImage = styled.div<{ img: string }>`
-  width: 30px;
-  height: 30px;
-  border-radius: 30px;
-  margin-right: 10px;
-  background-image: url(${({ img }) => img});
-  background-position: center;
-  background-size: cover;
-`;
-
 const UserInfo = styled.div`
   height: 100%;
   display: flex;
   align-content: center;
 `;
 
+const PlcaeLink = styled.a`
+  text-decoration: none;
+  color: gray;
+  text-weight: 600;
+`;
 
 const PostImage = styled.img`
   width: 100%;
@@ -99,13 +94,15 @@ function FeedPage() {
           dataLength={postsData.size ?? 1 * postsData.content.length}
           next={fetchMoreData}
           hasMore={true}
-          loader={<h4>Loading...</h4>}
+          loader={<div>No more feeds!</div>}
         >
           {postsData !== undefined &&
             postsData.content.map(
               ({
                 postId,
                 scheduleId,
+                placeName,
+                placeUrl,
                 userInfo,
                 title,
                 text,
@@ -157,30 +154,18 @@ function FeedPage() {
                        </div>
                   <div
                     css={css`
-                      padding: 0.2rem;
-                    `}
-                  >
-                    <p>{text}</p>
-                  </div>
-
-                  <div
-                    css={css`
-                      display: flex;
-                      bottom: 1rem;
-                      right: 1rem;
-                      column-gap: 0.2rem;
-                      position: absolute;
-                      p {
-                        cursor: pointer;
-                        :hover {
-                          opacity: 50%;
-                        }
-                      }
-                    `}
-                  >
+                    width: 100%;
+                    display: flex;
+                    padding: 0.2rem;
+                  `}
+                >
+                  <p css={css`width: 80%;`}>{text}</p>
+                  <div css={css`width: 20%;display:flex;justify-content:end;`}>
                     <p>❤️</p>
                     <p>👏</p>
                   </div>
+                </div>
+                <PlcaeLink href={placeUrl}>#{placeName}</PlcaeLink>
                 </FeedContainer>
               )
             )}

@@ -1,3 +1,4 @@
+import TextAvatar from "@src/components/atoms/textAvatar";
 import { Container, ElementContainer, Wrapper, Avartar } from "./styles";
 
 interface IUser {
@@ -19,15 +20,12 @@ const SelectPayer = ({ payer, setPayer, users }: Props) => {
       {users.map(({ userId, userName, profilePath }) => (
         <ElementContainer>
           <Wrapper>
-            <Avartar />
+            <TextAvatar name={userName} />
             <p>{userName}</p>
           </Wrapper>
           <input
             type="radio"
-            checked={
-              JSON.stringify(payer) ===
-              JSON.stringify({ userId, userName, profilePath })
-            }
+            checked={payer?.userId === userId}
             onClick={() => setPayer({ userId, userName, profilePath })}
           />
         </ElementContainer>

@@ -41,6 +41,8 @@ interface ICostResponse {
 export interface IPostResponse {
   postId: number;
   scheduleId: number;
+  placeName: string;
+  placeUrl: string;
   userInfo: IUserResponse;
   title: string;
   text: string;
@@ -130,6 +132,8 @@ export const api = baseApi.injectEndpoints({
           {
             postId: number;
             scheduleId: number;
+            placeName: string;
+            placeUrl: string;
             title: string;
             text: string;
             createdAt: number;
@@ -186,8 +190,8 @@ export const api = baseApi.injectEndpoints({
     updateSchedule: builder.mutation<
       any,
       {
-        endTime: "14:49:48";
-        startTime: "14:49:48";
+        endTime: "00:00:00";
+        startTime: "00:00:00";
         userIds: number[];
         place: {
           addressName: string;

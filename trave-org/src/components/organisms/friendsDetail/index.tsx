@@ -18,10 +18,10 @@ const FeedsContainer = styled.div`
 
 const FeedContainer = styled.div`
   position: relative;
-  width: 20vw;
+  width: 27vw;
   border: none;
   box-shadow: 0px 0px 6px ${theme.colors.shadow};
-  padding: 1rem 0px;
+  padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -58,6 +58,12 @@ const PostImage = styled.img`
   height: 20rem;
   background-position: center;
   background-size: cover;
+`;
+
+const PlcaeLink = styled.a`
+  text-decoration: none;
+  color: gray;
+  text-weight: 600;
 `;
 
 interface Props {
@@ -123,7 +129,7 @@ const FriendsDetail = ({ targetId }: Props) => {
             `}
           >
             {friendsProfile.posts.map(
-              ({ postId, text, userInfo, photoInfos }) => (
+              ({ postId, placeName, placeUrl, text, userInfo, photoInfos }) => (
                 <div key={postId}>
                   <FeedContainer>
                     <div
@@ -142,30 +148,18 @@ const FriendsDetail = ({ targetId }: Props) => {
                     </div>
                     <div
                       css={css`
+                      width: 100%;
+                        display: flex;
                         padding: 0.2rem;
                       `}
                     >
-                      <p>{text}</p>
+                      <p css={css`width: 80%;`}>{text}</p>
+                      <div css={css`width: 20%;display:flex;justify-content:end;`}>
+                        <p>❤️</p>
+                        <p>👏</p>
+                      </div>
                     </div>
-
-                    <div
-                      css={css`
-                        display: flex;
-                        bottom: 1rem;
-                        right: 1rem;
-                        column-gap: 0.2rem;
-                        position: absolute;
-                        p {
-                          cursor: pointer;
-                          :hover {
-                            opacity: 50%;
-                          }
-                        }
-                      `}
-                    >
-                      <p>❤️</p>
-                      <p>👏</p>
-                    </div>
+                    <PlcaeLink href={placeUrl}>#{placeName}</PlcaeLink>
                   </FeedContainer>
                 </div>
               )

@@ -1,10 +1,26 @@
 import { css } from "@emotion/react";
-import React, { useState } from "react";
+import { useState } from "react";
+import styled from "@emotion/styled";
 import { api } from "@src/app/api/api";
 import CostElement from "@src/components/organisms/costElement";
 import Modal from "@src/components/modal";
 import AddCostModal from "@src/components/organisms/addCostModal";
 import { theme } from "@src/styles/theme";
+import { BiTrash } from "react-icons/bi";
+
+const Button = styled.button<{ isDelete: boolean }>`
+  border: 0.1rem solid grey;
+  border-radius: 10px;
+  width: 3rem;
+  height: 1.2rem;
+  padding: 0.1rem 0px;
+  font-size: smaller;
+  display: ${({ isDelete }) => (isDelete ? "block" : "none")};
+  cursor: pointer;
+  :hover {
+    opacity: 50%;
+  }
+`;
 
 interface Props {
   costData: any[];
@@ -12,13 +28,29 @@ interface Props {
 }
 
 const SplitBill = ({ costData, travelId }: Props) => {
+  console.log(costData);
   const [createCost] = api.useCreateCostMutation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: users } = api.useGetUsersQuery(travelId!);
+  const [isModalOpen, setIsModalOpen] = useState(0);
   const [isExpand, setIsExpand] = useState(false);
-
+  const [isDelete, setIsDelete] = useState(false);
+  const [deleteCosts, setDeleteCosts] = useState<string[]>([]);
+  const [deleteCost] = api.useDeleteCostMutation();
   const [amount] = useState(10000);
   const [val, setVal] = useState(10000);
 
+  const handleSelectCostDelete = (id: string) => {
+    if (deleteCosts.includes(id))
+      setDeleteCosts(deleteCosts.filter((v) => v !== id));
+    else setDeleteCosts([...deleteCosts, id]);
+  };
+
+  const handleDelete = async () => {
+    for (let costId of deleteCosts) {
+      await deleteCost({ travelId: travelId!, costId });
+    }
+    setIsDelete(false);
+  };
   return (
     <>
       <div
@@ -26,9 +58,36 @@ const SplitBill = ({ costData, travelId }: Props) => {
           width: 100%;
           position: relative;
           align-items: center;
-          height: 60vh;
+          height: 100%;
         `}
       >
+        <div
+          css={css`
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem;
+            align-items: center;
+            gap: 1rem;
+          `}
+        >
+          <BiTrash
+            css={css`
+              border: 0.1rem solid grey;
+              border-radius: 10px;
+              width: 3rem;
+              height: 1.2rem;
+              padding: 0.1rem 0px;
+              cursor: pointer;
+              :hover {
+                opacity: 50%;
+              }
+            `}
+            onClick={() => setIsDelete((v) => !v)}
+          />
+          <Button isDelete={isDelete} onClick={handleDelete}>
+            확인
+          </Button>
+        </div>
         <div
           css={css`
             height: 100%;
@@ -40,24 +99,23 @@ const SplitBill = ({ costData, travelId }: Props) => {
             flex-direction: column;
           `}
         >
-          {costData.map(
-            ({ costId, title, content, totalAmount, userCosts, payerId }) => (
-              <CostElement
-                key={costId}
-                title={title}
-                payerId={payerId}
-                content={content}
-                totalAmount={totalAmount}
-                userCosts={userCosts}
-              />
-            )
-          )}
+          {costData.map((data) => (
+            <CostElement
+              users={users}
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              handleSelectCostDelete={handleSelectCostDelete}
+              isDelete={isDelete}
+              data={data}
+              travelId={travelId!}
+            />
+          ))}
         </div>
         <button
           css={css`
             display: flex;
             position: absolute;
-            bottom: 0px;
+            bottom: 1rem;
             justify-content: center;
             background: white;
             cursor: pointer;
@@ -74,21 +132,21 @@ const SplitBill = ({ costData, travelId }: Props) => {
             border-radius: 100vw;
             box-shadow: 0px 0px 6px ${theme.colors.shadow};
           `}
-          onClick={() => setIsModalOpen((v) => !v)}
+          onClick={() => setIsModalOpen((v) => (v === 0 ? 1 : 0))}
         >
           +
         </button>
       </div>
-      {isModalOpen && (
-        <Modal onClick={() => setIsModalOpen(false)}>
+      {isModalOpen === 1 && (
+        <Modal onClick={() => setIsModalOpen(0)}>
           <AddCostModal
             travelId={travelId}
-            isClose={() => setIsModalOpen(false)}
+            users={users}
+            isClose={() => setIsModalOpen(0)}
           />
         </Modal>
       )}
     </>
   );
 };
-
 export default SplitBill;

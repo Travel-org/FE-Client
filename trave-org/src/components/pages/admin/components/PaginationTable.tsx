@@ -36,6 +36,7 @@ const Img = styled.div<{ img: string }>`
   background-position: center;
   background-size: cover;
 `;
+
 const PaginationBar = styled.div`
   display: flex;
   justify-content: space-around;
@@ -51,6 +52,7 @@ interface TablePaginationActionsProps {
     newPage: number
   ) => void;
 }
+
 const useStyles1 = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -59,30 +61,36 @@ const useStyles1 = makeStyles((theme: Theme) =>
     },
   })
 );
+
 function TablePaginationActions(props: TablePaginationActionsProps) {
   const classes = useStyles1();
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
+
   const handleFirstPageButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     onPageChange(event, 0);
   };
+
   const handleBackButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     onPageChange(event, page - 1);
   };
+
   const handleNextButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     onPageChange(event, page + 1);
   };
+
   const handleLastPageButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
+
   return (
     <div className={classes.root}>
       <IconButton
@@ -116,13 +124,16 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
     </div>
   );
 }
+
 const PaginationTable = ({ url, kps }) => {
   const [rows, setRows] = useState<any>([]);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   const [totalCount, setTotalCount] = useState(0);
+
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
   useEffect(() => {
     axios.get(url + "?page=" + page).then((u) => {
       const { content, number, totalElements } = u.data;
@@ -132,21 +143,23 @@ const PaginationTable = ({ url, kps }) => {
       console.log(u);
     });
   }, [page]);
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
     setPage(newPage);
   };
+
   return (
     <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-    }}
-  >
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <TableContainer
         component={Paper}
         style={{ width: "90%", marginTop: "20px" }}
@@ -202,7 +215,7 @@ const PaginationTable = ({ url, kps }) => {
       </TableContainer>
       <div style={{ display: "flex", justifyContent: "right", width: "90%" }}>
         <Button
-          variant="contained" 
+          variant="contained"
           color="primary"
           style={{ marginTop: "10px" }}
         >
@@ -212,4 +225,5 @@ const PaginationTable = ({ url, kps }) => {
     </div>
   );
 };
+
 export default PaginationTable;

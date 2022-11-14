@@ -1,3 +1,4 @@
+import TextAvatar from "@src/components/atoms/textAvatar";
 import { useEffect, useState } from "react";
 import {
   Avartar,
@@ -15,6 +16,7 @@ interface IUser {
 }
 
 interface Props {
+  isUpdate: boolean;
   price?: number | string;
   setPrice: React.Dispatch<React.SetStateAction<string | number | undefined>>;
   users: IUser[];
@@ -24,6 +26,7 @@ interface Props {
 }
 
 const AddPrice = ({
+  isUpdate,
   price,
   setPrice,
   users,
@@ -43,6 +46,7 @@ const AddPrice = ({
     );
 
   useEffect(() => {
+    if (isUpdate) return;
     initializePrice(0);
   }, []);
 
@@ -80,7 +84,7 @@ const AddPrice = ({
         {userList.map(({ userId, userName }) => (
           <ElementContainer>
             <AvartarWrapper>
-              <Avartar />
+              <TextAvatar name={userName} />
               <p>{userName}</p>
             </AvartarWrapper>
             <input
