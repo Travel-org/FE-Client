@@ -72,231 +72,194 @@ interface AmountPerUserProps {
   [key: number]: number;
 }
 
-export const api = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
-    oauthLogin: builder.mutation<
-      {
-        status: number;
-        token: string;
-        kakaoId: string;
-      },
-      string
-    >({
-      query: (authorizationCode) => ({
-        url: "/v1/oauth2/authorization/kakao",
-        method: "GET",
-        params: { code: authorizationCode },
+export const api = baseApi
+  .enhanceEndpoints({
+    addTagTypes: ["UserInfo"],
+  })
+  .injectEndpoints({
+    endpoints: (builder) => ({
+      oauthLogin: builder.mutation<
+        {
+          status: number;
+          token: string;
+          kakaoId: string;
+        },
+        string
+      >({
+        query: (authorizationCode) => ({
+          url: "/v1/oauth2/authorization/kakao",
+          method: "GET",
+          params: { code: authorizationCode },
+        }),
       }),
-    }),
-    login: builder.mutation<
-      {
-        status: number;
-        token: string;
-        message?: string;
-      },
-      {
-        email: string;
-        password: string;
-      }
-    >({
-      query: (arg) => ({
-        url: "/v1/login",
-        method: "POST",
-        body: {
-          email: arg.email,
-          password: arg.password,
+      login: builder.mutation<
+        {
+          status: number;
+          token: string;
+          message?: string;
+        },
+        {
+          email: string;
+          password: string;
+        }
+      >({
+        query: (arg) => ({
+          url: "/v1/login",
+          method: "POST",
+          body: {
+            email: arg.email,
+            password: arg.password,
+          },
+        }),
+      }),
+      signUp: builder.mutation<any, any>({
+        query: (signUpData) => ({
+          url: `${USER_BASE_URL}/signup`,
+          method: "POST",
+          body: signUpData,
+        }),
+      }),
+      logout: builder.mutation<undefined, void>({
+        queryFn: () => {
+          return {
+            data: undefined,
+          };
         },
       }),
-    }),
-    signUp: builder.mutation<any, any>({
-      query: (signUpData) => ({
-        url: `${USER_BASE_URL}/signup`,
-        method: "POST",
-        body: signUpData,
+      getMyInfo: builder.query<
+        {
+          email: string;
+          name: string;
+          phoneNumber: string;
+          userId: string;
+          userType: string;
+          profilePath: string;
+          posts: [
+            {
+              postId: number;
+              scheduleId: number;
+              placeName: string;
+              placeUrl: string;
+              title: string;
+              text: string;
+              createdAt: number;
+              photoInfos: [
+                {
+                  photoId: number;
+                  name: string;
+                }
+              ];
+            }
+          ];
+        },
+        void
+      >({
+        query: () => ({
+          url: `${USER_BASE_URL}/my-info`,
+          method: "GET",
+        }),
+        providesTags: (result, error, postId) => [
+          { type: "UserInfo", id: "LIST" },
+        ],
       }),
-    }),
-    logout: builder.mutation<undefined, void>({
-      queryFn: () => {
-        return {
-          data: undefined,
-        };
-      },
-    }),
-    getMyInfo: builder.query<
-      {
-        email: string;
-        name: string;
-        phoneNumber: string;
-        userId: string;
-        userType: string;
-        posts: [
-          {
-            postId: number;
-            scheduleId: number;
+      updateMyInfo: builder.mutation<void, any>({
+        query: (args) => ({
+          url: USER_BASE_URL,
+          method: "PUT",
+          body: args,
+        }),
+        invalidatesTags: () => [{ type: "UserInfo", id: "LIST" }],
+      }),
+      updateMyAvatar: builder.mutation<FormData, any>({
+        query: (args) => ({
+          url: `${USER_BASE_URL}/photo`,
+          method: "PUT",
+          body: args,
+        }),
+        invalidatesTags: () => [{ type: "UserInfo", id: "LIST" }],
+      }),
+      /**
+       * Travel Apis
+       */
+
+      getUsers: builder.query<any, string>({
+        query: (travelId) => ({
+          url: `${TRAVEL_BASE_URL}/${travelId}/users`,
+          method: "GET",
+        }),
+      }),
+
+      getTravelsByUser: builder.query<any, void>({
+        query: () => ({
+          url: `${TRAVEL_BASE_URL}`,
+          method: "GET",
+        }),
+      }),
+      /**
+       * Schedule Apis
+       */
+      updateSchedule: builder.mutation<
+        any,
+        {
+          endTime: "00:00:00";
+          startTime: "00:00:00";
+          userIds: number[];
+          place: {
+            addressName: string;
+            addressRoadName: string;
+            kakaoMapId: number;
+            lat: number;
+            lng: number;
+            phoneNumber: string;
             placeName: string;
             placeUrl: string;
-            title: string;
-            text: string;
-            createdAt: number;
-            photoInfos: [
-              {
-                photoId: number;
-                name: string;
-              }
-            ];
-          }
-        ];
-      },
-      void
-    >({
-      query: () => ({
-        url: `${USER_BASE_URL}/my-info`,
-        method: "GET",
+          };
+          travelId: string;
+          scheduleId: string;
+        }
+      >({
+        query: (arg) => ({
+          url: `${TRAVEL_BASE_URL}/${arg.travelId}/schedules/${arg.scheduleId}`,
+          method: "PUT",
+        }),
       }),
-    }),
-    updateMyInfo: builder.mutation<void, any>({
-      query: (args) => ({
-        url: USER_BASE_URL,
-        method: "PUT",
-        body: args,
+      /**
+       * Cost Apis
+       */
+      getCostById: builder.query<
+        any,
+        {
+          travelId: string;
+          costId: string;
+        }
+      >({
+        query: (arg) => ({
+          url: `${TRAVEL_BASE_URL}/${arg.travelId}/costs/${arg.costId}`,
+          method: "GET",
+        }),
       }),
-    }),
-    updateMyAvatar: builder.mutation<FormData, any>({
-      query: (args) => ({
-        url: `${USER_BASE_URL}/photo`,
-        method: "PUT",
-        body: args,
-      }),
-    }),
-    /**
-     * Travel Apis
-     */
-
-    getUsers: builder.query<any, string>({
-      query: (travelId) => ({
-        url: `${TRAVEL_BASE_URL}/${travelId}/users`,
-        method: "GET",
-      }),
-    }),
-
-    getTravelsByUser: builder.query<any, void>({
-      query: () => ({
-        url: `${TRAVEL_BASE_URL}`,
-        method: "GET",
-      }),
-    }),
-    /**
-     * Schedule Apis
-     */
-    updateSchedule: builder.mutation<
-      any,
-      {
-        endTime: "00:00:00";
-        startTime: "00:00:00";
-        userIds: number[];
-        place: {
-          addressName: string;
-          addressRoadName: string;
-          kakaoMapId: number;
-          lat: number;
-          lng: number;
-          phoneNumber: string;
-          placeName: string;
-          placeUrl: string;
-        };
-        travelId: string;
-        scheduleId: string;
-      }
-    >({
-      query: (arg) => ({
-        url: `${TRAVEL_BASE_URL}/${arg.travelId}/schedules/${arg.scheduleId}`,
-        method: "PUT",
-      }),
-    }),
-    /**
-     * Cost Apis
-     */
-    getCostById: builder.query<
-      any,
-      {
-        travelId: string;
-        costId: string;
-      }
-    >({
-      query: (arg) => ({
-        url: `${TRAVEL_BASE_URL}/${arg.travelId}/costs/${arg.costId}`,
-        method: "GET",
-      }),
-    }),
-    createCost: builder.mutation<
-      any,
-      {
-        amountsPerUser: AmountPerUserProps[];
-        content: string;
-        payerId: number;
-        title: string;
-        totalAmount: number;
-        travelId: string;
-      }
-    >({
-      query: (arg) => ({
-        url: `${TRAVEL_BASE_URL}/${arg.travelId}/costs`,
-        method: "POST",
-        body: {
-          amountsPerUser: arg.amountsPerUser,
-          content: arg.content,
-          payerId: arg.payerId,
-          title: arg.title,
-          totalAmount: arg.totalAmount,
-        },
-      }),
-      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
-        const updateResponse = await queryFulfilled;
-        dispatch(
-          travelApi.util.updateQueryData("getTravel", arg.travelId, (draft) => {
-            draft.costs.push(updateResponse.data);
-          })
-        );
-      },
-    }),
-    deleteCost: builder.mutation<string, { travelId: string; costId: string }>({
-      query: (args) => ({
-        url: `/v1/travels/${args.travelId}/costs/${args.costId}`,
-        method: "DELETE",
-      }),
-      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
-        const updateResponse = await queryFulfilled;
-        dispatch(
-          travelApi.util.updateQueryData("getTravel", arg.travelId, (draft) => {
-            draft.costs = draft.costs.filter(
-              ({ costId }) => updateResponse.data !== costId
-            );
-          })
-        );
-      },
-    }),
-    updateCost: builder.mutation<
-      any,
-      {
-        amountsPerUser: AmountPerUserProps[];
-        content: string;
-        payerId: number;
-        title: string;
-        totalAmount: number;
-        travelId: string;
-        costId: string;
-      }
-    >({
-      query: (args) => ({
-        url: `/v1/travels/${args.travelId}/costs/${args.costId}`,
-        method: "PUT",
-        body: {
-          amountsPerUser: args.amountsPerUser,
-          content: args.content,
-          payerId: args.payerId,
-          title: args.title,
-          totalAmount: args.totalAmount,
-        },
+      createCost: builder.mutation<
+        any,
+        {
+          amountsPerUser: AmountPerUserProps[];
+          content: string;
+          payerId: number;
+          title: string;
+          totalAmount: number;
+          travelId: string;
+        }
+      >({
+        query: (arg) => ({
+          url: `${TRAVEL_BASE_URL}/${arg.travelId}/costs`,
+          method: "POST",
+          body: {
+            amountsPerUser: arg.amountsPerUser,
+            content: arg.content,
+            payerId: arg.payerId,
+            title: arg.title,
+            totalAmount: arg.totalAmount,
+          },
+        }),
         onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
           const updateResponse = await queryFulfilled;
           dispatch(
@@ -304,35 +267,93 @@ export const api = baseApi.injectEndpoints({
               "getTravel",
               arg.travelId,
               (draft) => {
-                draft.costs = [
-                  ...draft.costs.filter(
-                    ({ costId }) => updateResponse.data.costId !== costId
-                  ),
-                  updateResponse.data,
-                ];
+                draft.costs.push(updateResponse.data);
               }
             )
           );
         },
       }),
-    }),
-    /**
-     * Invite Apis
-     */
-     acceptInvite: builder.mutation<string, string>({
-      query: (code) => ({
-        url: `${TRAVEL_BASE_URL}/accept/${code}`,
-        method: "POST",
+      deleteCost: builder.mutation<
+        string,
+        { travelId: string; costId: string }
+      >({
+        query: (args) => ({
+          url: `/v1/travels/${args.travelId}/costs/${args.costId}`,
+          method: "DELETE",
+        }),
+        onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+          const updateResponse = await queryFulfilled;
+          dispatch(
+            travelApi.util.updateQueryData(
+              "getTravel",
+              arg.travelId,
+              (draft) => {
+                draft.costs = draft.costs.filter(
+                  ({ costId }) => updateResponse.data !== costId
+                );
+              }
+            )
+          );
+        },
+      }),
+      updateCost: builder.mutation<
+        any,
+        {
+          amountsPerUser: AmountPerUserProps[];
+          content: string;
+          payerId: number;
+          title: string;
+          totalAmount: number;
+          travelId: string;
+          costId: string;
+        }
+      >({
+        query: (args) => ({
+          url: `/v1/travels/${args.travelId}/costs/${args.costId}`,
+          method: "PUT",
+          body: {
+            amountsPerUser: args.amountsPerUser,
+            content: args.content,
+            payerId: args.payerId,
+            title: args.title,
+            totalAmount: Number(args.totalAmount),
+          },
+          onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+            const updateResponse = await queryFulfilled;
+            dispatch(
+              travelApi.util.updateQueryData(
+                "getTravel",
+                arg.travelId,
+                (draft) => {
+                  draft.costs = [
+                    ...draft.costs.filter(
+                      ({ costId }) => updateResponse.data.costId !== costId
+                    ),
+                    updateResponse.data,
+                  ];
+                }
+              )
+            );
+          },
+        }),
+      }),
+      /**
+       * Invite Apis
+       */
+      acceptInvite: builder.mutation<string, string>({
+        query: (code) => ({
+          url: `${TRAVEL_BASE_URL}/accept/${code}`,
+          method: "POST",
+        }),
+      }),
+      rejectInvite: builder.mutation<string, string>({
+        query: (code) => ({
+          url: `${TRAVEL_BASE_URL}/reject/${code}`,
+          method: "DELETE",
+        }),
       }),
     }),
-    rejectInvite: builder.mutation<string, string>({
-      query: (code) => ({
-        url: `${TRAVEL_BASE_URL}/reject/${code}`,
-        method: "DELETE",
-      }),
-    }),
-  }),
-});
+  });
 
 type AuthState = {
   token: string | null;
