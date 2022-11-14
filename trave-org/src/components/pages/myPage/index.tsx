@@ -11,10 +11,10 @@ import Modal from "@src/components/modal";
 const FeedContainer = styled.div`
   position: relative;
   background: white;
-  width: 30vw;
+  width: 27vw;
   border: none;
   box-shadow: 0px 0px 6px ${theme.colors.shadow};
-  padding: 5px 10px;
+  padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
