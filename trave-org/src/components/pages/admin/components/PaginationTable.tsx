@@ -125,7 +125,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-const PaginationTable = ({ url, kps }) => {
+const PaginationTable = ({ url, kps, children }) => {
   const [rows, setRows] = useState<any>([]);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
@@ -212,15 +212,7 @@ const PaginationTable = ({ url, kps }) => {
           </TableFooter>
         </Table>
       </TableContainer>
-      <div style={{ display: "flex", justifyContent: "right", width: "90%" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginTop: "10px" }}
-        >
-          생성하기
-        </Button>
-      </div>
+      {children}
     </div>
   );
 };

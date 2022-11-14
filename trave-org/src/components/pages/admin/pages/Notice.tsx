@@ -1,9 +1,10 @@
-import { TableCell } from "@material-ui/core";
+import { TableCell, Button } from "@material-ui/core";
 import styled from "@emotion/styled";
 import PaginationTable from "../components/PaginationTable";
 import { css } from "@emotion/react";
 import { useState } from "react";
-import  CreateNoticeModal  from "../components/CreateNoticeModal";
+import CreateNoticeModal from "../components/CreateNoticeModal";
+import Modal from "@src/components/modal";
 
 const Notice = () => {
   const url = "https://api.dev.travely.guide/v1/admin/notices";
@@ -11,27 +12,23 @@ const Notice = () => {
 
   const openModal = () => {
     setModalOpen(true);
-  }
+  };
 
   const closeModal = () => {
     setModalOpen(false);
-  }
+  };
 
   const kps: { title: string; gen: (rowData: any) => React.ReactNode }[] = [
     {
       title: "ID",
       gen: (rowData: any) => (
-        <TableCell align="center">
-          {rowData.noticeId}
-        </TableCell>
+        <TableCell align="center">{rowData.noticeId}</TableCell>
       ),
     },
     {
       title: "제목",
       gen: (rowData: any) => (
-        <TableCell align="center">
-          {rowData.title}
-        </TableCell>
+        <TableCell align="center">{rowData.title}</TableCell>
       ),
     },
     {
@@ -41,29 +38,27 @@ const Notice = () => {
       ),
     },
   ];
-  return <>
-  <PaginationTable url={url} kps={kps}></PaginationTable>
-  <button css={
-        css`
-          background-color: grey;
-          border: none;
-          color: white;
-          padding: 20px;
-          text-align: center;
-          text-decoration: none;
-          display: flex;
-          font-size: 16px;
-          margin: 2px 1.5px;
-          border-radius: 50%;
-          position: relative;
-          margin-top: 20px;
-          margin-left: 87%;
-          :hover {
-            opacity: 50%
-          }
-        `} onClick={openModal}>글쓰기</button>
-    <CreateNoticeModal open={modalOpen} close={closeModal} />
-</>;
+  return (
+    <>
+      {modalOpen && (
+        <Modal onClick={closeModal}>
+          <CreateNoticeModal open={modalOpen} close={closeModal} />
+        </Modal>
+      )}
+      <PaginationTable url={url} kps={kps}>
+        <div style={{ display: "flex", justifyContent: "right", width: "90%" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={openModal}
+            style={{ marginTop: "10px" }}
+          >
+            생성하기
+          </Button>
+        </div>
+      </PaginationTable>
+    </>
+  );
 };
 
 export default Notice;

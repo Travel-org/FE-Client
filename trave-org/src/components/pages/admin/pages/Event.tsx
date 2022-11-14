@@ -1,4 +1,4 @@
-import { TableCell, IconButton } from "@material-ui/core";
+import { TableCell, Button } from "@material-ui/core";
 import styled from "@emotion/styled";
 import PaginationTable from "../components/PaginationTable";
 
@@ -25,7 +25,19 @@ const Event = () => {
       ),
     },
   ];
-  return <PaginationTable url={url} kps={kps}></PaginationTable>;
+  return (
+    <PaginationTable url={url} kps={kps}>
+      <div style={{ display: "flex", justifyContent: "right", width: "90%" }}>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: "10px" }}
+        >
+          생성하기
+        </Button>
+      </div>
+    </PaginationTable>
+  );
 };
 
 export default Event;

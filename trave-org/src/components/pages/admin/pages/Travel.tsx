@@ -1,4 +1,4 @@
-import { TableCell } from "@material-ui/core";
+import { TableCell, Button } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import PaginationTable from "../components/PaginationTable";
 
@@ -43,7 +43,19 @@ const Travel = () => {
       ),
     },
   ];
-  return <PaginationTable url={url} kps={kps}></PaginationTable>;
+  return (
+    <PaginationTable url={url} kps={kps}>
+      <div style={{ display: "flex", justifyContent: "right", width: "90%" }}>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: "10px" }}
+        >
+          생성하기
+        </Button>
+      </div>
+    </PaginationTable>
+  );
 };
 
 export default Travel;
