@@ -430,7 +430,7 @@ function FriendsPage() {
                 </div>
                 {givingRequestData !== undefined &&
                   givingRequestData?.content.map(
-                    ({ profilePath, userId, userName }) => (
+                    ({ profilePath, userId, userName, email }) => (
                       <UserContainer key={1}>
                         <div
                           css={css`
@@ -472,7 +472,7 @@ function FriendsPage() {
                             `}
                           >
                             <p>{userName}</p>
-                            <p>{userId}</p>
+                            <p>{email}</p>
                           </div>
                         </div>
                         <p
