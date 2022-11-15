@@ -51,7 +51,7 @@ const CostElement = ({
   const [amount] = useState(10000);
   const [isExpand, setIsExpand] = useState(false);
   const handleUpdate = () => {
-    setIsModalOpen(2);
+    setIsModalOpen(Number(costId));
   };
   return (
     <>
@@ -59,10 +59,15 @@ const CostElement = ({
         css={css`
           display: flex;
           align-items: center;
-          gap: 1rem;
         `}
       >
-        <Container onClick={() => setIsExpand(!isExpand)}>
+          <Container
+          css={css`
+            transition: all 0.5s ease-out;
+            right: ${isDelete ? "1rem" : "0px"};
+          `}
+          onClick={() => setIsExpand(!isExpand)}
+        >
           <SubContainer>
             <Wrapper>
               <TextAvatar name={payer?.simpleUserInfoDto.userName} />
@@ -183,18 +188,21 @@ const CostElement = ({
         </Container>
         {isDelete && (
           <input
+            css={css`
+            transition: all 0.5s ease-out;
+            `}
             type={"radio"}
             onClick={() => handleSelectCostDelete(costId)}
           />
         )}
       </div>
-      {isModalOpen === 2 && (
-        <Modal onClick={() => setIsModalOpen(0)}>
+      {isModalOpen === Number(costId) && (
+        <Modal onClick={() => setIsModalOpen(-1)}>
           <AddCostModal
             users={users}
             travelId={travelId}
             costData={data}
-            isClose={() => setIsModalOpen(0)}
+            isClose={() => setIsModalOpen(-1)}
           />
         </Modal>
       )}

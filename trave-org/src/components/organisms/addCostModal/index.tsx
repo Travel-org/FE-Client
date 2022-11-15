@@ -16,6 +16,7 @@ import SelectPayer from "@src/components/organisms/settlementForm/selectPlayer";
 import SelectBiller from "@src/components/organisms/settlementForm/selectBiller";
 import AddPrice from "@src/components/organisms/settlementForm/addPrice";
 import { api } from "@src/app/api/api";
+import travelApi from "@src/app/api/travelApi";
 
 interface UserCost {
   amount: number;
@@ -59,7 +60,7 @@ const AddCostModal = ({
   const [payer, setPayer] = useState<IUser | null>(null);
   const [price, setPrice] = useState<number | string>();
   const [selectedUser, setSelectedUser] = useState({});
-  const [usersPrice, setUsersPrice] = useState({});
+  const [usersPrice, setUsersPrice] = useState<{ [key: number]: number }>({});
   const [countChip, setCountChip] = useState(0);
 
   const handlePast = () => setCountChip(Math.max(0, countChip - 1));
@@ -90,7 +91,7 @@ const AddCostModal = ({
       setUsersPrice(
         costData.userCosts.reduce(
           (r, { simpleUserInfoDto: { userId }, amount }) => {
-            r[userId] = amount;
+            r[userId] = Number(amount);
             return r;
           },
           {}

@@ -4,7 +4,15 @@ import {
   MapMarker,
   Polyline,
 } from "react-kakao-maps-sdk";
-import { BiPlus, BiCalendar, BiMapPin, BiPointer } from "react-icons/bi";
+
+import {
+  BiPlus,
+  BiCalendar,
+  BiMapPin,
+  BiPointer,
+  BiBeenHere,
+} from "react-icons/bi";
+
 import React, {
   useCallback,
   useEffect,
@@ -541,15 +549,43 @@ const TravelEditPage = () => {
             />
           )}
           {selectedDateSchedules.map((schedule) => (
-            <MapMarker // 마커를 생성합니다
+            <CustomOverlayMap // 마커를 생성합니다
               position={{
                 // 마커가 표시될 위치입니다
                 lat: schedule?.place.lat ?? 0,
                 lng: schedule?.place.lng ?? 0,
               }}
             >
-              <div>{schedule?.place.placeName}</div>
-            </MapMarker>
+              <div
+                css={css`
+                  display: flex;
+                  flex-direction: column;
+                  text-align: center;
+                  align-items: center;
+                  * {
+                    margin: 0px;
+                  }
+                `}
+              >
+                <p
+                  css={css`
+                    padding: 0.4rem;
+                    box-shadow: 0px 0px 3px ${theme.colors.shadow};
+                    background: white;
+                    border-radius: 5px;
+                  `}
+                >
+                  {schedule?.place.placeName}
+                </p>
+                <BiMapPin
+                  css={css`
+                    color: #191919;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                  `}
+                />
+              </div>
+            </CustomOverlayMap>
           ))}
           {routeInfos &&
             routeInfos.map((routeInfo) => (

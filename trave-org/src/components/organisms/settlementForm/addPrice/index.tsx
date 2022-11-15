@@ -65,7 +65,7 @@ const AddPrice = ({
         <h2>결제 금액을 입력해주세요!</h2>
         <input
           value={price}
-          onChange={(e) => setPrice(e.target.value.replace(/\D/g, ""))}
+          onChange={(e) => setPrice(Number(e.target.value.replace(/\D/g, "")))}
         />
       </PriceWrapper>
       <Wrapper>
@@ -93,7 +93,7 @@ const AddPrice = ({
               onChange={(e) =>
                 setUsersPrice({
                   ...usersPrice,
-                  [userId]: e.target.value.replace(/\D/g, ""),
+                  [userId]: Number(e.target.value.replace(/\D/g, "")),
                 })
               }
             />

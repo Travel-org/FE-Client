@@ -9,8 +9,12 @@ import { theme } from "@src/styles/theme";
 import { BiTrash } from "react-icons/bi";
 
 const Button = styled.button<{ isDelete: boolean }>`
+  position: absolute;
+  right: 0px;
   border: 0.1rem solid grey;
   border-radius: 10px;
+  top: 50%;
+  transform: translate(-50%, 0%);
   width: 3rem;
   height: 1.2rem;
   padding: 0.1rem 0px;
@@ -63,17 +67,20 @@ const SplitBill = ({ costData, travelId }: Props) => {
       >
         <div
           css={css`
-            display: flex;
-            justify-content: flex-end;
+            position: relative;
             padding: 1rem;
             align-items: center;
-            gap: 1rem;
           `}
         >
           <BiTrash
             css={css`
+              position: absolute;
               border: 0.1rem solid grey;
               border-radius: 10px;
+              top: 50%;
+              transform: translate(-50%, 0%);
+              transition: all 0.5s ease-out;
+              right: ${isDelete ? "4rem" : "0px"};
               width: 3rem;
               height: 1.2rem;
               padding: 0.1rem 0px;
@@ -90,7 +97,7 @@ const SplitBill = ({ costData, travelId }: Props) => {
         </div>
         <div
           css={css`
-            height: 100%;
+            height: 60vh;
             overflow: auto;
             padding: 1rem;
             box-sizing: border-box;
@@ -132,17 +139,17 @@ const SplitBill = ({ costData, travelId }: Props) => {
             border-radius: 100vw;
             box-shadow: 0px 0px 6px ${theme.colors.shadow};
           `}
-          onClick={() => setIsModalOpen((v) => (v === 0 ? 1 : 0))}
+          onClick={() => setIsModalOpen(-2)}
         >
           +
         </button>
       </div>
-      {isModalOpen === 1 && (
-        <Modal onClick={() => setIsModalOpen(0)}>
+      {isModalOpen === -2 && (
+        <Modal onClick={() => setIsModalOpen(-1)}>
           <AddCostModal
             travelId={travelId}
             users={users}
-            isClose={() => setIsModalOpen(0)}
+            isClose={() => setIsModalOpen(-1)}
           />
         </Modal>
       )}

@@ -72,6 +72,24 @@ interface AmountPerUserProps {
   [key: number]: number;
 }
 
+export interface INoticeResponse {
+  noticeId: number;
+  title: string;
+  content: string;
+  authorInfo: IUserResponse;
+  createdAt: string;
+  photoInfos: IPhotoResponse[];
+}
+
+export interface IEventResponse {
+  eventId: number;
+  title: string;
+  content: string;
+  authorInfo: IUserResponse;
+  createdAt: string;
+  photoInfos: IPhotoResponse[];
+}
+
 export const api = baseApi
   .enhanceEndpoints({
     addTagTypes: ["UserInfo"],
