@@ -21,6 +21,7 @@ const FeedContainer = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  background-color: white;
 `;
 
 const UserProfileRow = styled.div`
