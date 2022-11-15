@@ -33,6 +33,15 @@ const postApi = baseApi
           body: formData,
         }),
       }),
+      createComment: builder.mutation<any, any>({
+        query: (args) => ({
+          url: `/v1/comments/${args.postId}`,
+          method: "POST",
+          body: {
+            content: args.content,
+          },
+        }),
+      }),
     }),
   });
 

@@ -7,6 +7,7 @@ import { Container } from "./styles";
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import Modal from "@src/components/modal";
+import Feed from "@src/components/organisms/feed";
 
 const FeedContainer = styled.div`
   position: relative;
@@ -128,63 +129,15 @@ const MyPage = () => {
     <Container>
      {openModal && (
         <Modal onClick={handleCloseModal}>
-          <FeedContainer>
-            <UserProfileRow>
-              {post !== undefined && post?.userInfo?.profilePath === null ? (
-              <TextAvatar name={post?.userInfo?.userName} />
-              ) : (
-                <img
-                  css={css`
-                    width: 3rem;
-                    height: 3rem;
-                  `}
-                  src={post?.userInfo?.profilePath}
-                />
-              )}
-              <UserInfo>{post?.userInfo?.userName}</UserInfo>
-            </UserProfileRow>
-            <div
-              css={css`
-                width: 100%;
-                padding: 0.1rem;
-                box-sizing: border-box;
-                display: flex;
-                column-gap: 1rem;
-                overflow: auto;
-              `}
-            >
-              {post?.photoInfos.map(({ name }) => (
-                <PostImage src={name} />
-              ))}
-            </div>
-            <div
-              css={css`
-              width: 100%;
-              display: flex;
-              padding: 0.2rem;
-            `}
-          >
-              <p
-                css={css`
-                  width: 80%;
-                  word-wrap: break-word;
-                `}
-              >
-                {post?.text}
-              </p>
-              <div
-                css={css`
-                  width: 20%;
-                  display: flex;
-                  justify-content: end;
-                `}
-              >
-              <p>❤️</p>
-              <p>👏</p>
-            </div>
-          </div>
-            <PlcaeLink href={post?.placeUrl}>#{post?.placeName}</PlcaeLink>
-          </FeedContainer>
+          <Feed
+            postId={post?.postId!}
+            text={post?.text!}
+            photoInfos={post?.photoInfos}
+            placeUrl={post?.placeUrl!}
+            placeName={post?.placeName!}
+            userInfo={post?.userInfo}
+            comments={post?.comments}
+          />
         </Modal>
       )}
       <div

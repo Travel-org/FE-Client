@@ -4,6 +4,7 @@ import friendApi from "@src/app/api/friendApi";
 import TextAvatar from "@src/components/atoms/textAvatar";
 import { theme } from "@src/styles/theme";
 import { BiExpand } from "react-icons/bi";
+import Feed from "../feed";
 
 const FeedsContainer = styled.div`
   width: 100%;
@@ -129,38 +130,25 @@ const FriendsDetail = ({ targetId }: Props) => {
             `}
           >
             {friendsProfile.posts.map(
-              ({ postId, placeName, placeUrl, text, userInfo, photoInfos }) => (
-                <div key={postId}>
-                  <FeedContainer>
-                    <div
-                      css={css`
-                        width: 100%;
-                        padding: 0.1rem;
-                        box-sizing: border-box;
-                        display: flex;
-                        column-gap: 1rem;
-                        overflow: auto;
-                      `}
-                    >
-                      {photoInfos.map(({ name }) => (
-                        <PostImage src={name} />
-                      ))}
-                    </div>
-                    <div
-                      css={css`
-                      width: 100%;
-                        display: flex;
-                        padding: 0.2rem;
-                      `}
-                    >
-                      <p css={css`width: 80%;word-wrap: break-word;`}>{text}</p>
-                      <div css={css`width: 20%;display:flex;justify-content:end;`}>
-                        <p>❤️</p>
-                        <p>👏</p>
-                      </div>
-                    </div>
-                    <PlcaeLink href={placeUrl}>#{placeName}</PlcaeLink>
-                  </FeedContainer>
+                ({
+                  postId,
+                  placeName,
+                  placeUrl,
+                  text,
+                  userInfo,
+                  photoInfos,
+                  comments,
+                }) => (
+                  <div key={postId}>
+                    <Feed
+                      postId={postId}
+                      comments={comments}
+                      userInfo={userInfo}
+                      photoInfos={photoInfos}
+                      text={text}
+                      placeName={placeName}
+                      placeUrl={placeUrl}
+                    />
                 </div>
               )
             )}
