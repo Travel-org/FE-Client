@@ -1,16 +1,17 @@
 import { css } from "@emotion/react";
+import { Button } from "@material-ui/core";
+import { PhotoCamera } from "@material-ui/icons";
 import postApi from "@src/app/api/postApi";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CreateNoticeModal = (props) => {
   const { open, close } = props;
   const [image, setImage] = useState<{ preview: string; raw: any }[]>([]);
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
-  const imageRef = useRef(null);
   const [createNotice] = postApi.useCreateNoticeMutation();
   const handleChange = (e: any) => {
-    if (e.target.files.length) {
+    if (e.target.files.length > 0) {
       const file = e.target.files[0];
       setImage((v) => [
         ...v,
@@ -31,6 +32,11 @@ const CreateNoticeModal = (props) => {
     formData.append("title", titleRef.current?.value ?? "");
     formData.append("content", textRef.current?.value ?? "");
     createNotice(formData);
+    close();
+  };
+
+  const handleRemoveImg = (url: string) => {
+    setImage(image.filter(({ preview }) => preview !== url));
   };
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -39,72 +45,89 @@ const CreateNoticeModal = (props) => {
         display: flex;
       `}
     >
-        {open ? (
-        <section
-          css={css`
-            width: 400px;
-            background-color: white;
-            border: solid 1px black;
-            margin-left: 30%;
-            margin-bottom: 30px;
-            padding: 10px;
-          `}
-        >
-          <header>
-            <button
-              className="close"
-              onClick={close}
-              css={css`
-                display: flex;
-                margin-left: auto;
-              `}
+          <div
+        css={css`
+          width: 400px;
+          background-color: white;
+          border: solid 1px black;
+          margin-left: 30%;
+          margin-bottom: 30px;
+          padding: 10px;
+        `}
+      >
+        <header>
+          <button
+            className="close"
+            onClick={close}
+            css={css`
+              display: flex;
+              margin-left: auto;
+            `}
+          >
+            &times;
+          </button>
+        </header>
+        <main>
+          <input
+            placeholder="제목을 입력하세요"
+            ref={titleRef}
+            css={css`
+              width: 100%;
+              overflow: auto;
+              resize: none;
+              border: none;
+            `}
+          />
+          <textarea
+            placeholder="내용을 입력하세요"
+            ref={textRef}
+            cols={40}
+            rows={5}
+            css={css`
+              margin-top: 10px;
+              width: 100%;
+              overflow: auto;
+              resize: none;
+              border: none;
+            `}
+          ></textarea>
+          {/* <Button
+              variant="contained"
+              component="label"
+              size="small"
+              startIcon={<PhotoCamera />}
             >
-              &times;
-            </button>
-          </header>
-          <main>
-            <input
-              placeholder="제목을 입력하세요"
-              ref={titleRef}
-              css={css`
-                width: 100%;
-                overflow: auto;
-                resize: none;
-                border: none;
-              `}
-            />
-            <textarea
-              placeholder="내용을 입력하세요"
-              ref={textRef}
-              cols={40}
-              rows={5}
-              css={css`
-                margin-top: 10px;
-                width: 100%;
-                overflow: auto;
-                resize: none;
-                border: none;
-              `}
-            ></textarea>
-            <input ref={imageRef} type="file" onClick={handleChange} />
-            <button
-              css={css`
-                margin-top: 10%;
-                width: 100px;
-                height: 30px;
-                border-radius: 10px;
-                background-color: navy;
-                color: white;
-                padding: 5px;
-              `}
-              onClick={handleSubmit}
-            >
-              작성
-            </button>
-          </main>
-        </section>
-      ) : null}
+              Upload
+              <input ref={imageRef} type="file" hidden onClick={handleChange} />
+            </Button> */}
+          <div>
+            {image.map(({ preview }) => (
+              <img
+                key={preview}
+                css={css`
+                  width: 3rem;
+                  height: 3rem;
+                  :hover {
+                    opacity: 50%;
+                  }
+                `}
+                src={preview}
+                onClick={() => handleRemoveImg(preview)}
+              />
+            ))}
+          </div>
+          <input type="file" onChange={handleChange} />
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={handleSubmit}
+          >
+            작성
+          </Button>
+        </main>
       </div>
+    </div>
   );
 };
 

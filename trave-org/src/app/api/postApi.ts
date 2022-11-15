@@ -28,7 +28,7 @@ const postApi = baseApi
       }),
       createNotice: builder.mutation<any, FormData>({
         query: (formData) => ({
-          url: "/v1/notices",
+          url: "/v1/admin/notices",
           method: "POST",
           body: formData,
         }),
