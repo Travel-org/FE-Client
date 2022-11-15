@@ -9,6 +9,9 @@ interface IDateData {
   scheduleOrders: number[];
   schedules: IScheduleResponse[];
 }
+interface AmountPerUserProps {
+  [key: number]: number;
+}
 
 export interface ITravelResponse {
   id: number;
@@ -80,6 +83,7 @@ const travelApi = baseApi
           { type: "Travel", id: "LIST" },
         ],
       }),
+
       changeTravelScheduleOrder: builder.mutation<
         number[],
         {
@@ -197,4 +201,5 @@ const travelApi = baseApi
       }),
     }),
   });
+
 export default travelApi;

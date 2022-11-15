@@ -72,24 +72,6 @@ interface AmountPerUserProps {
   [key: number]: number;
 }
 
-export interface INoticeResponse {
-  noticeId: number;
-  title: string;
-  content: string;
-  authorInfo: IUserResponse;
-  createdAt: string;
-  photoInfos: IPhotoResponse[];
-}
-
-export interface IEventResponse {
-  eventId: number;
-  title: string;
-  content: string;
-  authorInfo: IUserResponse;
-  createdAt: string;
-  photoInfos: IPhotoResponse[];
-}
-
 export const api = baseApi
   .enhanceEndpoints({
     addTagTypes: ["UserInfo"],
@@ -315,7 +297,7 @@ export const api = baseApi
         },
       }),
       updateCost: builder.mutation<
-        any,
+        string,
         {
           amountsPerUser: AmountPerUserProps[];
           content: string;
@@ -334,7 +316,7 @@ export const api = baseApi
             content: args.content,
             payerId: args.payerId,
             title: args.title,
-            totalAmount: Number(args.totalAmount),
+            totalAmount: args.totalAmount,
           },
           onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
             const updateResponse = await queryFulfilled;
@@ -343,12 +325,9 @@ export const api = baseApi
                 "getTravel",
                 arg.travelId,
                 (draft) => {
-                  draft.costs = [
-                    ...draft.costs.filter(
-                      ({ costId }) => updateResponse.data.costId !== costId
-                    ),
-                    updateResponse.data,
-                  ];
+                  draft.costs = draft.costs.filter(
+                    ({ costId }) => updateResponse.data !== costId
+                  );
                 }
               )
             );
