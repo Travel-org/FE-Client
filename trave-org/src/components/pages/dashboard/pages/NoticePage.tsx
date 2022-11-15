@@ -15,7 +15,11 @@ const NoticePage = () => {
     {
       title: "제목",
       gen: (rowData: any) => (
-        <TableCell align="center">{rowData.title}</TableCell>
+        <TableCell align="center">
+          <a href={`/dashboard/notices/${rowData.noticeId}`}>
+            {rowData.title}
+          </a>
+          </TableCell>
       ),
     },
     {

@@ -34,6 +34,8 @@ import Notice from "./pages/Notice";
 import Event from "./pages/Event";
 import Cost from "./pages/Cost";
 import TravelDetail from "./pages/TravelDetail";
+import NoticeDetail from "./pages/detail/NoticeDetail";
+import EventDetail from "./pages/detail/EventDetail";
 
 export const LLink = styled(Link)`
   text-decoration: none;
@@ -148,11 +150,11 @@ const SideBar = () => {
           <BiGridAlt size={24} style={{ marginRight: 12 }} />
           정산
         </SideBarMenu>
-        <SideBarMenu toPath="/admin/notice">
+        <SideBarMenu toPath="/admin/notices">
           <BiBookAlt size={24} style={{ marginRight: 12 }} />
           공지사항
         </SideBarMenu>
-        <SideBarMenu toPath="/admin/event">
+        <SideBarMenu toPath="/admin/events">
           <BiBell size={24} style={{ marginRight: 12 }} />
           이벤트
         </SideBarMenu>
@@ -286,12 +288,20 @@ const adminRouter: BreadcrumbsRoute<string>[] = [
         element: <Cost />,
       },
       {
-        path: "/admin/notice",
+        path: "/admin/notices",
         element: <Notice />,
       },
       {
-        path: "/admin/event",
+        path: "/admin/notices/:noticeId",
+        element: <NoticeDetail />,
+      },
+      {
+        path: "/admin/events",
         element: <Event />,
+      },
+      {
+        path: "/admin/events/:eventId",
+        element: <EventDetail />,
       },
     ],
   },

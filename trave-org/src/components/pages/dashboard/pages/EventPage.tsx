@@ -18,7 +18,9 @@ const EventPage = () => {
       title: "제목",
       gen: (rowData: any) => (
         <TableCell align="center">
-          {rowData.title}
+            <a href={`/dashboard/events/${rowData.eventId}`}>
+              {rowData.title}
+            </a>
         </TableCell>
       ),
     },

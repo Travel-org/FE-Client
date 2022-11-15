@@ -24,6 +24,16 @@ const Event = () => {
         <TableCell align="center">{rowData.authorName}</TableCell>
       ),
     },
+    {
+      title: "상세 페이지",
+      gen: (rowData: any) => (
+        <TableCell align="center">
+          <a href={`/admin/events/${rowData.eventId}`}>
+            상세 보기
+          </a>
+        </TableCell>
+      ),
+    },
   ];
   return (
     <PaginationTable url={url} kps={kps}>

@@ -37,6 +37,16 @@ const Notice = () => {
         <TableCell align="center">{rowData.authorName}</TableCell>
       ),
     },
+    {
+      title: "상세 페이지",
+      gen: (rowData: any) => (
+        <TableCell align="center">
+          <a href={`/admin/notices/${rowData.noticeId}`}>
+            상세 보기
+          </a>
+        </TableCell>
+      ),
+    },
   ];
   return (
     <>

@@ -34,6 +34,8 @@ import Modal from "@src/components/modal";
 import CreateTravelModal from "@pages/dashboard/CreateTravelModal";
 import travelApi from "@src/app/api/travelApi";
 import TextAvatar from "@src/components/atoms/textAvatar";
+import NoticeDetail from "../admin/pages/detail/NoticeDetail";
+import EventDetail from "../admin/pages/detail/EventDetail";
 
 const LLink = styled(Link)`
   text-decoration: none;
@@ -107,6 +109,7 @@ const SideBar = () => {
         align-items: flex-start;
 
         border-right: 1px solid rgba(0, 0, 0, 0.1);
+
         // FIXME : Is there better way?
         width: 250px;
         min-width: 250px;
@@ -143,11 +146,11 @@ const SideBar = () => {
           <BiGridAlt size={24} style={{ marginRight: 12 }} />
           피드
         </SideBarMenu>
-        <SideBarMenu toPath="/dashboard/notice">
+        <SideBarMenu toPath="/dashboard/notices">
           <BiBookAlt size={24} style={{ marginRight: 12 }} />
           공지사항
         </SideBarMenu>
-        <SideBarMenu toPath="/dashboard/event">
+        <SideBarMenu toPath="/dashboard/events">
           <BiBell size={24} style={{ marginRight: 12 }} />
           이벤트
         </SideBarMenu>
@@ -162,7 +165,8 @@ const SideBar = () => {
       </div>
     </div>
   );
-}
+};
+
 const TravelNameBreadCrumb = ({ match }) => {
   const { data: travelData } = travelApi.useGetTravelQuery(
     match.params.travelId
@@ -170,7 +174,7 @@ const TravelNameBreadCrumb = ({ match }) => {
   return (
     <span>{travelData ? `${travelData.id}-${travelData.title}` : "..."}</span>
   );
-}
+};
 
 const TopBar = () => {
   const { data: myInfoData } = api.useGetMyInfoQuery();
@@ -180,7 +184,7 @@ const TopBar = () => {
   return (
     <>
       <div>
-      <span
+        <span
           css={css`
             font-weight: 500;
             font-size: 24px;
@@ -188,6 +192,7 @@ const TopBar = () => {
         >
           메인
         </span>
+
         <div>
           {breadcrumbs.map(({ match, breadcrumb }) => (
             <span key={match.pathname}>
@@ -215,7 +220,6 @@ const TopBar = () => {
     </>
   );
 };
-
 const DashboardTemplate = () => {
   return (
     <div
@@ -228,14 +232,16 @@ const DashboardTemplate = () => {
       <div
         css={css`
           flex-grow: 1;
+
           display: flex;
           flex-direction: column;
         `}
       >
         <div
           css={css`
-            height: 80px;
-            padding: 0 24px;
+            height: 8vh;
+            padding: 1rem;
+            box-sizing: border-box;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -254,7 +260,7 @@ const DashboardTemplate = () => {
       </div>
     </div>
   );
-}
+};
 
 const dashboardRoute: BreadcrumbsRoute<string>[] = [
   {
@@ -287,13 +293,23 @@ const dashboardRoute: BreadcrumbsRoute<string>[] = [
         breadcrumb: "피드",
       },
       {
-        path: "notice",
+        path: "notices",
         element: <NoticePage />,
         breadcrumb: "공지사항",
       },
       {
-        path: "event",
+        path: "notices/:noticeId",
+        element: <NoticeDetail />,
+        breadcrumb: "공지사항",
+      },
+      {
+        path: "events",
         element: <EventPage />,
+        breadcrumb: "이벤트",
+      },
+      {
+        path: "events/:eventId",
+        element: <EventDetail />,
         breadcrumb: "이벤트",
       },
     ],
