@@ -372,7 +372,6 @@ const MyPage = () => {
             position: relative;
             border-radius: 10px;
             display: flex;
-            column-gap: 1rem;
             align-items: center;
             * {
               margin: 0px;
@@ -382,14 +381,33 @@ const MyPage = () => {
           {myData !== undefined &&
             myData.posts !== undefined &&
             myData.posts.map((v) => (
+              <div
+                css={css`
+                position: relative;
+                width: 5rem;
+                height: 5rem;
+                border: 0.1px solid #fcfcfd;
+              `}
+            >
+              <div
+                css={css`
+                  position: absolute;
+                  background: white;
+                  box-shadow: 0px 0px 1px ${theme.colors.shadow};
+                  width: 5rem;
+                  height: 5rem;
+                `}
+              />
               <img
                 css={css`
+                  position: absolute;
                   width: 5rem;
                   height: 5rem;
                 `}
                 src={v.photoInfos[0].name}
                 onClick={() => handleOpenModal(v)}
               />
+            </div>
             ))}
         </div>
       </div>
