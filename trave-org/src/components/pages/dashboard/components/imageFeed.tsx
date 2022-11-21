@@ -9,6 +9,7 @@ interface Props {
   travelData: any;
   travelId: string | undefined;
 }
+
 const Marker = ({ children }: { children: any }) => {
   return (
     <div
@@ -53,6 +54,7 @@ const ImageFeed = ({ travelData, travelId }: Props) => {
     setScheduleId(id);
     setCreateImageModalOpened(true);
   }, []);
+
   const closeCreateImageModal = useCallback(() => {
     setScheduleId("");
     setCreateImageModalOpened(false);
@@ -68,6 +70,7 @@ const ImageFeed = ({ travelData, travelId }: Props) => {
     if (travelData === undefined) return;
     setSelectedDate(travelData.dates[0].date);
   }, [travelData]);
+
   return (
     <>
       {createDateImageOpened && (
@@ -177,6 +180,7 @@ const ImageFeed = ({ travelData, travelId }: Props) => {
                       css={css`
                         width: 1.2rem;
                         height: 1.2rem;
+
                         cursor: pointer;
                         :hover {
                           opacity: 50%;
@@ -232,4 +236,5 @@ const ImageFeed = ({ travelData, travelId }: Props) => {
     </>
   );
 };
+
 export default ImageFeed;

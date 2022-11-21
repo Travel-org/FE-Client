@@ -9,10 +9,11 @@ interface Props {
 }
 
 const Container = styled.div`
-  width: 80vw;
   height: 92vh;
+
   border-radius: inherit;
 `;
+
 
 const path = [
   [126.4910516, 33.4921636],
@@ -129,6 +130,7 @@ const Map2 = ({ kakao, setMap, focusMark }: Props) => {
     };
     setMap(new kakao.maps.Map(ref.current, options));
   };
+
   useEffect(() => {
     if (kakao && kakao.maps) handleFocusMark();
   }, [kakao]);

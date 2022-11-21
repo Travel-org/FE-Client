@@ -33,4 +33,5 @@ const InnerDashBoard = ({
     </InnerDashBoardStyle>
   );
 };
+
 export default InnerDashBoard;

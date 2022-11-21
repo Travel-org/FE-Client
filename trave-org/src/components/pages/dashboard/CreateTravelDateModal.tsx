@@ -6,6 +6,7 @@ import { api } from "@src/app/api/api";
 import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import travelApi from "@src/app/api/travelApi";
 
 interface ICreateTravelDateModalProps {
   travelId: string;
@@ -31,10 +32,13 @@ const CreateTravelDateModal: React.FC<ICreateTravelDateModalProps> = ({
   onClose,
   onSuccess,
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [createTravelDate, { error, isSuccess, isLoading }] =
-    api.useCreateTravelDateMutation();
-
+  const [dateRange, setDateRange] = useState<any>([new Date(), new Date()]);
+  const [updateTravelDates, { isSuccess }] =
+    travelApi.useUpdateTravelDateMutation();
+  const setDateFormat = (date: Date) =>
+    `${date.getFullYear()}-${date.getMonth() + 1 < 10 ? "0" : ""}${
+      date.getMonth() + 1
+    }-${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
   useEffect(() => {
     if (isSuccess) {
       onSuccess();
@@ -47,9 +51,11 @@ const CreateTravelDateModal: React.FC<ICreateTravelDateModalProps> = ({
         css={css`
           background: white;
           border-radius: 10px;
+
           display: flex;
           flex-direction: column;
           overflow: hidden;
+
           > * {
             padding: 25px 30px;
           }
@@ -69,7 +75,7 @@ const CreateTravelDateModal: React.FC<ICreateTravelDateModalProps> = ({
               font-weight: 600;
             `}
           >
-            날짜 생성하기
+            날짜 변경하기
           </span>
         </div>
         <div
@@ -78,7 +84,12 @@ const CreateTravelDateModal: React.FC<ICreateTravelDateModalProps> = ({
             flex-direction: column;
           `}
         >
-          <Calendar value={selectedDate} onChange={setSelectedDate} />
+          <Calendar
+            selectRange
+            returnValue={"range"}
+            value={dateRange}
+            onChange={(v) => setDateRange(v)}
+          />
         </div>
         <div
           css={css`
@@ -100,10 +111,10 @@ const CreateTravelDateModal: React.FC<ICreateTravelDateModalProps> = ({
           <button
             type="button"
             onClick={() =>
-              createTravelDate({
+              updateTravelDates({
                 travelId: travelId,
-                date: formatDate(selectedDate),
-                title: "test",
+                startDate: setDateFormat(dateRange[0]),
+                endDate: setDateFormat(dateRange[1]),
               })
             }
           >

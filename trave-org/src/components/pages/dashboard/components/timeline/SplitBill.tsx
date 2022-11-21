@@ -55,6 +55,7 @@ const SplitBill = ({ costData, travelId }: Props) => {
     }
     setIsDelete(false);
   };
+
   return (
     <>
       <div
@@ -156,4 +157,5 @@ const SplitBill = ({ costData, travelId }: Props) => {
     </>
   );
 };
+
 export default SplitBill;

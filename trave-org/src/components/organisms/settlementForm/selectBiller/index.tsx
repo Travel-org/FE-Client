@@ -34,7 +34,6 @@ const SelectBiller = ({
     });
   }, []);
   console.log(payer, users);
-
   return (
     <Container>
       <h2>결제자</h2>
@@ -44,10 +43,6 @@ const SelectBiller = ({
           <p>{payer.userName}</p>
         </Wrapper>
       )}
-      <Wrapper>
-        <Avartar />
-        {payer !== null && <p>{payer.userName}</p>}
-      </Wrapper>
       <h2>청구자를 선택해주세요!</h2>
       {users
         .filter((user) => user.userId !== payer?.userId)

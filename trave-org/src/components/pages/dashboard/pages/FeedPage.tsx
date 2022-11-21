@@ -36,12 +36,12 @@ function FeedPage() {
         <p>loading..</p>
       </div>
     );
-    else if (isSuccess) {
-      console.log(postsData);
+  else if (isSuccess) {
+    console.log(postsData);
     return (
       <FeedsContainer>
         <InfiniteScroll
-            css={css`
+          css={css`
             display: flex;
             flex-direction: column;
             padding: 1rem;
@@ -66,14 +66,14 @@ function FeedPage() {
                 photoInfos,
               }) => (
                 <Feed
-                comments={comments}
-                postId={postId}
-                text={text}
-                userInfo={userInfo}
-                photoInfos={photoInfos}
-                placeName={placeName}
-                placeUrl={placeUrl}
-              />
+                  comments={comments}
+                  postId={postId}
+                  text={text}
+                  userInfo={userInfo}
+                  photoInfos={photoInfos}
+                  placeName={placeName}
+                  placeUrl={placeUrl}
+                />
               )
             )}
         </InfiniteScroll>

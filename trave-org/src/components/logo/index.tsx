@@ -37,6 +37,7 @@ export function Logo({ color }: { color: string }) {
           font-weight: 700;
           font-size: 30px;
           letter-spacing: -3px;
+
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;

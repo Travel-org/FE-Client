@@ -11,6 +11,7 @@ interface IUploadImageModalProps {
   onClose: () => void;
   onSuccess: () => void;
 }
+
 const UploadImageModal = ({
   travelId,
   scheduleId,
@@ -65,6 +66,7 @@ const UploadImageModal = ({
           height: 40vh;
           display: flex;
           flex-direction: column;
+
           padding: 1rem;
         `}
       >
@@ -145,4 +147,5 @@ const UploadImageModal = ({
     </Modal>
   );
 };
+
 export default UploadImageModal;

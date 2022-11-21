@@ -51,9 +51,11 @@ const CreateTravelModal: React.FC<ISignInModalProps> = ({
           width: 500px;
           background: white;
           border-radius: 10px;
+
           display: flex;
           flex-direction: column;
           overflow: hidden;
+
           > * {
             padding: 25px 30px;
           }
@@ -79,6 +81,7 @@ const CreateTravelModal: React.FC<ISignInModalProps> = ({
         <div
           css={css`
             height: 300px;
+
             display: flex;
             flex-direction: column;
           `}
@@ -134,14 +137,13 @@ const CreateTravelModal: React.FC<ISignInModalProps> = ({
               createTravel({
                 title: title,
                 userEmails: emails.filter((email) => email !== ""),
-                startDate: "",
-                endDate: ""
               })
             }
           >
             생성
           </button>
         </div>
+      </div>
     </Modal>
   );
 };

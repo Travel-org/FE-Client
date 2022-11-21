@@ -4,7 +4,6 @@ import {
   MapMarker,
   Polyline,
 } from "react-kakao-maps-sdk";
-
 import {
   BiPlus,
   BiCalendar,
@@ -12,7 +11,6 @@ import {
   BiPointer,
   BiBeenHere,
 } from "react-icons/bi";
-
 import React, {
   useCallback,
   useEffect,
@@ -37,6 +35,8 @@ import { RootState, store } from "@src/app/store";
 import { theme } from "@src/styles/theme";
 import SearchModal from "@src/components/organisms/searchModal";
 import produce from "immer";
+import { useMeetingManager } from "amazon-chime-sdk-component-library-react";
+import { MeetingSessionConfiguration } from "amazon-chime-sdk-js";
 import ImageFeed from "../components/imageFeed";
 
 const BtnWarpper = styled.div`
@@ -65,6 +65,41 @@ const TravelEditPage = () => {
 
   const client = useRef<Socket>();
   const dispatch = useAppDispatch();
+
+  /**
+   * AWS Chime
+   */
+  const meetingManager = useMeetingManager();
+  const joinMeeting = async () => {
+    // Fetch the meeting and attendee data from your server application
+    const response = await fetch(`http://123.214.75.32:12325/chime/${travelId}`);
+    const data = await response.json();
+
+    const meetingSessionConfiguration = new MeetingSessionConfiguration(
+      data.Meeting,
+      data.Attendee
+    );
+    // Customize your own `DeviceLabelTrigger`
+    const deviceLabels = async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
+      return stream;
+    };
+    const options = {
+      deviceLabels: deviceLabels,
+    };
+
+    // Use the join API to create a meeting session using the `MeetingSessionConfiguration` and custom device label trigger
+    await meetingManager.join(meetingSessionConfiguration, options);
+
+    // Start the session to join the meeting
+    await meetingManager.start();
+  };
+
+  useEffect(() => {
+    joinMeeting();
+  }, []);
 
   const [sharedCursors, setSharedCursors] = useState<{
     [ownerId: string]: { lat: number; lng: number };
@@ -448,17 +483,17 @@ const TravelEditPage = () => {
                     (draft) => {
                       draft.dates.find(
                         (date) => date.date === selectedDate
-                        )!.scheduleOrders = updatedScheduleOrder;
-                      }
-                    )
-                  );
-                  client.current!.emit("scheduleOrderChange", {
-                    travelId: travelId!,
-                    data: {
-                      date: selectedDate!,
-                      scheduleOrder: updatedScheduleOrder,
-                    },
-                  });
+                      )!.scheduleOrders = updatedScheduleOrder;
+                    }
+                  )
+                );
+                client.current!.emit("scheduleOrderChange", {
+                  travelId: travelId!,
+                  data: {
+                    date: selectedDate!,
+                    scheduleOrder: updatedScheduleOrder,
+                  },
+                });
               }}
             />
             <div

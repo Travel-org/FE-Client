@@ -12,7 +12,7 @@ import {
 } from "./styles";
 
 import SelectTitle from "@src/components/organisms/settlementForm/selectTitle";
-import SelectPayer from "@src/components/organisms/settlementForm/selectPlayer";
+import SelectPayer from "@src/components/organisms/settlementForm/selectPayer";
 import SelectBiller from "@src/components/organisms/settlementForm/selectBiller";
 import AddPrice from "@src/components/organisms/settlementForm/addPrice";
 import { api } from "@src/app/api/api";
@@ -66,46 +66,49 @@ const AddCostModal = ({
   const handlePast = () => setCountChip(Math.max(0, countChip - 1));
   const handleNext = () =>
     title !== "" && setCountChip(Math.min(3, countChip + 1));
-    useEffect(() => {
-      if (costData === undefined) return;
-      setTitle(costData.title);
-      setMemo(costData.content);
-      const { userId, userName, profilePath } = users.filter(
-        ({ userId }) => costData.payerId === userId
-      )[0];
-      setPayer({ userId, userName, profilePath });
-      setPrice(costData.totalAmount);
-      setSelectedUser({
-        ...users.reduce((r, { userId }) => {
-          r[userId] = false;
+
+  useEffect(() => {
+    if (costData === undefined) return;
+    setTitle(costData.title);
+    setMemo(costData.content);
+    const { userId, userName, profilePath } = users.filter(
+      ({ userId }) => costData.payerId === userId
+    )[0];
+    setPayer({ userId, userName, profilePath });
+    setPrice(costData.totalAmount);
+    setSelectedUser({
+      ...users.reduce((r, { userId }) => {
+        r[userId] = false;
+        return r;
+      }, {}),
+      ...{
+        ...costData.userCosts.reduce((r, { simpleUserInfoDto: { userId } }) => {
+          r[userId] = true;
           return r;
         }, {}),
-        ...{
-          ...costData.userCosts.reduce((r, { simpleUserInfoDto: { userId } }) => {
-            r[userId] = true;
-            return r;
-          }, {}),
-          [costData.payerId as number]: true,
+        [costData.payerId as number]: true,
+      },
+    });
+    setUsersPrice(
+      costData.userCosts.reduce(
+        (r, { simpleUserInfoDto: { userId }, amount }) => {
+          r[userId] = Number(amount);
+          return r;
         },
-      });
-      setUsersPrice(
-        costData.userCosts.reduce(
-          (r, { simpleUserInfoDto: { userId }, amount }) => {
-            r[userId] = Number(amount);
-            return r;
-          },
-          {}
-        )
-      );
-      setCountChip(3);
-    }, []);
-  
-    useEffect(() => {
-      console.log(selectedUser, usersPrice);
-    }, [selectedUser, usersPrice]);
+        {}
+      )
+    );
+    setCountChip(3);
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedUser, usersPrice);
+  }, [selectedUser, usersPrice]);
+
   const compareUserPrice =
-    price ==
-    Object.values(usersPrice).reduce((r: number, v) => r + (v as number), 0);
+    Number(price) ==
+    Object.values(usersPrice).reduce((r: number, v) => r + Number(v), 0);
+
   const goNextPage = () => {
     if (price !== undefined && +price > 0 && compareUserPrice) {
       {
@@ -138,7 +141,6 @@ const AddCostModal = ({
       }
     } else alert("금액이 맞지 않습니다.");
   };
-
   return (
     <Container direction="column">
       <h2>정산 생성</h2>

@@ -130,25 +130,25 @@ const FriendsDetail = ({ targetId }: Props) => {
             `}
           >
             {friendsProfile.posts.map(
-                ({
-                  postId,
-                  placeName,
-                  placeUrl,
-                  text,
-                  userInfo,
-                  photoInfos,
-                  comments,
-                }) => (
-                  <div key={postId}>
-                    <Feed
-                      postId={postId}
-                      comments={comments}
-                      userInfo={userInfo}
-                      photoInfos={photoInfos}
-                      text={text}
-                      placeName={placeName}
-                      placeUrl={placeUrl}
-                    />
+              ({
+                postId,
+                placeName,
+                placeUrl,
+                text,
+                userInfo,
+                photoInfos,
+                comments,
+              }) => (
+                <div key={postId}>
+                  <Feed
+                    postId={postId}
+                    comments={comments}
+                    userInfo={userInfo}
+                    photoInfos={photoInfos}
+                    text={text}
+                    placeName={placeName}
+                    placeUrl={placeUrl}
+                  />
                 </div>
               )
             )}

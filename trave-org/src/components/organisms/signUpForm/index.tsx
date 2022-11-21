@@ -28,7 +28,6 @@ function SignUpForm() {
     formState: { errors },
   } = useForm<SignUpFormInterface>({});
   const navigate = useNavigate();
-
   const inputProps = (type: keyof SignUpFormInterface) => {
     return {
       ...register(type, CHECK_SIGNUP_DATA[type]),
@@ -106,13 +105,13 @@ function SignUpForm() {
         <ErrorMessage>{dayError}</ErrorMessage>
       </Container>
     );
-  };
+  }
 
   return (
     <SignFormStyle onSubmit={handleSubmit(onSubmit)}>
       <SignUpInput {...inputProps("name")} />
-       {/* <SignUpInput {...inputProps("nickName")} /> */}
-       <SignUpInput {...inputProps("phoneNumber")} />
+      {/* <SignUpInput {...inputProps("nickName")} /> */}
+      <SignUpInput {...inputProps("phoneNumber")} />
       {/* <SignUpInput {...inputProps("gender")} />
       <SignUpInput {...inputProps("tendency")} /> */}
       {/* <BirthInputForm /> */}
@@ -121,6 +120,6 @@ function SignUpForm() {
       <Button>제출</Button>
     </SignFormStyle>
   );
-};
+}
 
 export default SignUpForm;

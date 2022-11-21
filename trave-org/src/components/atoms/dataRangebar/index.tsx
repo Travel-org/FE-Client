@@ -6,7 +6,9 @@ interface Props {
 }
 
 const DataRangeBar = ({ onClick, selectedDate }: Props) => {
-  const [start, end] = selectedDate;
+  const [start, end] = [...selectedDate].sort((a, b) =>
+    a.getTime() > b.getTime() ? 1 : -1
+  );
 
   const getFullDate = (date: Date) =>
     `${date.getFullYear()} - ${date.getMonth() + 1 < 10 ? "0" : ""}${

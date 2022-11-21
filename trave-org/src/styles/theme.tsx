@@ -1,4 +1,5 @@
 import { Theme } from "@emotion/react";
+
 declare module "@emotion/react" {
   export interface Theme {
     colors: {
@@ -29,6 +30,7 @@ declare module "@emotion/react" {
     };
   }
 }
+
 export const theme: Theme = {
   colors: {
     shadow: "#00000029",

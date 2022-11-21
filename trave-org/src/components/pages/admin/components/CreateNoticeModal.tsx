@@ -23,6 +23,7 @@ const CreateNoticeModal = (props) => {
       e.target.value = "";
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -45,7 +46,7 @@ const CreateNoticeModal = (props) => {
         display: flex;
       `}
     >
-          <div
+      <div
         css={css`
           width: 400px;
           background-color: white;

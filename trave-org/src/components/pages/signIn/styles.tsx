@@ -20,6 +20,7 @@ const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
+
 const Wrapper = styled(FlexDiv)`
   column-gap: 1rem;
   p {

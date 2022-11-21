@@ -1,5 +1,5 @@
 const Spinner = () => {
-    return <></>;
-  };
-  
-  export default Spinner;
+  return <></>;
+};
+
+export default Spinner;

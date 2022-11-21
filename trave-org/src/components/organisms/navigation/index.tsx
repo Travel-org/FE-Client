@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   > div {
     display: inline-flex;
     align-items: center;
@@ -36,8 +37,9 @@ const Navigation = ({ user }: Props) => {
   const navigate = useNavigate();
   const currentUser = useAppSelector(isLoginSelector);
   const [logout] = api.useLogoutMutation();
+
   return (
-      <>
+    <>
       <NavigationStyle>
         <Wrapper>
           <Link to="/" style={{ textDecoration: "none" }}>
@@ -70,6 +72,5 @@ const Navigation = ({ user }: Props) => {
     </>
   );
 };
-
 
 export default Navigation;

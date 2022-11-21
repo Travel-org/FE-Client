@@ -44,7 +44,9 @@ const Calender = ({
   const handleDown = () => handleChangeMonth(-1);
 
   const handleCheckSleleted = (element: Date) => {
-    const [first, second] = selectedDate;
+    const [first, second] = [...selectedDate].sort((a, b) =>
+      a.getTime() > b.getTime() ? 1 : -1
+    );
     return (
       !!(selectedDate.length === 1 && handleCompareDate(first, element)) ||
       (selectedDate.length == 2 && first <= element && element <= second) ||

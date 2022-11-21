@@ -17,6 +17,7 @@ const Background = styled.img<{ url: string }>`
   object-fit: cover;
   background-size: cover;
 `;
+
 const Wrapper = styled.div`
   P {
     margin: 0;
@@ -45,10 +46,12 @@ const Wrapper = styled.div`
     }
   }
 `;
+
 const ArrowImg = styled.img`
   width: 2rem;
   height: 2rem;
 `;
+
 const SubmitBtn = styled.button`
   width: 3rem;
   height: 3rem;
@@ -59,6 +62,7 @@ const SubmitBtn = styled.button`
   justify-content: center;
   align-content: center;
 `;
+
 const Banner = styled.div`
   position: relative;
   height: 50vh;
@@ -71,4 +75,5 @@ const Banner = styled.div`
     transform: translate(-50%, -50%);
   }
 `;
+
 export { Container, Background, Banner, Wrapper, ArrowImg, SubmitBtn };

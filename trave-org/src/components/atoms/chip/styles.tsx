@@ -25,6 +25,7 @@ const Container = styled.div<{ status: boolean }>`
     status ? theme.colors.green[600] : theme.colors.grey[600]};
   background: ${({ status }) =>
     status ? theme.colors.green[300] : theme.colors.grey[300]};
+
   @media (max-width: ${theme.breakpoints.md}) {
     font-size: 1rem;
   }

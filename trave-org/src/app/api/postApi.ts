@@ -1,6 +1,7 @@
 import baseApi, { IPaginationResponse } from "@src/app/api/baseApi";
 import { POST_BASE_URL } from "@utils/type";
 import { IPageRequest, IPostResponse } from "@src/app/api/api";
+
 const postApi = baseApi
   .enhanceEndpoints({
     addTagTypes: ["Post"],

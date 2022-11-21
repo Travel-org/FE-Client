@@ -31,10 +31,10 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
   onSuccess,
 }) => {
   const [title, setTitle] = useState("");
-  const [dataRange, setDateRange] = useState<any>();
+  const [dateRange, setDateRange] = useState<any>();
   const [emails, setEmails] = useState<string[]>(["", "", ""]);
   const [createTravel, { error, isSuccess, isLoading }] =
-  travelApi.useCreateTravelMutation();
+    travelApi.useCreateTravelMutation();
 
   const updateEmail = useCallback((index: number, value: string) => {
     setEmails(
@@ -65,9 +65,11 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
           width: 500px;
           background: white;
           border-radius: 10px;
+
           display: flex;
           flex-direction: column;
           overflow: hidden;
+
           > * {
             padding: 25px 30px;
           }
@@ -160,8 +162,8 @@ const CreateTravelModal: React.FC<ICreateTravelModalProps> = ({
               createTravel({
                 title: title,
                 userEmails: emails.filter((email) => email !== ""),
-                startDate: formatDate(dataRange[0]),
-                endDate: formatDate(dataRange[1]),
+                startDate: formatDate(dateRange[0]),
+                endDate: formatDate(dateRange[1]),
               })
             }
           >

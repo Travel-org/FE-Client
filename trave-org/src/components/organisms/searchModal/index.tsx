@@ -44,7 +44,7 @@ const SearchModal = ({
   const [createSchedule, { data, error, isSuccess, isLoading }] =
     travelApi.useCreateScheduleMutation();
 
-    const handleCreateSchedule = (id: number) => {
+  const handleCreateSchedule = (id: number) => {
     if (targetAddress === undefined) return;
     console.log(targetAddress);
     createSchedule({
@@ -141,8 +141,8 @@ const SearchModal = ({
                       : "grey"};
                     cursor: pointer;
                     * {
-                    margin: 0px;
-                  }
+                      margin: 0px;
+                    }
                   `}
                   onClick={() => setTargetAddress(result)}
                 >

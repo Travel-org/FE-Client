@@ -35,13 +35,14 @@ const ListProtoItem = ({
   index,
 }: {
   travelId: string;
-  scheduleId: string
+  scheduleId: string;
   index: number;
 }) => {
   const { data } = travelApi.useGetScheduleQuery({
     travelId: travelId,
     scheduleId: scheduleId,
   });
+
   return (
     <div
       css={css`
@@ -62,6 +63,7 @@ const ListProtoItem = ({
           left: -30px;
           top: 0;
           position: absolute;
+
           &:before,
           &:after {
             content: "";
@@ -79,6 +81,7 @@ const ListProtoItem = ({
           &:after {
             top: 100%;
           }
+
           span {
             position: absolute;
             font-size: 10px;
@@ -99,7 +102,7 @@ const ListProtoItem = ({
             top: 100%;
           `}
         >
-        {data?.endTime}
+          {data?.endTime}
         </span>
       </span>
       <div
@@ -126,7 +129,7 @@ const ListProtoItem = ({
               font-weight: 400;
             `}
           >
-           {data?.place.addressName}
+            {data?.place.addressName}
           </div>
         </div>
       </div>
@@ -140,27 +143,11 @@ const ListProto = ({
   updateData,
   routeData,
 }: {
-  travelId: string
+  travelId: string;
   data: any[];
   updateData: (newData: any) => void;
   routeData: any[];
 }) => {
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchResult, setSearchResult] =
-    useState<kakao.maps.services.PlacesSearchResult>();
-
-  useEffect(() => {
-    if (searchKeyword === "") {
-      setSearchResult(undefined);
-    }
-
-    const ps = new kakao.maps.services.Places();
-    ps.keywordSearch(searchKeyword, (data, status, _pagination) => {
-      if (status === kakao.maps.services.Status.OK) {
-        setSearchResult(data);
-      }
-    });
-  }, [searchKeyword]);
   const [isGrabbed, setIsGrabbed] = useState(false);
 
   const [internalData, setInternalData] = useState(outerData);
@@ -183,7 +170,9 @@ const ListProto = ({
       css={css`
         background: white;
         display: flex;
+        height: 50vh;
         flex-grow: 1;
+        padding: 1rem;
       `}
     >
       <Reorder.Group
@@ -200,6 +189,7 @@ const ListProto = ({
           padding: 0px 50px;
           color: #495057;
           font-size: 13px;
+
           &:before {
             content: "";
             width: 1px;
@@ -211,7 +201,7 @@ const ListProto = ({
       >
         {internalData.map((item, i) => (
           <Reorder.Item
-           key={item.scheduleId}
+            key={item.scheduleId}
             value={item}
             onDragStart={() => setIsGrabbed(true)}
             onDragEnd={() => {
@@ -231,7 +221,7 @@ const ListProto = ({
               >
                 {!isGrabbed && (
                   <>
-                       {routeData?.[i - 1] && (
+                    {routeData?.[i - 1] && (
                       <>
                         <BiCar />
                         {(routeData[i - 1].distance / 1000).toFixed(1)}km · {(routeData[i - 1].duration / 60 / 60).toFixed(1)}시간
@@ -246,32 +236,13 @@ const ListProto = ({
                 )}
               </div>
             )}
-              <ListProtoItem
+            <ListProtoItem
               index={i}
               travelId={travelId}
               scheduleId={item.scheduleId}
             />
           </Reorder.Item>
         ))}
-         <div
-          css={css`
-            margin-left: 30px;
-            margin-top: 10px;
-          `}
-        >
-          <input
-            type="text"
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-          />
-
-          <div>
-            {searchResult &&
-              searchResult.map((result) => {
-                return <div>{result.place_name}</div>;
-              })}
-          </div>
-        </div>
       </Reorder.Group>
     </div>
   );

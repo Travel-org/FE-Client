@@ -6,6 +6,7 @@ import travelApi from "@src/app/api/travelApi";
 import { theme } from "@src/styles/theme";
 import Modal from "@src/components/modal";
 import CreateTravelModal from "@src/components/organisms/createTravelModal";
+import { BiPlus } from "react-icons/bi";
 
 const TravelListPage = () => {
   const navigate = useNavigate();
@@ -29,25 +30,53 @@ const TravelListPage = () => {
           <CreateTravelModal onSuccess={closeCreateTravelModal} />
         </Modal>
       )}
+
       <div
         css={css`
           position: relative;
-          padding: 2rem;
-          width: calc(100vw - 250px);
+          padding: 1rem;
           height: 100%;
+          gap: 1rem;
         `}
       >
+        <h2> 내 여행</h2>
         <div
           css={css`
             display: grid;
             overflow: auto;
             grid-template-columns: repeat(4, 1fr);
+            padding: 1rem;
             gap: 24px;
             * {
               border-bottom-style: none;
             }
           `}
         >
+          <div
+            css={css`
+              border-radius: 10px;
+              max-width: 20vw;
+              height: 100%;
+              border: none;
+              background: none;
+              box-shadow: 0px 0px 6px ${theme.colors.shadow};
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              cursor: pointer;
+              :hover {
+                opacity: 50%;
+              }
+            `}
+            onClick={openCreateTravelModal}
+          >
+            <BiPlus
+              css={css`
+                width: 3rem;
+                height: 3rem;
+              `}
+            />
+          </div>
           {travelsData?.content !== undefined &&
             travelsData?.content.map(
               ({ id, title, users, startDate, endDate }) => (
@@ -62,29 +91,9 @@ const TravelListPage = () => {
               )
             )}
         </div>
-        <button
-          css={css`
-            position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            width: 3rem;
-            border: none;
-            height: 3rem;
-            background: white;
-            box-shadow: 0px 0px 6px ${theme.colors.shadow};
-            padding: 1rem;
-            border-radius: 100vw;
-            cursor: pointer;
-            :hover {
-              opacity: 50%;
-            }
-          `}
-          onClick={openCreateTravelModal}
-        >
-          +
-        </button>
       </div>
     </>
   );
 };
+
 export default TravelListPage;

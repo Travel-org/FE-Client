@@ -20,7 +20,7 @@ const Invite = () => {
       <h2>Travely에 오신 것을 환영합니다!</h2>
       <p>id : {id}</p>
       <div>
-      <button onClick={handleRejectCode}>취소</button>
+        <button onClick={handleRejectCode}>취소</button>
         <button onClick={handleAcceptCode}>승락</button>
       </div>
     </Container>

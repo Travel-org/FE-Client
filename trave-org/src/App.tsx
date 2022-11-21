@@ -9,11 +9,13 @@ import {
 } from "react-router-dom";
 import { ThemeProvider, Global, css } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
+
 import { theme } from "@styles/theme";
 import normalize from "@styles/normalize";
 import PrivateRoute from "@routes/private";
 import PublicRoute from "@routes/public";
 import AdminRoute from "@routes/admin";
+
 import Spinner from "@atoms/spinner";
 import {
   MYPAGE_URL,
@@ -22,6 +24,7 @@ import {
   ADMIN_URL,
   KAKAO_CALLBACK_URL,
 } from "@constants/index";
+
 import OAuth2RedirectHandler from "@routes/oauth";
 import dashboardRoute from "@pages/dashboard";
 import { Provider } from "react-redux";
@@ -30,11 +33,14 @@ import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
 import { store } from "./app/store";
 import OauthSignUp from "./components/pages/signUp/kakao";
+import User from "./components/pages/admin/User";
+import Travel from "./components/pages/admin/Travel";
+import Post from "./components/pages/admin/Post";
+import adminRouter from "@pages/admin";
 
 const Main = lazy(() => import("@pages/landingPage"));
 const SignIn = lazy(() => import("@pages/signIn"));
 const SignUp = lazy(() => import("@pages/signUp"));
-const Admin = lazy(() => import("@pages/admin"));
 const Settlement = lazy(() => import("@pages/settlement"));
 const LiveSchedule = lazy(() => import("@pages/liveSchedule"));
 const Temp = lazy(() => import("@pages/temp"));
@@ -123,45 +129,39 @@ const App = () => {
         },
       ],
     },
-    {
-      path: "/admin",
-      element: (
-        <AdminRoute>
-          <Outlet />
-
-        </AdminRoute>
-      ),
-    },
     ...dashboardRoute,
+    ...adminRouter,
   ];
-  
+
   const element = useRoutes(routes);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Global styles={normalize} />
-      <Global
-        styles={css`
-          * {
-            font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif;
-          }
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Global styles={normalize} />
+        <Global
+          styles={css`
+            * {
+              font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif;
+            }
 
-          *,
-          *::before,
-          *::after {
-            box-sizing: border-box;
-          }
+            *,
+            *::before,
+            *::after {
+              box-sizing: border-box;
+            }
 
-          body {
-            background: #fcfcfd;
-          }
-        `}
-      />
-      <QueryClientProvider client={queryClient}>
-        <Suspense fallback={<Spinner />}>{element}</Suspense>
-      </QueryClientProvider>
-    </ThemeProvider>
+            body {
+              background: #fcfcfd;
+            }
+          `}
+        />
+        <QueryClientProvider client={queryClient}>
+          <Suspense fallback={<Spinner />}>{element}</Suspense>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </Provider>
   );
-}
+};
 
 export default App;

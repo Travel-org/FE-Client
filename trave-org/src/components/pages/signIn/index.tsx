@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Container, ContentContainer, LoginForm, Wrapper } from "./styles";
 
-
 import Button from "@atoms/button";
 import KakaoBtn from "@atoms/button/kakao";
 import SignInInput from "@organisms/loginInput";
@@ -23,7 +22,7 @@ interface SignInFormInterface {
 const SignIn = () => {
   const navigate = useNavigate();
   const [tryLogin, { isLoading, isSuccess, error, data }] =
-  api.useLoginMutation();
+    api.useLoginMutation();
   const {
     register,
     handleSubmit,
@@ -40,11 +39,11 @@ const SignIn = () => {
     };
   };
 
-    useEffect(() => {
+  useEffect(() => {
     if (!data) return;
     if (data.status === 400) alert(data.message);
     else navigate("/dashboard");
-    }, [data]);
+  }, [data]);
 
   return (
     <Container direction="row">
@@ -66,4 +65,5 @@ const SignIn = () => {
     </Container>
   );
 };
+
 export default SignIn;

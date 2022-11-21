@@ -6,6 +6,7 @@ const NavigationStyle = styled.div`
   width: 100%;
   z-index: 1001;
 `;
+
 const Logo = styled.img`
   padding: 0.4rem;
   box-sizing: border-box;

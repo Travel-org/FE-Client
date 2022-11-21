@@ -138,7 +138,6 @@ const PaginationTable = ({ url, kps }) => {
       setRows(content);
       setPage(number);
       setTotalCount(totalElements);
-      console.log(u);
     });
   }, [page]);
 
@@ -170,9 +169,7 @@ const PaginationTable = ({ url, kps }) => {
               <TableRow key={idx}>
                 {kps.map((kp, idx2) => (
                   <React.Fragment key={idx + idx2}>
-                    <a href= {"/" + (idx + idx2)}>
-                      {kp.gen(row)}
-                    </a>
+                    {kp.gen(row)}
                   </React.Fragment>
                 ))}
               </TableRow>

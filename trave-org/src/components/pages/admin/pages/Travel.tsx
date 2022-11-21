@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
 const Travel = () => {
   const url = "https://api.dev.travely.guide/v1/admin/travels";
   const kps: { title: string; gen: (rowData: any) => React.ReactNode }[] = [
@@ -20,8 +21,8 @@ const Travel = () => {
       title: "제목",
       gen: (rowData: any) => (
         <TableCell align="center">
-        <a href={window.location.href + "/" + rowData.id}>{rowData.title}</a>
-      </TableCell>
+          <a href={window.location.href + "/" + rowData.id}>{rowData.title}</a>
+        </TableCell>
       ),
     },
     {

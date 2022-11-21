@@ -4,7 +4,7 @@ import { theme } from "@src/styles/theme";
 
 const Container = styled(FlexDiv)`
   justify-content: center;
-  `;
+`;
 
 const ContentContainer = styled(FlexDiv)`
   position: absolute;

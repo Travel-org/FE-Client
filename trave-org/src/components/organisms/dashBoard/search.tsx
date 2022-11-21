@@ -74,6 +74,7 @@ const SearchBoard: React.FC<Props> = ({
           title: place_name,
           position: new kakao.maps.LatLng(y, x),
         });
+
         marker.setMap(map);
         setMarkers((v) => [...v, marker]);
         if (index === 0) map.panTo(new kakao.maps.LatLng(y, x));
@@ -84,10 +85,12 @@ const SearchBoard: React.FC<Props> = ({
       alert("검색 결과 중 오류가 발생했습니다.");
     }
   }
+
   const handleSearch = () => {
     if (InputRef.current === undefined) return;
     ps.keywordSearch(InputRef.current.value, placesSearchCB);
   };
+
   return (
     <>
       <Wrapper>
@@ -122,4 +125,5 @@ const SearchBoard: React.FC<Props> = ({
     </>
   );
 };
+
 export default SearchBoard;

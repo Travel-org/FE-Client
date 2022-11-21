@@ -25,6 +25,7 @@ const SubContainer = styled.div`
 const AvarTarContainer = styled.div`
   display: flex;
   flex-direction: row;
+
   > * {
     margin-left: -10px;
     border: 2px solid white;

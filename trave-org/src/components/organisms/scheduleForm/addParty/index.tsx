@@ -4,7 +4,7 @@ import Button from "@atoms/button";
 import Modal from "@src/components/modal";
 import { useRef, useState } from "react";
 
-const data = { email: "pkb8839@naver.com" };
+const data = { email: "maxcha98@ajou.ac.kr" };
 
 interface Props {
   userEmails: string[];
@@ -23,7 +23,7 @@ const AddParty = ({ userEmails, addUserEmail }: Props) => {
   return (
     <Container>
       <ElementWrapper>
-      {userEmails.map((email, i) => (
+        {userEmails.map((email, i) => (
           <PartyElement key={i} email={email} />
         ))}
       </ElementWrapper>

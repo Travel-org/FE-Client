@@ -31,12 +31,12 @@ const DashBoard = ({
     if (!result.destination) {
       return;
     }
+
     const draggingItemIndex = result.source.index;
     const dropItemIndex = result.destination.index;
 
     console.log("from", draggingItemIndex);
     console.log("to", dropItemIndex);
-
     dispatch(
       travelApi.util.updateQueryData("getTravel", travelId!, (draft) => {
         const removeForm = draft.schedules.splice(draggingItemIndex, 1);
@@ -82,13 +82,13 @@ const DashBoard = ({
           <Droppable droppableId="droppable">
             {(provided) => (
               <div ref={provided.innerRef}>
-               {travelData !== undefined &&
+                {travelData !== undefined &&
                   travelData.schedules.map(({ place, scheduleId }, index) => (
                     <Draggable
-                    key={scheduleId}
-                    index={index}
-                    draggableId={`${scheduleId}`}
-                  >
+                      key={scheduleId}
+                      index={index}
+                      draggableId={`${scheduleId}`}
+                    >
                       {(providedInner) => (
                         <div
                           ref={providedInner.innerRef}

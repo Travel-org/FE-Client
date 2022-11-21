@@ -140,6 +140,7 @@ const PaginationTable = ({ url, kps, children }) => {
       setRows(content);
       setPage(number);
       setTotalCount(totalElements);
+      console.log(u);
     });
   }, [page]);
 

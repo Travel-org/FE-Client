@@ -1,10 +1,12 @@
 // url
 
 export const KAKAO_API_APPLICATION_JAVASCRIPT_KEY =
-  "244b79eae3d8dcb07b1677e2c4f962ed";
+  "4bd2c0bb8e2837b6462633a0ab8a7728";
 
 export const SIGNIN_URL = "/signIn";
+
 export const SIGNUP_URL = "/signUp";
+
 export const MYPAGE_URL = "/myPage";
 
 export const ADMIN_URL = "/admin";
@@ -13,7 +15,7 @@ export const KAKAO_CALLBACK_URL = "/oauth/kakao/callback";
 
 export const ERROR_MESSAGE = "올바른 작성이 필요합니다.";
 
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=fb3cdc8286f403c65be5509d76bd17b0&redirect_uri=${API_URL}${KAKAO_CALLBACK_URL}&response_type=code`;
+export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=4bd2c0bb8e2837b6462633a0ab8a7728&redirect_uri=${window.location.protocol}//${window.location.host}${KAKAO_CALLBACK_URL}&response_type=code`;
 
 export const DAY = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -29,6 +31,7 @@ export const SIGNIN_INPUT_DATA = {
     content: "비밀번호",
   },
 };
+
 export const CHECK_SIGNUP_DATA = {
   name: {
     required: "이름을 입력해주세요",

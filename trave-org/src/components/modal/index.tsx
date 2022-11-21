@@ -18,14 +18,16 @@ const Modal: React.FC<IModalProp> = ({ children, onClick }) => {
         bottom: 0;
         right: 0;
         background-color: rgba(0, 0, 0, 0.2);
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         z-index: 9999;
       `}
       onClick={onClick}
     >
-       <div
+      <div
         onClick={(e) => {
           e.stopPropagation();
         }}

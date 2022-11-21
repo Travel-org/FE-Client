@@ -36,7 +36,7 @@ interface Props {
 }
 
 const CostElement = ({
- users,
+  users,
   data,
   isModalOpen,
   setIsModalOpen,
@@ -61,7 +61,7 @@ const CostElement = ({
           align-items: center;
         `}
       >
-          <Container
+        <Container
           css={css`
             transition: all 0.5s ease-out;
             right: ${isDelete ? "1rem" : "0px"};
@@ -189,7 +189,7 @@ const CostElement = ({
         {isDelete && (
           <input
             css={css`
-            transition: all 0.5s ease-out;
+              transition: all 0.5s ease-out;
             `}
             type={"radio"}
             onClick={() => handleSelectCostDelete(costId)}

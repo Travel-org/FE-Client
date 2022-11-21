@@ -12,10 +12,15 @@ const Box = styled.div<{ status: string }>`
   border: none;
   color: white;
   border-radius: 100vw;
+  cursor: pointer;
   background: ${({ status }) =>
     status !== "none" ? theme.colors.blue[900] : theme.colors.blue[600]};
   p {
     margin: 0px;
   }
+  :hover {
+    opacity: 50%;
+  }
 `;
+
 export { Box };
