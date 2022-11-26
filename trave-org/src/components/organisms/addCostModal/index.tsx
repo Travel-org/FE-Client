@@ -12,7 +12,7 @@ import {
 } from "./styles";
 
 import SelectTitle from "@src/components/organisms/settlementForm/selectTitle";
-import SelectPayer from "@src/components/organisms/settlementForm/selectPayer";
+import SelectPlayer from "@src/components/organisms/settlementForm/selectPlayer";
 import SelectBiller from "@src/components/organisms/settlementForm/selectBiller";
 import AddPrice from "@src/components/organisms/settlementForm/addPrice";
 import { api } from "@src/app/api/api";

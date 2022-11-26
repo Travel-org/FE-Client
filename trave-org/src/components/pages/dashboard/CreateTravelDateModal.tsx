@@ -109,7 +109,7 @@ const CreateTravelDateModal: React.FC<ICreateTravelDateModalProps> = ({
             취소
           </button>
           <button
-            type="button"
+            type="button" 
             onClick={() =>
               updateTravelDates({
                 travelId: travelId,

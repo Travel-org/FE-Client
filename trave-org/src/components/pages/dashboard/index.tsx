@@ -36,7 +36,6 @@ import travelApi from "@src/app/api/travelApi";
 import TextAvatar from "@src/components/atoms/textAvatar";
 import NoticeDetail from "../admin/pages/detail/NoticeDetail";
 import EventDetail from "../admin/pages/detail/EventDetail";
-import { MeetingProvider } from "amazon-chime-sdk-component-library-react";
 
 const LLink = styled(Link)`
   text-decoration: none;
@@ -215,7 +214,7 @@ const TopBar = () => {
         `}
       >
         <div onClick={() => navigate("/mypage")}>
-          <TextAvatar name={myInfoData?.name ?? "게스트"} />
+          <TextAvatar name={myInfoData?.name?? "박경빈"} />
         </div>
       </div>
     </>
@@ -282,9 +281,7 @@ const dashboardRoute: BreadcrumbsRoute<string>[] = [
         path: "travels/:travelId",
         element: (
           // @ts-ignore
-          <MeetingProvider>
             <TravelEditPage />
-          </MeetingProvider>
         ),
         breadcrumb: TravelNameBreadCrumb,
       },

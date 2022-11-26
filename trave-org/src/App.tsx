@@ -33,9 +33,6 @@ import Navigation from "./components/organisms/navigation";
 import Invite from "./components/pages/invite";
 import { store } from "./app/store";
 import OauthSignUp from "./components/pages/signUp/kakao";
-import User from "./components/pages/admin/User";
-import Travel from "./components/pages/admin/Travel";
-import Post from "./components/pages/admin/Post";
 import adminRouter from "@pages/admin";
 
 const Main = lazy(() => import("@pages/landingPage"));

@@ -1,7 +1,6 @@
 // url
 
-export const KAKAO_API_APPLICATION_JAVASCRIPT_KEY =
-  "4bd2c0bb8e2837b6462633a0ab8a7728";
+export const KAKAO_API_APPLICATION_JAVASCRIPT_KEY ="244b79eae3d8dcb07b1677e2c4f962ed";
 
 export const SIGNIN_URL = "/signIn";
 
